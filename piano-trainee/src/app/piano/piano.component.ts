@@ -40,6 +40,7 @@ export class PianoComponent implements OnInit {
 
 	public onKeyClick(key: Key) {
 		key.isActive = !key.isActive;
+		this.pianoService.checkAnswer();
 		// setTimeout(() => {
 		// 	key.isActive = false;
 		// }, 1000)

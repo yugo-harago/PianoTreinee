@@ -8,11 +8,8 @@ import { PianoService } from '../piano.service';
 })
 export class TrainingDisplayComponent implements OnInit {
 
-	public quest: string = "";
-	public questAnswer: string[] = [];
-
 	constructor(
-		private pianoService: PianoService,
+		public pianoService: PianoService,
 	) { }
 
 	ngOnInit(): void {
@@ -20,13 +17,7 @@ export class TrainingDisplayComponent implements OnInit {
 	}
 
 	public nextQuest(): void {
-		const quest = this.pianoService.startBasicQuest();
-		this.quest = quest.quest;
-		this.questAnswer = quest.answer;
-	}
-
-	public answer(a: string[]): void {
-
+		this.pianoService.startBasicQuest();
 	}
 
 }

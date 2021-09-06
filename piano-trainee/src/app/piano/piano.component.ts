@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Key, PianoService } from './piano.service';
 
 @Component({
   selector: 'app-piano',
@@ -11,13 +12,11 @@ export class PianoComponent implements OnInit {
 	public keyHeight = 380;
 	public octaveWidth: number = 6.5*this.keyWidth;
 
-	public startOctave: number = 4;
-	public octaves: number = 1;
 	private zoom: number = 0;
 
-	public notes = ['c','c#','d','d#','e','f','f#','g','g#','a','a#','b']
-
-	constructor() { }
+	constructor(
+		public pianoService: PianoService,
+	) { }
 
 	ngOnInit(): void {
 	}
@@ -35,6 +34,14 @@ export class PianoComponent implements OnInit {
 	}
 
 	public octaveTest(){
-		this.octaves += 1
+		this.pianoService.octaves += 1;
+		this.pianoService.loadOctaves();
+	}
+
+	public onKeyClick(key: Key) {
+		key.isActive = !key.isActive;
+		// setTimeout(() => {
+		// 	key.isActive = false;
+		// }, 1000)
 	}
 }

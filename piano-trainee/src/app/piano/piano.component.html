@@ -16,16 +16,14 @@
 	<div class="keyboard"
 		[style.width.px]="octaveWidth"
 		>
-		<div class="octave" 
-			*ngFor="let i of [].constructor(octaves); let octave = index"
-			[style.width.px]="octaveWidth"
-			>
 		<button class="key" 
-			*ngFor="let note of notes" 
-			[attr.data-note]="note" 
-			[attr.data-octave]="startOctave + octave"
+			*ngFor="let key of pianoService.keys"
+			[class.right]="key.isActive && key.isRight"
+			[class.wrong]="key.isActive && !key.isRight"
+			[attr.data-note]="key.note"
+			[attr.data-octave]="key.octave"
 			[style.height.px]="keyHeight"
-			[style.width.px]="keyWidth"></button>
-		</div>
+			[style.width.px]="keyWidth"
+			(click)="onKeyClick(key)"></button>
 	</div>
 </div>

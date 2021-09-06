@@ -6,10 +6,8 @@ $radius: 5px
 // $white-key-width: 77px
 
 :host
-	font-family: "Open Sans Condensed"
 	display: flex
 	flex-direction: column
-	justify-content: center
 	align-items: center
 	background: #422c1d
 	padding: 0.25rem 1rem
@@ -20,12 +18,7 @@ $radius: 5px
 .keyboard
 	// width: 6.3*$white-key-width
 	position: relative
-	display: inline
-
-.octave
-	// width: 6.5*$white-key-width
-	float: left
-	display: contents // To make octave keys split
+	display: inline // To make octave keys split
 
 .key
 	display: inline-block
@@ -48,3 +41,8 @@ $radius: 5px
 	transform-origin: center top
 	transform: translateX(-50%) scaleY(0.6) scaleX(0.75)
 	border-radius: 0 0 $radius * 1.6 $radius * 1.6
+
+.right
+	background: #54ce7d
+.wrong
+	background: #ce5454

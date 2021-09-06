@@ -7,20 +7,25 @@
 		(click)="zoomOut()">
 		<i class="fa fa-search-minus"></i>
 	</button>
+	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+		(click)="octaveTest()">octave
+	</button>
 </div>
-
-<div class="keyboard"
-	[style.width.px]="octaveWidth"
-	>
-	<div class="octave" 
-		*ngFor="let i of [].constructor(octaves); let octave = index"
+<div class="key-container"
+	[style.height.px]="keyHeight">
+	<div class="keyboard"
 		[style.width.px]="octaveWidth"
 		>
-    <button class="key" 
-		*ngFor="let note of notes" 
-		[attr.data-note]="note" 
-		[attr.data-octave]="startOctave + octave"
-		[style.height.px]="keyHeight"
-		[style.width.px]="keyWidth"></button>
+		<div class="octave" 
+			*ngFor="let i of [].constructor(octaves); let octave = index"
+			[style.width.px]="octaveWidth"
+			>
+		<button class="key" 
+			*ngFor="let note of notes" 
+			[attr.data-note]="note" 
+			[attr.data-octave]="startOctave + octave"
+			[style.height.px]="keyHeight"
+			[style.width.px]="keyWidth"></button>
+		</div>
 	</div>
 </div>

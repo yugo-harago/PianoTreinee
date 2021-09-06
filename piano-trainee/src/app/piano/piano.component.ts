@@ -24,15 +24,17 @@ export class PianoComponent implements OnInit {
 
 	public zoomIn(): void {
 		this.zoom += 1;
-		if(this.zoom){
-			this.keyWidth = 77*(this.zoom + 0.1);
-		}
+		this.keyWidth *= (1.1);
+		this.keyHeight *= (1.1);
 	}
 
 	public zoomOut(): void {
 		this.zoom -= 1;
-		if(this.zoom){
-			this.keyWidth = 77*(this.zoom + 0.1);
-		}
+		this.keyWidth *= (0.9)
+		this.keyHeight *= (0.9)
+	}
+
+	public octaveTest(){
+		this.octaves += 1
 	}
 }

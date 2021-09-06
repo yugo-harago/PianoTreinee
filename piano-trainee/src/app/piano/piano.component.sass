@@ -14,12 +14,18 @@ $radius: 5px
 	background: #422c1d
 	padding: 0.25rem 1rem
 
+.key-container
+	overflow: hidden // To cut excess keys if doesnt fit
+
 .keyboard
 	// width: 6.3*$white-key-width
 	position: relative
+	display: inline
 
-// .octave
-// 	width: 6.5*$white-key-width
+.octave
+	// width: 6.5*$white-key-width
+	float: left
+	display: contents // To make octave keys split
 
 .key
 	display: inline-block

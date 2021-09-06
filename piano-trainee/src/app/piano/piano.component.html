@@ -1,0 +1,5 @@
+<div class="keyboard row">
+	<div class="octave col" *ngFor="let i of [].constructor(octaves); let octave = index">
+    <button class="key" *ngFor="let note of notes" [attr.data-note]="note" [attr.data-octave]="startOctave + octave"></button>
+	</div>
+</div>

@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PianoComponent } from './piano.component';
 import { TrainingDisplayComponent } from './training-display/training-display.component';
-import { PianoService } from './piano.service';
+import { PianoQuestComponent } from './piano-quest/piano-quest.component';
 
 
 
 @NgModule({
   declarations: [
-    PianoComponent,
+    PianoQuestComponent,
     TrainingDisplayComponent,
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    PianoComponent,
+    PianoQuestComponent,
 	TrainingDisplayComponent,
   ]
 })

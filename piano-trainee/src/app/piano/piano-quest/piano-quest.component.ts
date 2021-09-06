@@ -1,34 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { Key, PianoService } from './piano.service';
+import { Key } from '../piano.service';
+import { PianoQuestService } from './piano-quest.service';
 
 @Component({
-  selector: 'app-piano',
-  templateUrl: './piano.component.html',
-  styleUrls: ['./piano.component.sass']
+  selector: 'app-piano-quest',
+  templateUrl: './piano-quest.component.html',
+  styleUrls: ['./piano-quest.component.sass']
 })
-export class PianoComponent implements OnInit {
+export class PianoQuestComponent implements OnInit {
 
 	public keyWidth = 77;
 	public keyHeight = 380;
 	public octaveWidth: number = 6.5*this.keyWidth;
 
-	private zoom: number = 0;
 
 	constructor(
-		public pianoService: PianoService,
+		public pianoService: PianoQuestService,
 	) { }
 
 	ngOnInit(): void {
 	}
 
 	public zoomIn(): void {
-		this.zoom += 1;
 		this.keyWidth *= (1.1);
 		this.keyHeight *= (1.1);
 	}
 
 	public zoomOut(): void {
-		this.zoom -= 1;
 		this.keyWidth *= (0.9)
 		this.keyHeight *= (0.9)
 	}
@@ -39,10 +37,6 @@ export class PianoComponent implements OnInit {
 	}
 
 	public onKeyClick(key: Key) {
-		key.isActive = !key.isActive;
-		this.pianoService.checkAnswer();
-		// setTimeout(() => {
-		// 	key.isActive = false;
-		// }, 1000)
+		this.pianoService.onKeyClick(key);
 	}
 }

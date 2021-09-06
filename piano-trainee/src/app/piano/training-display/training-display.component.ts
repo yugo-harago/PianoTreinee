@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PianoQuestService } from '../piano-quest/piano-quest.service';
 import { PianoService } from '../piano.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { PianoService } from '../piano.service';
 export class TrainingDisplayComponent implements OnInit {
 
 	constructor(
-		public pianoService: PianoService,
+		public pianoQuestService: PianoQuestService,
 	) { }
 
 	ngOnInit(): void {
@@ -17,7 +18,7 @@ export class TrainingDisplayComponent implements OnInit {
 	}
 
 	public nextQuest(): void {
-		this.pianoService.startBasicQuest();
+		this.pianoQuestService.startBasicQuest();
 	}
 
 }

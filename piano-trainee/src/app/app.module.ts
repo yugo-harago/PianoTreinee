@@ -7,7 +7,6 @@ import { VisitorComponent } from './visitor/visitor.component';
 import { VisitorHeaderComponent } from './visitor/visitor-header/visitor-header.component';
 import { VisitorHomeComponent } from './visitor/visitor-home/visitor-home.component';
 import { UserModule } from './user/user.module';
-import { PianoComponent } from './piano/piano.component';
 
 @NgModule({
   declarations: [

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PianoQuestComponent } from './piano-quest.component';
 
-import { PianoComponent } from './piano.component';
 
-describe('PianoComponent', () => {
-  let component: PianoComponent;
-  let fixture: ComponentFixture<PianoComponent>;
+describe('PianoQuestComponent', () => {
+  let component: PianoQuestComponent;
+  let fixture: ComponentFixture<PianoQuestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PianoComponent ]
+      declarations: [ PianoQuestComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PianoComponent);
+    fixture = TestBed.createComponent(PianoQuestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

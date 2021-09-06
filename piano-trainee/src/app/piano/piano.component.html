@@ -1,5 +1,26 @@
-<div class="keyboard row">
-	<div class="octave col" *ngFor="let i of [].constructor(octaves); let octave = index">
-    <button class="key" *ngFor="let note of notes" [attr.data-note]="note" [attr.data-octave]="startOctave + octave"></button>
+<div class="col-4 text-left" style="margin: 0px;padding: 5px 15px;">
+	<button class="btn btn-light btn-sm" id="zoom_in" type="button" style="padding: 5px;margin: 2px;"
+		(click)="zoomIn()">
+		<i class="fa fa-search-plus"></i>
+	</button>
+	<button class="btn btn-light btn-sm" id="zoom_out" type="button" style="padding: 5px;margin: 2px;"
+		(click)="zoomOut()">
+		<i class="fa fa-search-minus"></i>
+	</button>
+</div>
+
+<div class="keyboard"
+	[style.width.px]="octaveWidth"
+	>
+	<div class="octave" 
+		*ngFor="let i of [].constructor(octaves); let octave = index"
+		[style.width.px]="octaveWidth"
+		>
+    <button class="key" 
+		*ngFor="let note of notes" 
+		[attr.data-note]="note" 
+		[attr.data-octave]="startOctave + octave"
+		[style.height.px]="keyHeight"
+		[style.width.px]="keyWidth"></button>
 	</div>
 </div>

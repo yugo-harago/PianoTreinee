@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import WebMidi, { InputEventNoteon, InputEventNoteoff, Input, Output, WebMidiEvents, WebMidiEventConnected } from "webmidi";
 import { Key } from '../piano.service';
-import * as Tone from 'tone'
+import * as Tone from 'tone';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -16,6 +16,8 @@ export class MidiService {
 	public selectedOutput?: Output;
 	public onMidiKeyPress: BehaviorSubject<{note: string, octave: number} | undefined> = 
 		new BehaviorSubject<{note: string, octave: number} | undefined>(undefined);
+	public onMidiKeyRelease: BehaviorSubject<{note: string, octave: number} | undefined> = 
+		new BehaviorSubject<{note: string, octave: number} | undefined>(undefined);
 	public onConnected: BehaviorSubject<WebMidiEventConnected | undefined> = new BehaviorSubject<WebMidiEventConnected | undefined>(undefined);
 
 	constructor() {
@@ -28,14 +30,12 @@ export class MidiService {
 				return;
 			}
 			this.enabled = true;
-			console.log("WebMidi enabled!");
 			console.log(WebMidi.inputs);
 			console.log(WebMidi.outputs);
 			this.inputs = WebMidi.inputs;
 			this.outputs = WebMidi.outputs;
 
 			WebMidi.addListener("connected", (e) => {
-				console.log(e);
 				this.onConnected.next(e);
 				if(!this.selectedInput) this.selectInput(WebMidi.inputs[0]);
 			});
@@ -50,8 +50,17 @@ export class MidiService {
 		}
 		//create a synth and connect it to the main output (your speakers)
 		const synth = new Tone.Synth().toDestination();
-		//play a middle 'C' for the duration of an 8th note
+		//play a note for the duration of an 8th note
 		synth.triggerAttackRelease(note, "8n");
+	}
+
+	public startPlay(key: Key){
+		const now = Tone.now();
+		key.synth.triggerAttack(key.note + key.octave, now)
+	}
+	public stopPlay(key: Key){
+		const now = Tone.now();
+		key.synth.triggerRelease(now)
 	}
 
 	public selectInput(input: Input): void {
@@ -61,9 +70,15 @@ export class MidiService {
 			(e) => {
 				const note = e.note.name;
 				const octave = e.note.octave;
-				console.log("Received 'noteon' message (" + note + octave + ").");
 				this.onMidiKeyPress.next({note,octave});
 			}
 	  	);
+		input.addListener('noteoff', "all",
+			(e) => {
+				const note = e.note.name;
+				const octave = e.note.octave;
+				this.onMidiKeyRelease.next({note,octave});
+			}
+		);
 	}
 }

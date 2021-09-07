@@ -3,12 +3,14 @@ import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
 import { BehaviorSubject } from 'rxjs';
 import { MidiService } from './midi/midi.service';
 import { IPianoService } from './PianoService.interface';
+import * as Tone from 'tone';
 
 export class Key {
 	note: string = "";
 	isActive: boolean = false;
 	octave: number = 0;
 	isRight: boolean = false;
+	synth: Tone.Synth<Tone.SynthOptions> = new Tone.Synth().toDestination();
 	constructor(note: string, octave: number){
 		this.note = note;
 		this.octave = octave;
@@ -16,7 +18,7 @@ export class Key {
 }
 
 export class Octave {
-	public length: number = 1;
+	public length: number = 3;
 	public middle: number = 4;
 	public start = () => {
 		return this.middle - Math.ceil((this.length-1)/2) -1;
@@ -39,12 +41,6 @@ export class PianoService implements IPianoService{
 		public midi: MidiService
 	) {
 		this.loadOctaves();
-		this.midi.onMidiKeyPress.subscribe(e => {
-			if(!e) return;
-			let key = this.keys.find(key => key.note == e.note && key.octave == e.octave);
-			if(key) this.onKeyClick(key);
-			else console.error("Key not found.")
-		});
 	}
 
 	public loadOctaves(){
@@ -58,6 +54,7 @@ export class PianoService implements IPianoService{
 		return Math.floor(Math.random() * max);
 	}
 
+	// Mouse/Screen Input
 	public onKeyClick(key: Key) {
 		key.isActive = !key.isActive;
 		this.midi.play(key);
@@ -66,6 +63,18 @@ export class PianoService implements IPianoService{
 			key.isActive = false;
 			this.checkChange.next(true);
 		}, 1000)
+	}
+
+	// Midi Key Input
+	public onKeyDown(key: Key){
+		key.isActive = true;
+		this.checkChange.next(true);
+		this.midi.startPlay(key);
+	}
+	public onKeyUp(key: Key){
+		key.isActive = false;
+		this.checkChange.next(true);
+		this.midi.stopPlay(key);
 	}
 
 }

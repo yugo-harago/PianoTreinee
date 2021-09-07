@@ -7,4 +7,6 @@ export interface IPianoService {
 	checkChange: BehaviorSubject<boolean>;
 	octave: Octave;
 	keys: Key[];
+	onKeyDown: (key: Key) => void;
+	onKeyUp: (key: Key) => void;
 }

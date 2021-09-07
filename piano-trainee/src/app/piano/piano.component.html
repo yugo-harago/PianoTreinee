@@ -1,20 +1,26 @@
 <div class="col-4 text-left" style="margin: 0px;padding: 5px 15px;">
 	<button class="btn btn-light btn-sm" id="zoom_in" type="button" style="padding: 5px;margin: 2px;"
 		(click)="zoomIn()">
-		<i class="fa fa-search-plus"></i>
+		<!-- <i class="fa fa-search-plus"></i> -->
+		+
 	</button>
 	<button class="btn btn-light btn-sm" id="zoom_out" type="button" style="padding: 5px;margin: 2px;"
 		(click)="zoomOut()">
-		<i class="fa fa-search-minus"></i>
+		<!-- <i class="fa fa-search-minus"></i> -->
+		-
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
-		(click)="octaveTest()">octave
+		(click)="octavePlus()">octave +
 	</button>
-	<select class="form-select" *ngIf="midi.enabled" (change)="onOctaveChange($event)">
+	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+		(click)="octaveMinus()">octave -
+	</button>
+	<select class="form-select" *ngIf="midi.inputs.length" (change)="onMidiChange($event)">
 		<option *ngFor="let in of midi.inputs; let i = index" [value]="i">{{ in.name }}</option>
 	</select>
 </div>
 <div class="key-container"
+	*ngIf="pianoService"
 	[style.height.px]="keySize.height">
 	<div class="keyboard"
 		[style.width.px]="octaveWidth"
@@ -22,11 +28,11 @@
 		<button class="key" 
 			*ngFor="let key of pianoService.keys"
 			[class.right]="(key.isActive && !isQuest)||(key.isActive && key.isRight && isQuest)"
-			[class.wrong]="(key.isActive && isQuest)||(key.isActive && !key.isRight && isQuest)"
+			[class.wrong]="(key.isActive && !key.isRight && isQuest)"
 			[attr.data-note]="key.note"
 			[attr.data-octave]="key.octave"
 			[style.height.px]="keySize.height"
 			[style.width.px]="keySize.width"
-			(click)="onKeyClick(key)"></button>
+			(pointerdown)="onKeyClick(key)"></button>
 	</div>
 </div>

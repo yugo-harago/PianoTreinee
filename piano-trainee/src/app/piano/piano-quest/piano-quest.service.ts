@@ -13,7 +13,7 @@ export class PianoQuestService implements IPianoService{
 	public questChord: string = '';
 	public answerChords: string[] = [];
 	
-	public checkChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	public checkChange: BehaviorSubject<boolean>;
 	public octave: Octave;
 	public keys: Key[];
 
@@ -23,11 +23,12 @@ export class PianoQuestService implements IPianoService{
 	) {
 		this.octave = piano.octave;
 		this.keys = piano.keys;
+		this.checkChange = piano.checkChange;
 	}
 
 	public loadOctaves(){
 		this.piano.loadOctaves();
-		if(this.answerChords) this.setAnswer(this.answerChords);
+		if(this.answerChords.length) this.setAnswer(this.answerChords);
 	}
 
 	public startBasicQuest(): void {
@@ -38,6 +39,7 @@ export class PianoQuestService implements IPianoService{
 		this.setAnswer(chord.notes);
 		this.questChord = quest;
 		this.answerChords = chord.notes;
+		this.checkChange.next(true);
 	}
 
 	public setAnswer(notes: string[]): void {
@@ -52,7 +54,7 @@ export class PianoQuestService implements IPianoService{
 		this.answerChords.forEach(answer => {
 			correct = correct && !!this.piano.keys.filter(key => key.note == answer && key.isRight && key.isActive).length;
 		});
-		// Check if any key is active and wrong
+		// Check if any key is not active and wrong
 		correct = correct && !this.piano.keys.filter(key => key.isActive && !key.isRight).length;
 		if(correct) this.answeredRight();
 	}
@@ -65,8 +67,18 @@ export class PianoQuestService implements IPianoService{
 		this.startBasicQuest();
 	}
 	public onKeyClick(key: Key) {
+		if(!key.isActive) this.midi.play(key);
 		key.isActive = !key.isActive;
-		this.midi.play(key);
+		this.checkAnswer();
+	}
+
+	// Midi Key Input
+	public onKeyDown(key: Key){
+		this.piano.onKeyDown(key);
+		this.checkAnswer();
+	}
+	public onKeyUp(key: Key){
+		this.piano.onKeyUp(key);
 		this.checkAnswer();
 	}
 }

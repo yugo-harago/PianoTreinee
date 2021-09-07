@@ -18,8 +18,8 @@
 		>
 		<button class="key" 
 			*ngFor="let key of pianoService.keys"
-			[class.right]="key.isActive && key.isRight"
-			[class.wrong]="key.isActive && !key.isRight"
+			[class.right]="(key.isActive && !isQuest)||(key.isActive && key.isRight && isQuest)"
+			[class.wrong]="(key.isActive && isQuest)||(key.isActive && !key.isRight && isQuest)"
 			[attr.data-note]="key.note"
 			[attr.data-octave]="key.octave"
 			[style.height.px]="keyHeight"

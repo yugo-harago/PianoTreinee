@@ -10,6 +10,9 @@
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 		(click)="octaveTest()">octave
 	</button>
+	<select class="form-select" *ngIf="midi.enabled" (change)="onMidiChange($event)">
+		<option *ngFor="let in of midi.inputs; let i = index" [value]="i">{{ in.name }}</option>
+	</select>
 </div>
 <div class="key-container"
 	[style.height.px]="keySize.height">

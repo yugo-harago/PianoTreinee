@@ -18,7 +18,7 @@ export class PianoComponent implements OnInit {
 	constructor(
 		piano: PianoService,
 		pianoQuestService: PianoQuestService,
-		private midi: MidiService
+		public midi: MidiService
 	) { 
 		if(this.isQuest) { this.pianoService = pianoQuestService; }
 		else { this.pianoService = piano; }
@@ -26,6 +26,7 @@ export class PianoComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		if(this.midi.enabled) this.midi.selectedInput = this.midi.inputs[0];
 	}
 
 	public zoomIn(): void {
@@ -39,12 +40,18 @@ export class PianoComponent implements OnInit {
 	}
 
 	public octaveTest(){
-		this.pianoService.octaves += 1;
+		this.pianoService.octave.lenght += 1;
 		this.pianoService.loadOctaves();
 	}
 
 	public onKeyClick(key: Key) {
 		this.pianoService.onKeyClick(key);
+	}
+
+	public onMidiChange(e: Event): void {
+		if(!e?.target) return;
+		const i = parseInt((e.target as HTMLTextAreaElement).value);
+		this.midi.selectedInput = this.midi.inputs[i];
 	}
 	
 }

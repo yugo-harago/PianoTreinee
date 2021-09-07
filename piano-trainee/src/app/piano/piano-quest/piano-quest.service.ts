@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
+import { MidiService } from '../midi/midi.service';
 import { Key, PianoService } from '../piano.service';
 
 @Injectable({
@@ -10,8 +11,10 @@ export class PianoQuestService extends PianoService {
 	public questChord: string = '';
 	public answerChords: string[] = [];
 	
-	constructor() {
-		super();
+	constructor(
+		midi: MidiService
+	) {
+		super(midi);
 	}
 
 	public loadOctaves(){
@@ -55,6 +58,7 @@ export class PianoQuestService extends PianoService {
 	}
 	public onKeyClick(key: Key) {
 		key.isActive = !key.isActive;
+		super.midi.play(key);
 		this.checkAnswer();
 	}
 }

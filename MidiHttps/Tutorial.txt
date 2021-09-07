@@ -1,0 +1,27 @@
+https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70dab07417c8
+1. generate cnf
+2. generate ssl
+	openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout localhost.key -days 3560 -out localhost.crt -config certificate.cnf
+	My command: 
+		%OPEN_SSL%/openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout localhost.key -days 3560 -out localhost.crt -config yugo-midi-certificate.cnf
+3. Set those files in angular:
+	In the "Configuring Angular CLI to use https" section I used:
+	https://stackoverflow.com/questions/39210467/get-angular-cli-to-ng-serve-over-https
+	{
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"projects": {
+		"<PROJECT-NAME>": {
+			"architect": {
+				"serve: {
+					"options": {
+						"sslKey": "<relative path from angular.json>/server.key",
+						"sslCert": "<relative path from angular.json>/server.crt",
+						...
+					}, ...
+				}, ...
+			}, ...
+		}, ...
+	}, ...
+	}
+4. Trust Certificate in Windows
+5. Restart Chrome

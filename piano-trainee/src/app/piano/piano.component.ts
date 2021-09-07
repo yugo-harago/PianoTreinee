@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MidiService } from './midi/midi.service';
 import { PianoQuestService } from './piano-quest/piano-quest.service';
 import { Key, PianoService } from './piano.service';
 
@@ -10,34 +11,31 @@ import { Key, PianoService } from './piano.service';
 export class PianoComponent implements OnInit {
 
 	@Input() isQuest: boolean = false;
-	public keyWidth = 77;
-	public keyHeight = 380;
-	public octaveWidth: number = 6.5*this.keyWidth;
-
+	public keySize = { width:77, height: 380 };
+	public octaveWidth: number = 6.5*this.keySize.width;
 	public pianoService: PianoService;
 
 	constructor(
 		piano: PianoService,
-		pianoQuestService: PianoQuestService
+		pianoQuestService: PianoQuestService,
+		private midi: MidiService
 	) { 
-		if(this.isQuest) {
-			this.pianoService = pianoQuestService;
-		} else {
-			this.pianoService = piano;
-		}
+		if(this.isQuest) { this.pianoService = pianoQuestService; }
+		else { this.pianoService = piano; }
+		this.midi.startMidi();
 	}
 
 	ngOnInit(): void {
 	}
 
 	public zoomIn(): void {
-		this.keyWidth *= (1.1);
-		this.keyHeight *= (1.1);
+		this.keySize.width *= (1.1);
+		this.keySize.height *= (1.1);
 	}
 
 	public zoomOut(): void {
-		this.keyWidth *= (0.9)
-		this.keyHeight *= (0.9)
+		this.keySize.width *= (0.9)
+		this.keySize.height *= (0.9)
 	}
 
 	public octaveTest(){
@@ -48,4 +46,5 @@ export class PianoComponent implements OnInit {
 	public onKeyClick(key: Key) {
 		this.pianoService.onKeyClick(key);
 	}
+	
 }

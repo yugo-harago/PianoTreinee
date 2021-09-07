@@ -12,7 +12,7 @@
 	</button>
 </div>
 <div class="key-container"
-	[style.height.px]="keyHeight">
+	[style.height.px]="keySize.height">
 	<div class="keyboard"
 		[style.width.px]="octaveWidth"
 		>
@@ -22,8 +22,8 @@
 			[class.wrong]="(key.isActive && isQuest)||(key.isActive && !key.isRight && isQuest)"
 			[attr.data-note]="key.note"
 			[attr.data-octave]="key.octave"
-			[style.height.px]="keyHeight"
-			[style.width.px]="keyWidth"
+			[style.height.px]="keySize.height"
+			[style.width.px]="keySize.width"
 			(click)="onKeyClick(key)"></button>
 	</div>
 </div>

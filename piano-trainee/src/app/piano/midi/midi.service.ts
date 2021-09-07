@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import WebMidi, { InputEventNoteon, InputEventNoteoff, Input, Output } from "webmidi";
+import WebMidi, { InputEventNoteon, InputEventNoteoff, Input, Output, WebMidiEvents, WebMidiEventConnected } from "webmidi";
 import { Key } from '../piano.service';
 import * as Tone from 'tone'
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,11 @@ export class MidiService {
 	public enabled: boolean = false;
 	public inputs: Input[] = [];
 	public outputs: Output[] = [];
-	public selectedInput?: Input;
+	private selectedInput?: Input;
 	public selectedOutput?: Output;
+	public onMidiKeyPress: BehaviorSubject<{note: string, octave: number} | undefined> = 
+		new BehaviorSubject<{note: string, octave: number} | undefined>(undefined);
+	public onConnected: BehaviorSubject<WebMidiEventConnected | undefined> = new BehaviorSubject<WebMidiEventConnected | undefined>(undefined);
 
 	constructor() {
 	}
@@ -29,7 +33,12 @@ export class MidiService {
 			console.log(WebMidi.outputs);
 			this.inputs = WebMidi.inputs;
 			this.outputs = WebMidi.outputs;
-			// this.inputs[0].name
+
+			WebMidi.addListener("connected", (e) => {
+				console.log(e);
+				this.onConnected.next(e);
+				if(!this.selectedInput) this.selectInput(WebMidi.inputs[0]);
+			});
 		});
 	}
 
@@ -43,5 +52,18 @@ export class MidiService {
 		const synth = new Tone.Synth().toDestination();
 		//play a middle 'C' for the duration of an 8th note
 		synth.triggerAttackRelease(note, "8n");
+	}
+
+	public selectInput(input: Input): void {
+		this.selectedInput = input;
+		// Listen for a 'note on' message on all channels
+		input.addListener('noteon', "all",
+			(e) => {
+				const note = e.note.name;
+				const octave = e.note.octave;
+				console.log("Received 'noteon' message (" + note + octave + ").");
+				this.onMidiKeyPress.next({note,octave});
+			}
+	  	);
 	}
 }

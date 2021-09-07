@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
+import { BehaviorSubject } from 'rxjs';
 import { MidiService } from '../midi/midi.service';
-import { Key, PianoService } from '../piano.service';
+import { Key, Octave, PianoService } from '../piano.service';
+import { IPianoService } from '../PianoService.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PianoQuestService extends PianoService {
+export class PianoQuestService implements IPianoService{
 
 	public questChord: string = '';
 	public answerChords: string[] = [];
 	
+	public checkChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	public octave: Octave;
+	public keys: Key[];
+
 	constructor(
-		midi: MidiService
+		private midi: MidiService,
+		private piano: PianoService
 	) {
-		super(midi);
+		this.octave = piano.octave;
+		this.keys = piano.keys;
 	}
 
 	public loadOctaves(){
-		super.loadOctaves();
+		this.piano.loadOctaves();
 		if(this.answerChords) this.setAnswer(this.answerChords);
 	}
 
 	public startBasicQuest(): void {
 		const notes = ["C","D","E","F","G","A","B"];
-		const noteIndex = super.getRandomInt(notes.length);
+		const noteIndex = this.piano.getRandomInt(notes.length);
 		const quest = notes[noteIndex]
 		const chord = Chord.getChord("major", quest);
 		this.setAnswer(chord.notes);
@@ -33,7 +41,7 @@ export class PianoQuestService extends PianoService {
 	}
 
 	public setAnswer(notes: string[]): void {
-		this.keys.forEach(key => {
+		this.piano.keys.forEach(key => {
 			key.isRight = notes.includes(key.note);
 		})
 	}
@@ -42,15 +50,15 @@ export class PianoQuestService extends PianoService {
 		let correct = true;
 		// Check if right keys are active
 		this.answerChords.forEach(answer => {
-			correct = correct && !!this.keys.filter(key => key.note == answer && key.isRight && key.isActive).length;
+			correct = correct && !!this.piano.keys.filter(key => key.note == answer && key.isRight && key.isActive).length;
 		});
 		// Check if any key is active and wrong
-		correct = correct && !this.keys.filter(key => key.isActive && !key.isRight).length;
+		correct = correct && !this.piano.keys.filter(key => key.isActive && !key.isRight).length;
 		if(correct) this.answeredRight();
 	}
 
 	public answeredRight(){
-		this.keys.forEach(key => {
+		this.piano.keys.forEach(key => {
 			key.isActive = false;
 			key.isRight = false;
 		})
@@ -58,7 +66,7 @@ export class PianoQuestService extends PianoService {
 	}
 	public onKeyClick(key: Key) {
 		key.isActive = !key.isActive;
-		super.midi.play(key);
+		this.midi.play(key);
 		this.checkAnswer();
 	}
 }

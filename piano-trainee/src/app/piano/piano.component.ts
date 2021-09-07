@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MidiService } from './midi/midi.service';
 import { PianoQuestService } from './piano-quest/piano-quest.service';
 import { Key, PianoService } from './piano.service';
+import { IPianoService } from './PianoService.interface';
 
 @Component({
   selector: 'app-piano',
@@ -13,20 +14,23 @@ export class PianoComponent implements OnInit {
 	@Input() isQuest: boolean = false;
 	public keySize = { width:77, height: 380 };
 	public octaveWidth: number = 6.5*this.keySize.width;
-	public pianoService: PianoService;
+	public pianoService: IPianoService;
 
 	constructor(
 		piano: PianoService,
 		pianoQuestService: PianoQuestService,
-		public midi: MidiService
+		public midi: MidiService,
+		private change: ChangeDetectorRef
 	) { 
 		if(this.isQuest) { this.pianoService = pianoQuestService; }
 		else { this.pianoService = piano; }
 		this.midi.startMidi();
+		this.pianoService.checkChange.subscribe((e) => {
+			if(e) this.change.detectChanges();
+		})
 	}
 
 	ngOnInit(): void {
-		if(this.midi.enabled) this.midi.selectedInput = this.midi.inputs[0];
 	}
 
 	public zoomIn(): void {
@@ -40,7 +44,7 @@ export class PianoComponent implements OnInit {
 	}
 
 	public octaveTest(){
-		this.pianoService.octave.lenght += 1;
+		this.pianoService.octave.length += 1;
 		this.pianoService.loadOctaves();
 	}
 
@@ -48,10 +52,10 @@ export class PianoComponent implements OnInit {
 		this.pianoService.onKeyClick(key);
 	}
 
-	public onMidiChange(e: Event): void {
+	public onOctaveChange(e: Event): void {
 		if(!e?.target) return;
 		const i = parseInt((e.target as HTMLTextAreaElement).value);
-		this.midi.selectedInput = this.midi.inputs[i];
+		this.midi.selectInput(this.midi.inputs[i]);
 	}
 	
 }

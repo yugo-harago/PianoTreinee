@@ -26,20 +26,16 @@ export class PianoQuestService implements IPianoService{
 		this.checkChange = piano.checkChange;
 	}
 
+	public nextQuest() {
+		// this.majorChordQuest();
+		// this.simpleMinorChordQuest();
+		// this.blackKeyMajorChordQuest();
+		this.blackKeyMinorChordQuest();
+	}
+
 	public loadOctaves(){
 		this.piano.loadOctaves();
 		if(this.answerChords.length) this.setAnswer(this.answerChords);
-	}
-
-	public startBasicQuest(): void {
-		const notes = ["C","D","E","F","G","A","B"];
-		const noteIndex = this.piano.getRandomInt(notes.length);
-		const quest = notes[noteIndex]
-		const chord = Chord.getChord("major", quest);
-		this.setAnswer(chord.notes);
-		this.questChord = quest;
-		this.answerChords = chord.notes;
-		this.checkChange.next(true);
 	}
 
 	public setAnswer(notes: string[]): void {
@@ -64,7 +60,7 @@ export class PianoQuestService implements IPianoService{
 			key.isActive = false;
 			key.isRight = false;
 		})
-		this.startBasicQuest();
+		this.nextQuest();
 	}
 	public onKeyClick(key: Key) {
 		if(!key.isActive) this.midi.play(key);
@@ -80,5 +76,52 @@ export class PianoQuestService implements IPianoService{
 	public onKeyUp(key: Key){
 		this.piano.onKeyUp(key);
 		this.checkAnswer();
+	}
+
+	// Major chord with white root key
+	public majorChordQuest(): void {
+		const notes = ["C","D","E","F","G","A","B"];
+		const noteIndex = this.piano.getRandomInt(notes.length);
+		const quest = notes[noteIndex];
+		const chord = Chord.getChord("major", quest);
+		this.setAnswer(chord.notes);
+		this.questChord = quest;
+		this.answerChords = chord.notes;
+		this.checkChange.next(true);
+	}
+
+	public blackKeyMajorChordQuest(): void {
+		const notes = ["C#","D#","F#","G#","A#"];
+		const noteIndex = this.piano.getRandomInt(notes.length);
+		const quest = notes[noteIndex];
+		const chord = Chord.getChord("major", quest);
+		chord.notes.forEach((n, i) => chord.notes[i] = Note.simplify(n));
+		this.setAnswer(chord.notes);
+		this.questChord = quest;
+		this.answerChords = chord.notes;
+		this.checkChange.next(true);
+	}
+
+	public simpleMinorChordQuest(): void {
+		const notes = ["C","D","E","F","G","A","B"];
+		const noteIndex = this.piano.getRandomInt(notes.length);
+		const noteQuest = notes[noteIndex];
+		const chord = Chord.getChord("minor", noteQuest);
+		this.setAnswer(chord.notes);
+		this.questChord = noteQuest + "m";
+		this.answerChords = chord.notes;
+		this.checkChange.next(true);
+	}
+
+	public blackKeyMinorChordQuest(): void {
+		const notes = ["C#","D#","F#","G#","A#"];
+		const noteIndex = this.piano.getRandomInt(notes.length);
+		const noteQuest = notes[noteIndex];
+		const chord = Chord.getChord("minor", noteQuest);
+		chord.notes.forEach((n, i) => chord.notes[i] = Note.simplify(n));
+		this.setAnswer(chord.notes);
+		this.questChord = noteQuest + "m";
+		this.answerChords = chord.notes;
+		this.checkChange.next(true);
 	}
 }

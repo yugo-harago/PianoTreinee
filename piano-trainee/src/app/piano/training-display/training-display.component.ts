@@ -26,7 +26,7 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 	}
 
 	public nextQuest(): void {
-		this.pianoQuestService.startBasicQuest();
+		this.pianoQuestService.nextQuest();
 	}
 
 }

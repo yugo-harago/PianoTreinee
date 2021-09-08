@@ -50,10 +50,6 @@ export class PianoService implements IPianoService{
 		}
 	}
 
-	public getRandomInt(max: number): number {
-		return Math.floor(Math.random() * max);
-	}
-
 	// Mouse/Screen Input
 	public onKeyClick(key: Key) {
 		key.isActive = !key.isActive;

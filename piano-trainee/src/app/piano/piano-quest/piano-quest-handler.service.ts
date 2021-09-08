@@ -41,7 +41,14 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	public nextQuest() {
-		this.questBundle.nextQuest();
+		let quest = null;
+		do{
+			quest = this.questBundle.nextQuest();
+		} while (this.questChord == quest.questChord);
+		this.setAnswer(quest.answerChords);
+		this.questChord = quest.questChord;
+		this.answerChords = quest.answerChords;
+		this.checkChange.next(true);
 	}
 
 	public loadOctaves(){

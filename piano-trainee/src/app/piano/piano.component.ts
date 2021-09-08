@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MidiService } from './midi/midi.service';
-import { PianoQuestService } from './piano-quest/piano-quest.service';
+import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
 import { Key, PianoService } from './piano.service';
 import { IPianoService } from './PianoService.interface';
 
@@ -18,7 +18,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private piano: PianoService,
-		private pianoQuest: PianoQuestService,
+		private pianoQuest: PianoQuestHandlerService,
 		public midi: MidiService,
 		private change: ChangeDetectorRef
 	) {

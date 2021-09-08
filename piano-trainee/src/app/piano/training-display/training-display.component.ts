@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { PianoQuestService } from '../piano-quest/piano-quest.service';
+import { PianoQuestHandlerService } from '../piano-quest/piano-quest-handler.service';
 import { PianoService } from '../piano.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { PianoService } from '../piano.service';
 export class TrainingDisplayComponent implements OnInit, OnDestroy {
 
 	constructor(
-		public pianoQuestService: PianoQuestService,
+		public pianoQuestService: PianoQuestHandlerService,
 		private change: ChangeDetectorRef
 	) { }
 

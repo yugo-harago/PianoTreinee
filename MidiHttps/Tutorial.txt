@@ -25,3 +25,4 @@ https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70d
 	}
 4. Trust Certificate in Windows
 5. Restart Chrome
+6. Command: ng serve --host 0.0.0.0 --ssl

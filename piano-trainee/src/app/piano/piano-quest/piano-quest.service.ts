@@ -15,14 +15,18 @@ export class PianoQuestService implements IPianoService{
 	
 	public checkChange: BehaviorSubject<boolean>;
 	public octave: Octave;
-	public keys: Key[];
+	public get keys(): Key[] {
+		return this.piano.keys;
+	}
+	public set keys(value: Key[]) {
+		this.piano.keys = value;
+	}
 
 	constructor(
 		private midi: MidiService,
 		private piano: PianoService
 	) {
 		this.octave = piano.octave;
-		this.keys = piano.keys;
 		this.checkChange = piano.checkChange;
 	}
 
@@ -39,7 +43,7 @@ export class PianoQuestService implements IPianoService{
 	}
 
 	public setAnswer(notes: string[]): void {
-		this.piano.keys.forEach(key => {
+		this.keys.forEach(key => {
 			key.isRight = notes.includes(key.note);
 		})
 	}
@@ -48,15 +52,15 @@ export class PianoQuestService implements IPianoService{
 		let correct = true;
 		// Check if right keys are active
 		this.answerChords.forEach(answer => {
-			correct = correct && !!this.piano.keys.filter(key => key.note == answer && key.isRight && key.isActive).length;
+			correct = correct && !!this.keys.filter(key => key.note == answer && key.isRight && key.isActive).length;
 		});
 		// Check if any key is not active and wrong
-		correct = correct && !this.piano.keys.filter(key => key.isActive && !key.isRight).length;
+		correct = correct && !this.keys.filter(key => key.isActive && !key.isRight).length;
 		if(correct) this.answeredRight();
 	}
 
 	public answeredRight(){
-		this.piano.keys.forEach(key => {
+		this.keys.forEach(key => {
 			key.isActive = false;
 			key.isRight = false;
 		})

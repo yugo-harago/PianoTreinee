@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '',
+    basePath: '/',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -38,7 +38,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', "ChromeHeadlessNoSandbox"],
+    browsers: ['Chrome'],
     singleRun: false,
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
@@ -51,6 +51,18 @@ module.exports = function (config) {
         ],
         debug: true,
       },
+	  "Chrome-headless": {
+		  base: 'Chrome',
+		  flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox', "--max_old_space_size=4096"]
+	  },
+      ChromeDebug: {
+        base: 'Chrome',
+        flags: [ '--remote-debugging-port=9333' ]
+      }, 
+	  SingleRun:{
+        base: 'Chrome',
+        flags: [ '--single-run','--sourcemap=false' ]
+	  }
     },
     restartOnFileChange: true,
 	browserNoActivityTimeout: 400000

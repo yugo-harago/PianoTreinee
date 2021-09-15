@@ -3,11 +3,10 @@ import WebMidi, { InputEventNoteon, InputEventNoteoff, Input, Output, WebMidiEve
 import { Key } from '../piano.service';
 import * as Tone from 'tone';
 import { BehaviorSubject } from 'rxjs';
+import { IWebMidiService } from './midi.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class MidiService {
+@Injectable()
+export class MidiService implements IWebMidiService {
 
 	public enabled: boolean = false;
 	public inputs: Input[] = [];

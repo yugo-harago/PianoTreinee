@@ -6,6 +6,8 @@ import { TOKENS } from '../injections-tokens';
 import { environment } from '../../environments/environment';
 import { PianoQuestBundleMock } from './piano-quest/piano-quest-bundle.mock';
 import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
+import { WebMidiMock } from './midi/midi.mock';
+import { MidiService } from './midi/midi.service';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.servic
 	PianoComponent
   ],
   providers: [
-	  {provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: environment.mockQuestBundle ? PianoQuestBundleMock : PianoQuestBundleService }
+	  { provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: environment.mockQuestBundle ? PianoQuestBundleMock : PianoQuestBundleService },
+	  { provide: TOKENS.WEB_MIDI, useClass: environment.mockWebMidi? WebMidiMock : MidiService },
   ]
 })
 export class PianoModule { }

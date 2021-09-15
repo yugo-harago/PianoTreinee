@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MidiService } from './midi/midi.service';
+import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { TOKENS } from '../injections-tokens';
+import { IWebMidiService } from './midi/midi.interface';
 import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
 import { Key, PianoService } from './piano.service';
 import { IPianoService } from './PianoService.interface';
@@ -19,7 +20,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 	constructor(
 		private piano: PianoService,
 		private pianoQuest: PianoQuestHandlerService,
-		public midi: MidiService,
+		@Inject(TOKENS.WEB_MIDI) public midi: IWebMidiService,
 		private change: ChangeDetectorRef
 	) {
 	}

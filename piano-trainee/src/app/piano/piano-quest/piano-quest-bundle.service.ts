@@ -8,7 +8,8 @@ export class Quest {
 	public answerChord: string[] = [];
 	public questChord: string = "";
 	public checkOrder?: boolean;
-	public baseOctave?:number;
+	public baseOctave?: number;
+	public inversion: number = 0;
 }
 
 @Injectable({
@@ -82,6 +83,7 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 	public firstInversionQuest(quest: Quest): Quest {
 		this.inverseChord(quest.answerChord);
 		quest.questChord += "/" + quest.answerChord[0];
+		quest.inversion = 1;
 		return quest;
 	}
 
@@ -89,6 +91,7 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		this.inverseChord(quest.answerChord);
 		this.inverseChord(quest.answerChord);
 		quest.questChord += "/" + quest.answerChord[0];
+		quest.inversion = 2;
 		return quest;
 	}
 

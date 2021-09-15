@@ -6,9 +6,11 @@ import { PianoQuestBundleService, Quest } from './piano-quest-bundle.service';
 import {AppModule} from '../../app.module';
 import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { UserModule } from 'src/app/user/user.module';
-import { MidiService } from '../midi/midi.service';
+import { TOKENS } from 'src/app/injections-tokens';
+import { WebMidiMock } from '../midi/midi.mock';
+import { configureTestSuite } from 'ng-bullet';
 
-describe('PianoQuestHandlerService', () => {
+fdescribe('PianoQuestHandlerService', () => {
 	let service: PianoQuestHandlerService;
 	let piano: PianoService;
 
@@ -30,18 +32,19 @@ describe('PianoQuestHandlerService', () => {
 	}
 
 	const userPressKey = (pressKeys: string[], octave: number) => {
-		pressKeys.forEach(pressKey => {
-			let key = service.keys.find(k => k.note == pressKey && k.octave == octave);
-			if(!key) throw new Error("Key is undefined");
-			key.isActive = true;
+		pressKeys.forEach(p => {
+			const key = piano.keys.find(pk => pk.note == p && pk.octave == octave);
+			if(!key) throw new Error("Key not found");
+			service.onKeyDown(key)
 		});
 	}
 
-	beforeEach(() => {
+	configureTestSuite(() => {
 		TestBed.configureTestingModule({
 			providers: [
+				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
 				{ provide: PianoQuestBundleService, useValue: pianoQuestStub },
-				{ provide: MidiService, useValue:midiStub }
+				{ provide: TOKENS.WEB_MIDI, useClass: WebMidiMock }
 			]
 		});
 		service = TestBed.inject(PianoQuestHandlerService);
@@ -51,7 +54,7 @@ describe('PianoQuestHandlerService', () => {
 		pianoQuestStub.quest = new Quest();
 	});
 
-	it('should be created', () => {
+	fit('should be created', () => {
 		expect(service).toBeTruthy();
 	});
 

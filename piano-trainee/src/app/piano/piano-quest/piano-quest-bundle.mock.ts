@@ -16,15 +16,17 @@ export class PianoQuestBundleMock implements IPianoQuestBundleService {
 		this.count++;
 		if(this.count%2 == 0)
 			return <Quest>{
-				answerChord: ["E", "G", "C"],
+				answerChord: ["F#","A", "D"],
 				checkOrder: true,
-				questChord: "C/E"
+				questChord: "D/F#",
+				inversion: 1
 			}
 		else
 			return <Quest>{
-				answerChord: ["A", "F#", "D"],
+				answerChord: ["A","D","F#" ],
 				checkOrder: true,
-				questChord: "D/A"
+				questChord: "D/A",
+				inversion: 2
 			}
 	}
 }

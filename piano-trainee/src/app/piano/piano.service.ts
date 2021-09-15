@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
 import { BehaviorSubject } from 'rxjs';
-import { MidiService } from './midi/midi.service';
 import { IPianoService } from './PianoService.interface';
 import * as Tone from 'tone';
+import { IWebMidiService } from './midi/midi.interface';
+import { TOKENS } from '../injections-tokens';
 
 export class Key {
 	note: string = "";
@@ -34,13 +35,19 @@ export class PianoService implements IPianoService{
 
 	public keys: Key[] = [];
 	public octave: Octave = new Octave();
+	public detectedChord?: string;
 
 	public checkChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	public onKeyChenge: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 	constructor(
-		public midi: MidiService
+		@Inject(TOKENS.WEB_MIDI) public midi: IWebMidiService,
 	) {
 		this.loadOctaves();
+		this.onKeyChenge.subscribe(bool => {
+			const keys = this.keys.map(k => k.note);
+			if(bool) this.detectedChord = Chord.detect(keys)[0];
+		})
 	}
 
 	public loadOctaves(){

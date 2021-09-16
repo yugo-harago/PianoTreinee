@@ -3,8 +3,8 @@ import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
 import { BehaviorSubject } from 'rxjs';
 import { IPianoService } from './PianoService.interface';
 import * as Tone from 'tone';
-import { IWebMidiService } from './midi/midi.interface';
 import { TOKENS } from '../injections-tokens';
+import { MidiService } from './midi/midi.service';
 
 export class Key {
 	note: string = "";
@@ -41,7 +41,7 @@ export class PianoService implements IPianoService{
 	public onKeyChenge: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 	constructor(
-		@Inject(TOKENS.WEB_MIDI) public midi: IWebMidiService,
+		private midi: MidiService,
 	) {
 		this.loadOctaves();
 		this.onKeyChenge.subscribe(bool => {

@@ -24,7 +24,7 @@ import { MidiService } from './midi/midi.service';
   ],
   providers: [
 	  { provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: environment.mockQuestBundle ? PianoQuestBundleMock : PianoQuestBundleService },
-	  { provide: TOKENS.WEB_MIDI, useClass: environment.mockWebMidi? WebMidiMock : MidiService },
+	  { provide: MidiService },
   ]
 })
 export class PianoModule { }

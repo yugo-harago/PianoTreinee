@@ -44,7 +44,7 @@ describe('PianoQuestHandlerService', () => {
 			providers: [
 				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
 				{ provide: PianoQuestBundleService, useValue: pianoQuestStub },
-				{ provide: TOKENS.WEB_MIDI, useClass: WebMidiMock }
+				{ provide: WebMidiMock, useValue: midiStub}
 			]
 		});
 		service = TestBed.inject(PianoQuestHandlerService);

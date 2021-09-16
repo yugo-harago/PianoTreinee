@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Interval, Note, Scale, Chord, ChordType } from "@tonaljs/tonal";
 import { BehaviorSubject } from 'rxjs';
 import { TOKENS } from 'src/app/injections-tokens';
-import { IWebMidiService } from '../midi/midi.interface';
+import { MidiService } from '../midi/midi.service';
 import { Key, Octave, PianoService } from '../piano.service';
 import { IPianoService } from '../PianoService.interface';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
@@ -38,7 +38,7 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	constructor(
-		@Inject(TOKENS.WEB_MIDI) private midi: IWebMidiService,
+		private midi: MidiService,
 		private piano: PianoService,
 		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundle: IPianoQuestBundleService
 	) {

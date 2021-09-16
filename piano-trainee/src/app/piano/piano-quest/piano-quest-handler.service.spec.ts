@@ -27,8 +27,8 @@ describe('PianoQuestHandlerService', () => {
 		play: (key: Key) => {
 			console.log(key.note + key.octave + " Played.")
 		},
-		startPlay: (key: Key) => {},
-		stopPlay: (key: Key) => {}
+		startPlay: (key: Key) => undefined,
+		stopPlay: (key: Key) => undefined,
 	}
 
 	const userPressKey = (pressKeys: string[], octave: number) => {
@@ -178,6 +178,26 @@ describe('PianoQuestHandlerService', () => {
 		let key2 = service.keys.find(f => f.note == "G" && f.octave == 4);
 		expect(key2?.isActive).toBeTruthy();
 		expect(key2?.isRight).toBeTruthy();
+	});
+
+	it('should not be right in the third note of second major inversion being the sequence, 4,6,9,8', () => {
+		// Arrange
+		const quest = <Quest>{
+			answerChord: ["A","D","F#" ],
+			checkOrder: true,
+			questChord: "D/A",
+			inversion: 2
+		}
+		pianoQuestStub.quest = quest;
+		// Act
+		service.nextQuest();
+		userPressKey(["D","F#","B","A"], 4);
+		service.checkAnswer();
+
+		// Arrange
+		let thirdKey = service.keys.find(f => f.note == "A" && f.octave == 4);
+		expect(thirdKey?.isActive).toBeTruthy();
+		expect(thirdKey?.isRight).toBeFalsy();
 	});
 
 });

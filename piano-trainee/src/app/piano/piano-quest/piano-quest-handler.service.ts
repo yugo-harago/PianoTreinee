@@ -15,6 +15,8 @@ import { PianoQuestBundleService, Quest } from './piano-quest-bundle.service';
 export class PianoQuestHandlerService implements IPianoService{
 
 	public quest: Quest | undefined;
+
+	public canRepeat: boolean = false;
 	
 	public get checkChange(): BehaviorSubject<boolean> {
 		return this.piano.checkChange;
@@ -45,9 +47,16 @@ export class PianoQuestHandlerService implements IPianoService{
 
 	public nextQuest() {
 		let quest = null;
+		let repeat = 0;
+		let forceExit = false;
 		do{
 			quest = this.questBundle.nextQuest();
-		} while (this.quest?.questChord == quest.questChord);
+			repeat++;
+			if(repeat > 20){
+				console.warn("\n %c Quest repeated more than expected, check if is in the infinite loop", 'color: #dc2b4f');
+				forceExit = true;
+			}
+		} while (this.quest?.questChord == quest.questChord && !this.canRepeat && !forceExit);
 		this.quest = quest;
 		this.setAnswer(quest.answerChord);
 		this.checkChange.next(true);

@@ -7,8 +7,8 @@ import {AppModule} from '../../app.module';
 import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { UserModule } from 'src/app/user/user.module';
 import { TOKENS } from 'src/app/injections-tokens';
-import { WebMidiMock } from '../midi/midi.mock';
 import { configureTestSuite } from 'ng-bullet';
+import { MidiService } from '../midi/midi.service';
 
 describe('PianoQuestHandlerService', () => {
 	let service: PianoQuestHandlerService;
@@ -44,7 +44,7 @@ describe('PianoQuestHandlerService', () => {
 			providers: [
 				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
 				{ provide: PianoQuestBundleService, useValue: pianoQuestStub },
-				{ provide: WebMidiMock, useValue: midiStub}
+				{ provide: MidiService, useValue: midiStub}
 			]
 		});
 		service = TestBed.inject(PianoQuestHandlerService);
@@ -67,13 +67,13 @@ describe('PianoQuestHandlerService', () => {
 			questChord: "C"
 		}
 		pianoQuestStub.quest = quest;
-		// // Act
+		// Act
 		service.nextQuest();
 		userPressKey(quest.answerChord, 4);
-		// service.checkAnswer();
+		service.checkAnswer();
 
-		// // Arrange
-		// expect(pianoQuestStub.calledTimes).toEqual(2);
+		// Arrange
+		expect(pianoQuestStub.calledTimes).toEqual(2);
 	});
 	
 
@@ -120,7 +120,8 @@ describe('PianoQuestHandlerService', () => {
 		const quest = <Quest>{
 			answerChord: ["E", "G", "C"],
 			checkOrder: true,
-			questChord: "C/E"
+			questChord: "C/E",
+			inversion: 1
 		}
 		pianoQuestStub.quest = quest;
 		// Act
@@ -129,7 +130,7 @@ describe('PianoQuestHandlerService', () => {
 		service.checkAnswer();
 
 		// Arrange
-		let key = service.keys.find(f => f.note == "C" && f.octave == 4);
+		let key = service.keys.find(f => f.note == "E" && f.octave == 4);
 		expect(key?.isActive).toBeTruthy();
 		expect(key?.isRight).toBeFalsy();
 	});
@@ -139,7 +140,8 @@ describe('PianoQuestHandlerService', () => {
 		const quest = <Quest>{
 			answerChord: ["E", "G", "C"],
 			checkOrder: true,
-			questChord: "C/E"
+			questChord: "C/E",
+			inversion: 1
 		}
 		pianoQuestStub.quest = quest;
 		// Act
@@ -159,22 +161,23 @@ describe('PianoQuestHandlerService', () => {
 		const quest = <Quest>{
 			answerChord: ["E", "G", "C"],
 			checkOrder: true,
-			questChord: "C/E"
+			questChord: "C/E",
+			inversion: 1
 		}
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
 		userPressKey(["G"], 4);
-		userPressKey(["C"], 3);
+		userPressKey(["C"], 5);
 		service.checkAnswer();
 
 		// Arrange
-		let key1 = service.keys.find(f => f.note == "C" && f.octave == 3);
+		let key1 = service.keys.find(f => f.note == "C" && f.octave == 5);
 		expect(key1?.isActive).toBeTruthy();
-		expect(key1?.isRight).toBeFalsy();
+		expect(key1?.isRight).toBeTruthy();
 		let key2 = service.keys.find(f => f.note == "G" && f.octave == 4);
 		expect(key2?.isActive).toBeTruthy();
-		expect(key2?.isRight).toBeFalsy();
+		expect(key2?.isRight).toBeTruthy();
 	});
 
 });

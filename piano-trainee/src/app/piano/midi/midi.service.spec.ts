@@ -2,11 +2,15 @@ import { TestBed } from '@angular/core/testing';
 
 import { MidiService } from './midi.service';
 
-xdescribe('MidiService', () => {
+describe('MidiService', () => {
   let service: MidiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+	TestBed.configureTestingModule({
+		providers: [
+			{ provide: MidiService}
+		]
+	});
     service = TestBed.inject(MidiService);
   });
 

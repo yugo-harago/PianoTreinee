@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-			"allowedCommonJsDependencies": ["webmidi"],
+			"allowedCommonJsDependencies": ["webmidi", "automation-events"],
             "outputPath": "dist/piano-trainee",
             "index": "src/index.html",
             "main": "src/main.ts",

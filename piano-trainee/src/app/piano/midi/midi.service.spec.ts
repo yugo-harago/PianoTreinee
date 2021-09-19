@@ -1,20 +1,43 @@
 import { TestBed } from '@angular/core/testing';
+import { Key } from '../piano.service';
+import * as Tone from 'tone';
 
 import { MidiService } from './midi.service';
 
 describe('MidiService', () => {
-  let service: MidiService;
+	let service: MidiService;
 
-  beforeEach(() => {
-	TestBed.configureTestingModule({
-		providers: [
-			{ provide: MidiService}
-		]
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [
+				{ provide: MidiService}
+			]
+		});
+		service = TestBed.inject(MidiService);
 	});
-    service = TestBed.inject(MidiService);
-  });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(service).toBeTruthy();
+	});
+
+	it('should start and stop playing', async () => {
+		const key = new Key("C", 4);
+		service.startPlay(key);
+		await sleep(500);
+		service.stopPlay(key);
+	});
+
+	it('should play serval times', async () => {
+		const key = new Key("C", 4);
+		service.startPlay(key);
+		await sleep(50);
+		service.stopPlay(key);
+		service.startPlay(key);
+		await sleep(60);
+		service.stopPlay(key);
+	});
+
+	function sleep(ms:number) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
 });

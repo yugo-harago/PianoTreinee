@@ -57,7 +57,7 @@ module.exports = function (config) {
 	  },
       ChromeDebug: {
         base: 'Chrome',
-        flags: [ '--remote-debugging-port=9333' ]
+        flags: [ '--remote-debugging-port=9333', "--autoplay-policy=no-user-gesture-required" ]
       }, 
 	  SingleRun:{
         base: 'Chrome',

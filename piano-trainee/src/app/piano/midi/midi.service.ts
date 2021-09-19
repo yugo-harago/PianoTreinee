@@ -19,6 +19,7 @@ export class MidiService {
 	public onConnected: BehaviorSubject<WebMidiEventConnected | undefined> = new BehaviorSubject<WebMidiEventConnected | undefined>(undefined);
 
 	constructor() {
+		// Tone.start();
 	}
 
 	public startMidi() {
@@ -52,13 +53,14 @@ export class MidiService {
 		synth.triggerAttackRelease(note, "8n");
 	}
 
+	// Most browsers will not allow to play any audio until user clicks something
 	public startPlay(key: Key){
 		const now = Tone.now();
-		key.synth.triggerAttack(key.note + key.octave, now)
+		key.synth.triggerAttack(key.note + key.octave);
 	}
 	public stopPlay(key: Key){
 		const now = Tone.now();
-		key.synth.triggerRelease(now)
+		key.synth.triggerRelease();
 	}
 
 	public selectInput(input: Input): void {

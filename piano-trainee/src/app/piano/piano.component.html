@@ -15,6 +15,11 @@
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 		(click)="octaveMinus()">octave -
 	</button>
+	<!-- This button is necessary due to the chrome video policy-->
+	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+		*ngIf="!started"
+		(click)="start()">Start
+	</button>
 	<select class="form-select" *ngIf="midi.inputs.length" (change)="onMidiChange($event)">
 		<option *ngFor="let in of midi.inputs; let i = index" [value]="i">{{ in.name }}</option>
 	</select>

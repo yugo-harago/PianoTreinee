@@ -16,6 +16,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 	public keySize = { width:77, height: 380 };
 	public octaveWidth: number = 6.5*this.keySize.width;
 	public pianoService?: IPianoService;
+	public started = false;
 
 	constructor(
 		private piano: PianoService,
@@ -31,12 +32,16 @@ export class PianoComponent implements OnInit, OnDestroy {
 		// temporarily
 		if(this.isQuest) { this.pianoService = this.pianoQuest; }
 		else { this.pianoService = this.piano; }
-		this.midi.startMidi();
 		this.pianoService.checkChange.subscribe((e) => {
 			if(e) this.change.detectChanges();
 		});
 		this.setMidiKeyDown();
 		this.setMidiKeyUp();
+	}
+
+	start(): void {
+		this.midi.startMidi();
+		this.started = true;
 	}
 
 	ngOnDestroy(): void {

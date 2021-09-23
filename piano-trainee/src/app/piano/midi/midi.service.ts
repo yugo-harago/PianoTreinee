@@ -4,6 +4,7 @@ import { Key } from '../piano.service';
 import * as Tone from 'tone';
 import { BehaviorSubject } from 'rxjs';
 
+// Nota: https://developer.chrome.com/blog/autoplay/#webaudio
 @Injectable()
 export class MidiService {
 
@@ -19,10 +20,10 @@ export class MidiService {
 	public onConnected: BehaviorSubject<WebMidiEventConnected | undefined> = new BehaviorSubject<WebMidiEventConnected | undefined>(undefined);
 
 	constructor() {
-		// Tone.start();
 	}
 
 	public startMidi() {
+		Tone.start();
 		WebMidi.enable((err) => {
 			if (err) {
 				console.log("WebMidi could not be enabled.", err);

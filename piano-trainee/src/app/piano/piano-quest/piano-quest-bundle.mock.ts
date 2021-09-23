@@ -14,13 +14,13 @@ export class PianoQuestBundleMock implements IPianoQuestBundleService {
 
 	public nextQuest(): Quest {
 		this.count++;
-		if(this.count%2 == 0)
+		if(this.count%2 == 1)
 			return <Quest>{
-				answerChord: ["F#","A", "D"],
-				checkOrder: true,
-				questChord: "D/F#",
-				inversion: 1
-			}
+					answerChord: ["C", "D#", "G#"],
+					checkOrder: true,
+					questChord: "G#/C",
+					inversion: 2
+				}
 		else
 			return <Quest>{
 				answerChord: ["A","D","F#" ],

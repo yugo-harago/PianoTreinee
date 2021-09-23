@@ -1,20 +1,24 @@
-import { Inject, Injectable } from '@angular/core';
-import { Interval, Note, Scale, Chord } from "@tonaljs/tonal";
+import { Injectable } from '@angular/core';
+import { Chord } from "@tonaljs/tonal";
 import { BehaviorSubject } from 'rxjs';
 import { IPianoService } from './PianoService.interface';
 import * as Tone from 'tone';
-import { TOKENS } from '../injections-tokens';
 import { MidiService } from './midi/midi.service';
+import { Note } from './note.enum';
 
 export class Key {
-	note: string = "";
+	note: Note;
 	isActive: boolean = false;
 	octave: number = 0;
 	isRight: boolean = false;
 	synth: Tone.Synth<Tone.SynthOptions> = new Tone.Synth().toDestination();
-	constructor(note: string, octave: number){
+	accidental: boolean = false;
+	constructor(note: Note, octave: number){
 		this.note = note;
 		this.octave = octave;
+		if(Note[note].includes("#")){
+			this.accidental = true;
+		}
 	}
 }
 
@@ -45,7 +49,7 @@ export class PianoService implements IPianoService{
 	) {
 		this.loadOctaves();
 		this.onKeyChenge.subscribe(bool => {
-			const keys = this.keys.map(k => k.note);
+			const keys = this.keys.map(k => Note[k.note]);
 			if(bool) this.detectedChord = Chord.detect(keys)[0];
 		})
 	}
@@ -53,7 +57,10 @@ export class PianoService implements IPianoService{
 	public loadOctaves(){
 		this.keys = [];
 		for (let octave = 1; octave <= this.octave.length; octave++) {
-			this.notes.forEach(key => this.keys.push(new Key(key, octave + this.octave.start())));
+			Object.values(Note).forEach(strNote => {
+				if (!isNaN(Number(strNote))) return;
+				this.keys.push(new Key((<any>Note)[strNote], octave + this.octave.start()))
+			});
 		}
 	}
 
@@ -69,12 +76,14 @@ export class PianoService implements IPianoService{
 	}
 
 	// Midi Key Input
-	public onKeyDown(key: Key){
+	public onKeyDown(key: Key | undefined) {
+		if(!key) throw new Error("Key is undefined");
 		key.isActive = true;
 		this.checkChange.next(true);
 		this.midi.startPlay(key);
 	}
-	public onKeyUp(key: Key){
+	public onKeyUp(key: Key | undefined) {
+		if(!key) throw new Error("Key is undefined");
 		key.isActive = false;
 		this.checkChange.next(true);
 		this.midi.stopPlay(key);

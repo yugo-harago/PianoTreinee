@@ -1,12 +1,10 @@
 <div class="col-4 text-left" style="margin: 0px;padding: 5px 15px;">
 	<button class="btn btn-light btn-sm" id="zoom_in" type="button" style="padding: 5px;margin: 2px;"
 		(click)="zoomIn()">
-		<!-- <i class="fa fa-search-plus"></i> -->
 		+
 	</button>
 	<button class="btn btn-light btn-sm" id="zoom_out" type="button" style="padding: 5px;margin: 2px;"
 		(click)="zoomOut()">
-		<!-- <i class="fa fa-search-minus"></i> -->
 		-
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
@@ -35,7 +33,7 @@
 			[class.right]="(key.isActive && !isQuest)||(key.isActive && key.isRight && isQuest)"
 			[class.wrong]="(key.isActive && !key.isRight && isQuest)"
 			[attr.data-note]="key.note"
-			[attr.data-octave]="key.octave"
+			[class.accidental]="key.accidental"
 			[style.height.px]="keySize.height"
 			[style.width.px]="keySize.width"
 			(pointerdown)="onKeyClick(key)"></button>

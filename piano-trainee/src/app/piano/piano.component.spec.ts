@@ -21,16 +21,16 @@ describe('PianoComponent', () => {
 	let fixture: ComponentFixture<PianoComponent>;
 
 	beforeEach(async () => {
-	await TestBed.configureTestingModule({
-		declarations: [ PianoComponent ],
-		providers: [
-			{ provide: MidiService },
-			{ provide: PianoQuestBundleService },
-			{ provide: PianoQuestHandlerService },
-			{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
-		]
-	})
-	.compileComponents();
+		await TestBed.configureTestingModule({
+			declarations: [ PianoComponent ],
+			providers: [
+				{ provide: MidiService },
+				{ provide: PianoQuestBundleService },
+				{ provide: PianoQuestHandlerService },
+				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
+			]
+		})
+		.compileComponents();
 	});
 
 	beforeEach(() => {

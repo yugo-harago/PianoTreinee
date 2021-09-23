@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Interval, Note, Scale, Chord, ChordType } from "@tonaljs/tonal";
+import { ChordType } from '@tonaljs/tonal';
 import { BehaviorSubject } from 'rxjs';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
+import { Note } from '../note.enum';
 import { Key, Octave, PianoService } from '../piano.service';
 import { IPianoService } from '../PianoService.interface';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
-import { PianoQuestBundleService, Quest } from './piano-quest-bundle.service';
+import { Quest } from './piano-quest-bundle.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -67,7 +67,7 @@ export class PianoQuestHandlerService implements IPianoService{
 		if(this.quest?.answerChord?.length) this.setAnswer(this.quest.answerChord);
 	}
 
-	public setAnswer(notes: string[]): void {
+	public setAnswer(notes: Note[]): void {
 		this.keys.forEach(key => {
 			key.isRight = notes.includes(key.note);
 		})
@@ -88,9 +88,10 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	// Split chord into two based on quest inversion
-	// Ex: C/E => [E4, G4], [C5]
+	// Ex: C/E (II) => [E4, G4], [C5]
 	// Returns {octaveUp: ["E","G"], octaveDown:["C"]}
-	private splitChordInTwoOctaves(chords: string[]): {octaveUp: string[], octaveDown: string[]}{
+	// Ex: G#/C (II) => C D# G#
+	private splitChordInTwoOctaves(chords: Note[]): {octaveUp: Note[], octaveDown: Note[]}{
 		if(!this.quest) throw new Error("the quest does not exist!");
 		const octaveUp = chords.slice(
 			this.quest.answerChord.length-this.quest.inversion, 
@@ -100,10 +101,22 @@ export class PianoQuestHandlerService implements IPianoService{
 		return { octaveUp, octaveDown };
 	}
 
+	public checkSameOctave(notes: Note[]): boolean {
+		let previous = notes[0];
+		let isSame = true;
+		notes.slice(1, notes.length).forEach(note => {
+			if(previous > note) // If is bigger than previous
+				isSame = false;
+			previous = note;
+		})
+		return isSame;
+	}
+
 	// Check answer key in order
 	private setAnswersInOrder(activeKeys: Key[], baseOctave: number): void {
 		if(!this.quest) throw new Error("the quest does not exist!");
 		if(!this.quest.checkOrder) return;
+		if(this.checkSameOctave(this.quest.answerChord)) return;
 		const octaveUp = this.splitChordInTwoOctaves(this.quest.answerChord).octaveUp;
 		let currentOctave = baseOctave;
 		for(let activeKey of activeKeys){
@@ -158,11 +171,11 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	// Midi Key Input
-	public onKeyDown(key: Key){
+	public onKeyDown(key: Key | undefined) {
 		this.piano.onKeyDown(key);
 		this.checkAnswer();
 	}
-	public onKeyUp(key: Key){
+	public onKeyUp(key: Key | undefined){
 		this.piano.onKeyUp(key);
 		this.checkAnswer();
 	}

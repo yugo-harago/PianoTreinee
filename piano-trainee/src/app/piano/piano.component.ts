@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { TOKENS } from '../injections-tokens';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MidiService } from './midi/midi.service';
 import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
 import { Key, PianoService } from './piano.service';

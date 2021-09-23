@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Chord, Note } from '@tonaljs/tonal';
-import { PianoService } from '../piano.service';
+import { Chord, Note as NoteJs } from '@tonaljs/tonal';
+import { MusicTheoryService } from '../music-theory.service';
+import { Note } from '../note.enum';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
-import { PianoQuestHandlerService } from './piano-quest-handler.service';
 
 export class Quest {
-	public answerChord: string[] = [];
+	public answerChord: Note[] = [];
 	public questChord: string = "";
 	public checkOrder?: boolean;
 	public baseOctave?: number;
@@ -17,7 +17,9 @@ export class Quest {
 })
 export class PianoQuestBundleService implements IPianoQuestBundleService{
 
-	constructor() { }
+	constructor(
+		private theory: MusicTheoryService
+	) { }
 
 	public nextQuest(): Quest {
 		
@@ -40,42 +42,47 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 	}
 
 	private simplifyNotes(notes: string[]) {
-		notes.forEach((n, i) => notes[i] = Note.simplify(n));
+		notes.forEach((n, i) => notes[i] = NoteJs.simplify(n));
 	}
 
 	// Major chord with white root key
 	public getMajorChordQuest(note: string): Quest {
 		const chord = Chord.getChord("major", note);
 		if(note.includes("#")) this.simplifyNotes(chord.notes);
-		return <Quest>{answerChord: chord.notes, questChord: note};
+		const answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
+		return <Quest>{answerChord, questChord: note};
 	}
 
 	public getMinorChordQuest(note: string): Quest {
 		const chord = Chord.getChord("minor", note);
 		if(note.includes("#")) this.simplifyNotes(chord.notes);
-		return <Quest>{answerChord: chord.notes, questChord: note + "m"};
+		const answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
+		return <Quest>{answerChord, questChord: note + "m"};
 	}
 
 	public major7ChordQuest(note: string): Quest {
 		let quest = new Quest();
-		quest.answerChord = Chord.getChord("maj7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(quest.answerChord);
+		const strNotes = Chord.getChord("maj7", note).notes;
+		if(note.includes("#")) this.simplifyNotes(strNotes);
+		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
 		quest.questChord = note + "maj7";
 		return quest;
 	}
 
 	public minor7ChordQuest(note: string): Quest{
 		let quest = new Quest();
-		quest.answerChord = Chord.getChord("minor7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(quest.answerChord);
+		const strNotes = Chord.getChord("minor7", note).notes;
+		if(note.includes("#")) this.simplifyNotes(strNotes);
+		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
 		quest.questChord = note + "minor7";
 		return quest;
 	}
 
 	public dominant7ChordQuest(note: string): Quest {
 		let quest = new Quest();
-		quest.answerChord = Chord.getChord("dom7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(quest.answerChord);
+		const strNotes = Chord.getChord("dom7", note).notes;
+		if(note.includes("#")) this.simplifyNotes(strNotes);
+		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
 		quest.questChord = note + "dom7";
 		return quest;
 	}

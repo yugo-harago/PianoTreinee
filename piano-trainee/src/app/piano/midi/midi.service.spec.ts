@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Key } from '../piano.service';
-import * as Tone from 'tone';
 
 import { MidiService } from './midi.service';
+import { Note } from '../note.enum';
 
 describe('MidiService', () => {
 	let service: MidiService;
@@ -21,14 +21,14 @@ describe('MidiService', () => {
 	});
 
 	it('should start and stop playing', async () => {
-		const key = new Key("C", 4);
+		const key = new Key(Note.C, 4);
 		service.startPlay(key);
 		await sleep(500);
 		service.stopPlay(key);
 	});
 
 	it('should play serval times', async () => {
-		const key = new Key("C", 4);
+		const key = new Key(Note.C, 4);
 		service.startPlay(key);
 		await sleep(50);
 		service.stopPlay(key);

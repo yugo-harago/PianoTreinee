@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Chord, Note } from '@tonaljs/tonal';
-import { PianoService } from '../piano.service';
+import { Note } from '../note.enum';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
 import { Quest } from './piano-quest-bundle.service';
-import { PianoQuestHandlerService } from './piano-quest-handler.service';
 
 @Injectable()
 export class PianoQuestBundleMock implements IPianoQuestBundleService {
-
-	constructor() { }
 
 	private count: number = 0;
 
@@ -16,14 +12,14 @@ export class PianoQuestBundleMock implements IPianoQuestBundleService {
 		this.count++;
 		if(this.count%2 == 1)
 			return <Quest>{
-					answerChord: ["C", "D#", "G#"],
+					answerChord: [Note.C, Note['D#'], Note['G#']],
 					checkOrder: true,
 					questChord: "G#/C",
 					inversion: 2
 				}
 		else
 			return <Quest>{
-				answerChord: ["A","D","F#" ],
+				answerChord: [Note.A,Note.D,Note['F#']],
 				checkOrder: true,
 				questChord: "D/A",
 				inversion: 2

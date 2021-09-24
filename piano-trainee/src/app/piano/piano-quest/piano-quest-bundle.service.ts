@@ -32,12 +32,9 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 			this.dominant7ChordQuest
 		];
 		const question = quests[this.getRandomInt(quests.length)].bind(this);
-		const quest = question(note);
-		switch(this.getRandomInt(3)){
-			case 1: quest.checkOrder = true; this.firstInversionQuest(quest); break;
-			case 2: quest.checkOrder = true; this.secondInversionQuest(quest); break;
-			case 3: quest.checkOrder = false; break;
-		}
+		const inversion = this.getRandomInt(3) - 1;
+		const quest = question(note, inversion);
+		if(inversion) quest.checkOrder = true;
 		return quest;
 	}
 
@@ -46,72 +43,67 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 	}
 
 	// Major chord with white root key
-	public getMajorChordQuest(note: string): Quest {
-		const chord = Chord.getChord("major", note);
-		if(note.includes("#")) this.simplifyNotes(chord.notes);
-		const answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
-		return <Quest>{answerChord, questChord: note};
+	public getMajorChordQuest(note: Note, inversion: number = 0): Quest {
+		const noteStr = Note[note];
+		const chord = Chord.getChord("major", noteStr);
+		if(noteStr.includes("#")) this.simplifyNotes(chord.notes);
+		let answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
+		let questChord = noteStr;
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
+		if(inversion) questChord = Note[note] + "/" + Note[answerChord[0]];
+		return <Quest>{answerChord, questChord};
 	}
 
-	public getMinorChordQuest(note: string): Quest {
-		const chord = Chord.getChord("minor", note);
-		if(note.includes("#")) this.simplifyNotes(chord.notes);
-		const answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
-		return <Quest>{answerChord, questChord: note + "m"};
+	public getMinorChordQuest(note: Note, inversion: number = 0): Quest {
+		const noteStr = Note[note];
+		const chord = Chord.getChord("minor", noteStr);
+		if(noteStr.includes("#")) this.simplifyNotes(chord.notes);
+		let answerChord = this.theory.convertStringsToNoteEnums(chord.notes);
+		let questChord = noteStr + "m";
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
+		if(inversion) questChord = Note[note] + "/" + Note[answerChord[0]] + " m";
+		return <Quest>{answerChord, questChord};
 	}
 
-	public major7ChordQuest(note: string): Quest {
+	public major7ChordQuest(note: Note, inversion: number = 0): Quest {
+		const noteStr = Note[note];
 		let quest = new Quest();
-		const strNotes = Chord.getChord("maj7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(strNotes);
+		const strNotes = Chord.getChord("maj7", noteStr).notes;
+		if(noteStr.includes("#")) this.simplifyNotes(strNotes);
 		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
-		quest.questChord = note + "maj7";
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(quest.answerChord);
+		quest.questChord = noteStr + "maj7";
 		return quest;
 	}
 
-	public minor7ChordQuest(note: string): Quest{
+	public minor7ChordQuest(note: Note, inversion: number = 0): Quest{
+		const noteStr = Note[note];
 		let quest = new Quest();
-		const strNotes = Chord.getChord("minor7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(strNotes);
+		const strNotes = Chord.getChord("minor7", noteStr).notes;
+		if(noteStr.includes("#")) this.simplifyNotes(strNotes);
 		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
-		quest.questChord = note + "minor7";
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(quest.answerChord);
+		quest.questChord = noteStr + "minor7";
 		return quest;
 	}
 
-	public dominant7ChordQuest(note: string): Quest {
+	public dominant7ChordQuest(note: Note, inversion: number = 0): Quest {
+		const noteStr = Note[note];
 		let quest = new Quest();
-		const strNotes = Chord.getChord("dom7", note).notes;
-		if(note.includes("#")) this.simplifyNotes(strNotes);
+		const strNotes = Chord.getChord("dom7", noteStr).notes;
+		if(noteStr.includes("#")) this.simplifyNotes(strNotes);
 		quest.answerChord = this.theory.convertStringsToNoteEnums(strNotes);
-		quest.questChord = note + "dom7";
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(quest.answerChord);
+		quest.questChord = noteStr + " dom7";
 		return quest;
 	}
-
-	public firstInversionQuest(quest: Quest): Quest {
-		this.inverseChord(quest.answerChord);
-		quest.questChord += "/" + quest.answerChord[0];
-		quest.inversion = 1;
-		return quest;
-	}
-
-	public secondInversionQuest(quest: Quest): Quest {
-		this.inverseChord(quest.answerChord);
-		this.inverseChord(quest.answerChord);
-		quest.questChord += "/" + quest.answerChord[0];
-		quest.inversion = 2;
-		return quest;
-	}
-
-	private inverseChord(list: any[]){
-		list.push(list.splice(0, 1)[0]);
-	}
-	private getRandomBlackNote(): string {
-		const notes = ["C","D","E","F","G","A","B"];
+	private getRandomBlackNote(): Note {
+		const notes = [Note.C,Note.D,Note.E,Note.F,Note.G,Note.A,Note.B];
 		const noteIndex = this.getRandomInt(notes.length);
 		return notes[noteIndex];
 	}
-	private getRandomWhiteNote(): string {
-		const notes = ["C#","D#","F#","G#","A#"];
+	private getRandomWhiteNote(): Note {
+		const notes = [Note["C#"],Note["D#"],Note["F#"],Note["G#"],Note["A#"]];
 		const noteIndex = this.getRandomInt(notes.length);
 		return notes[noteIndex];
 	}

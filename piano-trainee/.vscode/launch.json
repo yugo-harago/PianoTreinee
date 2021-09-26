@@ -1,0 +1,41 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "pwa-chrome",
+			"request": "attach",
+			"name": "Attach to Karma",
+			"address": "localhost",
+			"port":9222,
+			"url":"http://localhost:9876/",
+			"timeout": 600000,
+			"sourceMaps": true,
+			"webRoot": "${workspaceFolder}/piano-trainee",
+			"pathMapping": {
+				"/_karma_webpack_": "${workspaceFolder}/piano-trainee"
+			}
+		},
+        {
+            "type": "pwa-chrome",
+            "request": "attach",
+            "name": "Attach to Chrome",
+			"address": "localhost",
+            "port": 9333,
+            "webRoot": "${workspaceFolder}/piano-trainee",
+			"url": "http://localhost:4200",
+			
+        },
+		{
+			"type": "pwa-chrome",
+			"request": "attach",
+			"name": "Attach chrome",
+			"address": "localhost",
+			"port": 9333,
+			"sourceMaps": true,
+			"webRoot": "${workspaceFolder}/piano-trainee",
+			"pathMapping": {
+			  "/_karma_webpack_": "${workspaceFolder}/piano-trainee"
+			}
+		  },
+	]
+}

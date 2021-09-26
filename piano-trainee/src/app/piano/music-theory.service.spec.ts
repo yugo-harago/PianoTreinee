@@ -47,4 +47,24 @@ describe('MusicTheoryService', () => {
 
 		expect(chord).toEqual([Note.C, Note['D#'], Note.G]);
 	});
+
+	it('should split in two octave if is first inversion quest', () => {
+		const inversion = 1;
+		const chord = [Note.G, Note.C, Note.E];
+
+		let chords = service.splitChordInTwoOctaves(chord, inversion);
+
+		expect(chords.octaveUp).toEqual([Note.C, Note.E]);
+		expect(chords.octaveDown).toEqual([Note.G]);
+	});
+
+	it('should split in two octave if is first inversion quest', () => {
+		const inversion = 2;
+		const chord = [Note.E, Note.G, Note.C];
+
+		let chords = service.splitChordInTwoOctaves(chord, inversion);
+
+		expect(chords.octaveUp).toEqual([Note.C]);
+		expect(chords.octaveDown).toEqual([Note.E, Note.G]);
+	});
 });

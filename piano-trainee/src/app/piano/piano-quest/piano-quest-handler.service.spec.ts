@@ -5,18 +5,23 @@ import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
 import { Note } from '../note.enum';
+import { Chord } from '../music-theory.service';
 
 describe('PianoQuestHandlerService', () => {
 	let service: PianoQuestHandlerService;
 	let piano: PianoService;
 
-	let pianoQuestStub = { 
+	let pianoQuestStub:{ 
+		nextQuest: () => Quest, 
+		calledTimes: number,
+		quest: Quest | undefined
+	} = { 
 		nextQuest: () => {
 			pianoQuestStub.calledTimes += 1;
-			return pianoQuestStub.quest;
+			return pianoQuestStub.quest!;
 		}, 
 		calledTimes: 0,
-		quest: new Quest()
+		quest: undefined
 	}
 
 	let midiStub = { 
@@ -48,7 +53,6 @@ describe('PianoQuestHandlerService', () => {
 		piano = TestBed.inject(PianoService);
 		piano.loadOctaves();
 		pianoQuestStub.calledTimes = 0;
-		pianoQuestStub.quest = new Quest();
 	});
 
 	it('should be created', () => {
@@ -57,11 +61,8 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should activete the key when pressed', () => {
 		// Arrange
-		service.quest = <Quest>{
-			answerChord: [Note.C, Note.E, Note.G],
-			checkOrder: false,
-			questChord: "C"
-		}
+		service.quest = new Quest([Note.C, Note.E, Note.G], 0);
+		service.setAnswer();
 		let key = service.keys.find(k => k.note == Note.C && k.octave == 4);
 		// Act
 		service.onKeyDown(key);
@@ -72,13 +73,9 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should keep active the key when other keys are pressed', () => {
 		// Arrange
-		service.quest = <Quest>{
-			answerChord: [Note.C, Note.E, Note.G],
-			checkOrder: true,
-			questChord: "C",
-			inversion: 2
-		}
+		service.quest = new Quest([Note.C, Note.E, Note.G], 2);
 		// Act
+		service.setAnswer();
 		userPressKey([Note.C, Note.D], 4);
 		// Assert
 		const result1 = piano.keys.find(k => k.note == Note.C && k.octave == 4);
@@ -89,11 +86,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should call next quest when the answer about triad major chord is right', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.C, Note.E, Note.G],
-			checkOrder: false,
-			questChord: "C"
-		}
+		const quest = new Quest([Note.C, Note.E, Note.G], 0);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -107,11 +100,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should not call nextQuest if the last key is released', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.C, Note.E, Note.G],
-			checkOrder: false,
-			questChord: "C"
-		}
+		const quest = new Quest([Note.C, Note.E, Note.G], 0);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -126,11 +115,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should check one inverse key to be right', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.E, Note.G, Note.C],
-			checkOrder: true,
-			questChord: "C/E"
-		}
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -145,12 +130,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be wrong if is not root in the inverse chord', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.E, Note.G, Note.C],
-			checkOrder: true,
-			questChord: "C/E",
-			inversion: 1
-		}
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -158,19 +138,17 @@ describe('PianoQuestHandlerService', () => {
 		service.checkAnswer();
 
 		// Arrange
-		let key = service.keys.find(f => f.note == Note.E && f.octave == 4);
-		expect(key?.isActive).toBeTruthy();
-		expect(key?.isRight).toBeFalsy();
+		let cKey = service.keys.find(f => f.note == Note.C && f.octave == 4);
+		expect(cKey?.isActive).toBeTruthy();
+		expect(cKey?.isRight).toBeFalsy();
+		let eKey = service.keys.find(f => f.note == Note.E && f.octave == 4);
+		expect(eKey?.isActive).toBeTruthy();
+		expect(eKey?.isRight).toBeFalsy();
 	});
 
 	it('should be right if is root in the inverse chord', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.E, Note.G, Note.C],
-			checkOrder: true,
-			questChord: "C/E",
-			inversion: 1
-		}
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -185,11 +163,7 @@ describe('PianoQuestHandlerService', () => {
 	});
 
 	it('should be true if is in same octave', () => {
-		const quest = <Quest>{
-			answerChord: [Note.C, Note.E, Note.G],
-			checkOrder: false,
-			questChord: "C"
-		}
+		const quest = new Quest([Note.C, Note.E, Note.G], 0);
 		pianoQuestStub.quest = quest;
 		const result = service.checkSameOctave([Note.C, Note.E, Note.G]);
 		expect(result).toBeTruthy();
@@ -197,12 +171,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be false when check same octave with one note octave down', () => {
 		// G3 C4 E4
-		const quest = <Quest>{
-			answerChord: [Note.G, Note.C, Note.E],
-			checkOrder: true,
-			questChord: "C/G",
-			inversion: 1
-		}
+		const quest = new Quest([Note.G, Note.C, Note.E], 1);
 		pianoQuestStub.quest = quest;
 		const result = service.checkSameOctave([Note.G, Note.C, Note.E]);
 		expect(result).toBeFalsy();
@@ -210,12 +179,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be false when check same octave with one note octave up', () => {
 		// G3 C4 E4
-		const quest = <Quest>{
-			answerChord: [Note.E, Note.G, Note.C],
-			checkOrder: true,
-			questChord: "C/E",
-			inversion: 2
-		}
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
 		pianoQuestStub.quest = quest;
 		const result = service.checkSameOctave(quest.answerChord);
 		expect(result).toBeFalsy();
@@ -225,8 +189,7 @@ describe('PianoQuestHandlerService', () => {
 		// G3 C4 E4
 		const quest = <Quest>{
 			answerChord: [Note.C, Note['D#'], Note['G#']],
-			checkOrder: true,
-			questChord: "G#/C",
+			questChord: new Chord(Note['G#'], Note.C),
 			inversion: 2
 		}
 		pianoQuestStub.quest = quest;
@@ -236,12 +199,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be right about G#/C', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.C, Note['D#'], Note['G#']],
-			checkOrder: true,
-			questChord: "G#/C",
-			inversion: 2
-		}
+		const quest = new Quest([Note.C, Note['D#'], Note['G#']], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -253,12 +211,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be right if 5th and root is pressed in first inverse chord', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.E, Note.G, Note.C],
-			checkOrder: true,
-			questChord: "C/E",
-			inversion: 1
-		}
+		const quest = new Quest([Note.E, Note.G, Note.C], 1);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -277,12 +230,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should not be right in the third note of second major inversion being the sequence, 4,6,9,8', () => {
 		// Arrange
-		const quest = <Quest>{
-			answerChord: [Note.A,Note.D,Note['F#'] ],
-			checkOrder: true,
-			questChord: "D/A",
-			inversion: 2
-		}
+		const quest = new Quest([Note.A,Note.D,Note['F#'] ], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();

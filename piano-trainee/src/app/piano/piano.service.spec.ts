@@ -4,7 +4,7 @@ import { MidiService } from './midi/midi.service';
 import { Note } from './note.enum';
 import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
 
-import { Octave, PianoService } from './piano.service';
+import { Keys, Octave, PianoService } from './piano.service';
 
 describe('PianoService', () => {
 	let service: PianoService;
@@ -34,7 +34,7 @@ describe('PianoService', () => {
 		let octaves = new Octave();
 		octaves.length = 1;
 		service.octave = octaves;
-		service.keys = [];
+		service.keys = new Keys();
 		// Act
 		service.loadOctaves();
 		// Assert
@@ -46,7 +46,7 @@ describe('PianoService', () => {
 		let octaves = new Octave();
 		octaves.length = 2;
 		service.octave = octaves;
-		service.keys = [];
+		service.keys = new Keys();
 		// Act
 		service.loadOctaves();
 		// Assert

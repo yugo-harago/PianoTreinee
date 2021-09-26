@@ -22,6 +22,15 @@ export class Key {
 	}
 }
 
+export class Keys extends Array<Key> {
+	public get actives(): Key[] {
+		return this.filter(f => f.isActive);
+	}
+	public get rights(): Key[] {
+		return this.filter(f => f.isRight);
+	}
+}
+
 export class Octave {
 	public length: number = 3;
 	public middle: number = 4;
@@ -37,7 +46,7 @@ export class PianoService implements IPianoService{
 
 	public notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
-	public keys: Key[] = [];
+	public keys: Keys = new Keys();
 	public octave: Octave = new Octave();
 	public detectedChord?: string;
 
@@ -55,7 +64,7 @@ export class PianoService implements IPianoService{
 	}
 
 	public loadOctaves(){
-		this.keys = [];
+		this.keys = new Keys();
 		for (let octave = 1; octave <= this.octave.length; octave++) {
 			Object.values(Note).forEach(strNote => {
 				if (!isNaN(Number(strNote))) return;

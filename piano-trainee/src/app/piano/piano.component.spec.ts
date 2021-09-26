@@ -7,13 +7,17 @@ import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.serv
 import { PianoComponent } from './piano.component';
 
 
-let pianoQuestStub = { 
+let pianoQuestStub:{ 
+	nextQuest: () => Quest, 
+	calledTimes: number,
+	quest: Quest | undefined
+} = { 
 	nextQuest: () => {
 		pianoQuestStub.calledTimes += 1;
-		return pianoQuestStub.quest;
+		return pianoQuestStub.quest!;
 	}, 
 	calledTimes: 0,
-	quest: new Quest()
+	quest: undefined
 }
 
 describe('PianoComponent', () => {

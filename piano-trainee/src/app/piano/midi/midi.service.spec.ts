@@ -3,8 +3,17 @@ import { Key } from '../piano.service';
 
 import { MidiService } from './midi.service';
 import { Note } from '../note.enum';
+import * as Tone from 'tone';
 
-describe('MidiService', () => {
+class TestSynth extends Tone.Synth {
+	public log = (...args: any[]) => {
+		this.logs?.push(args);
+	};
+	debug = true;
+	public logs:any[][] = [];
+}
+
+fdescribe('MidiService', () => {
 	let service: MidiService;
 
 	beforeEach(() => {
@@ -40,4 +49,18 @@ describe('MidiService', () => {
 	function sleep(ms:number) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
+
+	it('should play note', () => {
+		let key = new Key(Note.C, 4);
+		key.synth = new TestSynth();
+		service.play(key);
+		expect((<TestSynth>key.synth).logs[0][1]).toBe("C4");
+	});
+
+	it('should start play right note', () => {
+		let key = new Key(Note.C, 4);
+		key.synth = new TestSynth();
+		service.startPlay(key);
+		expect((<TestSynth>key.synth).logs[0][1]).toBe("C4");
+	});
 });

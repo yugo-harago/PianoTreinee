@@ -41,20 +41,18 @@ export class MidiService {
 	}
 
 	public play(key: Key){
-		const note = key.note + key.octave;
+		const note = Note[key.note] + key.octave;
 		if(this.selectedOutput) {
 			this.selectedOutput.playNote(note);
 			return;
 		}
-		//create a synth and connect it to the main output (your speakers)
-		const synth = new Tone.Synth().toDestination();
 		//play a note for the duration of an 8th note
-		synth.triggerAttackRelease(note, "8n");
+		key.synth.triggerAttackRelease(note, "8n");
 	}
 
 	// Most browsers will not allow to play any audio until user clicks something
 	public startPlay(key: Key){
-		key.synth.triggerAttack(key.note + key.octave);
+		key.synth.triggerAttack(Note[key.note] + key.octave);
 	}
 	public stopPlay(key: Key){
 		key.synth.triggerRelease();

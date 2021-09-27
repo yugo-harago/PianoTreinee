@@ -1,7 +1,7 @@
 import { Note } from "../note.enum";
 import { Quest } from "./quest.model";
 
-fdescribe('Quest model', () => {
+describe('Quest model', () => {
 
 	beforeEach(() => undefined);
 

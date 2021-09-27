@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { Key, PianoService } from '../piano.service';
-import { PianoQuestBundleService, Quest } from './piano-quest-bundle.service';
+import { PianoQuestBundleService } from './piano-quest-bundle.service';
 import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
 import { Note } from '../note.enum';
 import { Chord } from '../music-theory.service';
+import { Quest } from './quest.model';
 
 describe('PianoQuestHandlerService', () => {
 	let service: PianoQuestHandlerService;
@@ -140,7 +141,7 @@ describe('PianoQuestHandlerService', () => {
 		// Arrange
 		let cKey = service.keys.find(f => f.note == Note.C && f.octave == 4);
 		expect(cKey?.isActive).toBeTruthy();
-		expect(cKey?.isRight).toBeFalsy();
+		expect(cKey?.isRight).toBeTruthy();
 		let eKey = service.keys.find(f => f.note == Note.E && f.octave == 4);
 		expect(eKey?.isActive).toBeTruthy();
 		expect(eKey?.isRight).toBeFalsy();
@@ -211,7 +212,7 @@ describe('PianoQuestHandlerService', () => {
 
 	it('should be right if 5th and root is pressed in first inverse chord', () => {
 		// Arrange
-		const quest = new Quest([Note.E, Note.G, Note.C], 1);
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
 		pianoQuestStub.quest = quest;
 		// Act
 		service.nextQuest();
@@ -226,21 +227,6 @@ describe('PianoQuestHandlerService', () => {
 		let key2 = service.keys.find(f => f.note == Note.G && f.octave == 4);
 		expect(key2?.isActive).toBeTruthy();
 		expect(key2?.isRight).toBeTruthy();
-	});
-
-	it('should not be right in the third note of second major inversion being the sequence, 4,6,9,8', () => {
-		// Arrange
-		const quest = new Quest([Note.A,Note.D,Note['F#'] ], 2);
-		pianoQuestStub.quest = quest;
-		// Act
-		service.nextQuest();
-		userPressKey([Note.D,Note['F#'],Note.B,Note.A], 4);
-		service.checkAnswer();
-
-		// Arrange
-		let thirdKey = service.keys.find(f => f.note == Note.A && f.octave == 4);
-		expect(thirdKey?.isActive).toBeTruthy();
-		expect(thirdKey?.isRight).toBeFalsy();
 	});
 
 });

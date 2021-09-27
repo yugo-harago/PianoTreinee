@@ -8,7 +8,7 @@ import { Note } from '../note.enum';
 import { Key, Keys, Octave, PianoService } from '../piano.service';
 import { IPianoService } from '../PianoService.interface';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
-import { Quest } from './piano-quest-bundle.service';
+import { Quest } from './quest.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,6 +16,7 @@ import { Quest } from './piano-quest-bundle.service';
 export class PianoQuestHandlerService implements IPianoService{
 
 	public quest: Quest | undefined;
+	private firstKey?: {note: Note, octave: number};
 
 	public canRepeat: boolean = false;
 	
@@ -76,20 +77,6 @@ export class PianoQuestHandlerService implements IPianoService{
 		})
 	}
 
-	// Only used when the order is checked
-	// After the first note is played, it will determine which will be the base octave
-	private setBaseChord(keys: Key[]){
-		if(!this.quest?.answerChord) throw new Error("the answer does not exist!");
-		if(keys.length !== 1) throw new Error("Base chord cannot be settled!");
-		if(keys.find(f => f.isActive)?.isRight) {
-			const isChordNote = this.quest.questChord?.root == keys[0].note;
-			this.quest.base = {
-				octave: isChordNote? keys[0].octave-1: keys[0].octave,
-				note: keys[0].note
-			};
-		}
-	}
-
 	public checkSameOctave(notes: Note[]): boolean {
 		let previous = notes[0];
 		let isSame = true;
@@ -102,20 +89,26 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	// Check answer key in order
-	private setAnswersInOrder(activeKeys: Key[], base: { octave: number, note: Note }): void {
+	private setAnswersInOrder(activeKeys: Key[], firstKey: {note:Note, octave: number}): void {
 		if(!this.quest) throw new Error("the quest does not exist!");
 		if(!this.quest.inversion) return;
 		if(this.checkSameOctave(this.quest.answerChord)) return;
-		const octaveUp = this.theory.splitChordInTwoOctaves(this.quest.answerChord, this.quest.inversion).octaveUp;
-		let currentOctave = base.octave;
-		for(let activeKey of activeKeys){
-			let checkOctave;
-			if(octaveUp.includes(activeKey.note) && !(octaveUp.includes(activeKey.note) && activeKey.note == base.note)) {
-				checkOctave = activeKey.octave == currentOctave+1;
-			} else {
-				checkOctave = activeKey.octave == currentOctave;
+		const octaves = this.theory.splitChordInTwoOctaves(this.quest.answerChord, this.quest.inversion);
+		let rightChord;
+		if(octaves.octaveUp.includes(firstKey.note)){
+			// keys in ocatveUp should be the same ocatve and what's in octaveDown should subtract one octave of the first key.
+			rightChord = [{keys: octaves.octaveUp, octave: firstKey.octave},
+				{keys: octaves.octaveDown, octave: firstKey.octave - 1}];
+		} else {
+			// keys in ocatveUp should add one octave and what's in octave down should be the same.
+			rightChord = [{keys: octaves.octaveUp, octave: firstKey.octave + 1},
+				{keys: octaves.octaveDown, octave: firstKey.octave}];
+		}
+		for(let rChord of rightChord) {
+			for(let activeKey of activeKeys){
+				if(rChord.keys.includes(activeKey.note))
+					activeKey.isRight = activeKey.octave == rChord.octave;
 			}
-			activeKey.isRight = checkOctave;
 		}
 	}
 
@@ -136,11 +129,11 @@ export class PianoQuestHandlerService implements IPianoService{
 		if(!this.quest?.answerChord) throw new Error("the answer does not exist!");
 		const activeKeys = this.keys.actives;
 		// Check if is first user key hit
-		if(this.quest.inversion && activeKeys.length == 1) this.setBaseChord(activeKeys);
+		if(this.quest.inversion && activeKeys.length == 1) this.firstKey = {note: activeKeys[0].note, octave: activeKeys[0].octave}
 		if(activeKeys.length < 2) return;
 		if(this.quest.inversion){
-			if(!this.quest.base) throw new Error("the quest base is not defined!");
-			this.setAnswersInOrder(activeKeys, this.quest.base)
+			if(!this.firstKey) throw new Error("First key is not defined!");
+			this.setAnswersInOrder(activeKeys, this.firstKey)
 		}
 		if(this.anyKeyIsActiveAndWrong(activeKeys)) return;
 		if(this.rightKeysAreAllActive(activeKeys))

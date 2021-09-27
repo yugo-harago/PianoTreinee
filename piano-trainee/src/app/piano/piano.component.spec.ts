@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { MidiService } from './midi/midi.service';
-import { PianoQuestBundleService, Quest } from './piano-quest/piano-quest-bundle.service';
+import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
 import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
+import { Quest } from './piano-quest/quest.model';
 
 import { PianoComponent } from './piano.component';
 

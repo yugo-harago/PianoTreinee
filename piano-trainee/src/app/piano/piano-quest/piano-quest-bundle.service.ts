@@ -1,22 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Chord as ChordJs, ChordType, Note as NoteJs } from '@tonaljs/tonal';
-import { Chord, MusicTheoryService } from '../music-theory.service';
+import { MusicTheoryService } from '../music-theory.service';
 import { Note } from '../note.enum';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
-
-export class Quest {
-	public answerChord: Note[] = [];
-	public questChord: Chord;
-	public base?: {octave: number, note: Note};
-	public inversion: number = 0;
-
-	constructor(answerChord: Note[], inversion: number = 0, chordType?: string){
-		if(inversion) this.questChord = new Chord([...answerChord].splice(inversion,1)[0], [...answerChord].splice(0,1)[0], chordType);
-		else this.questChord = new Chord(answerChord[0], undefined, chordType)
-		this.answerChord = answerChord;
-		this.inversion = inversion;
-	}
-}
+import { Quest } from './quest.model';
 
 @Injectable({
   providedIn: 'root'

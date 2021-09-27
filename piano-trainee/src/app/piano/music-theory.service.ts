@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Note as NoteJs, ChordType} from '@tonaljs/tonal';
 import { Note } from './note.enum';
-import { Quest } from './piano-quest/piano-quest-bundle.service';
-import { Key } from './piano.service';
 
 
 export class Chord {

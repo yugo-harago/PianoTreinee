@@ -16,7 +16,7 @@ export class Chord {
 
 	toString(): string {
 		let result = Note[this.root];
-		if(this.baseNote)
+		if(this.baseNote || this.baseNote === 0)
 			result = result + "/" + Note[this.baseNote];
 		if(this.type) {
 			if(this.baseNote || this.type.length > 2) result = result + " " + this.type;

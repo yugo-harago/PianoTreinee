@@ -13,7 +13,7 @@ class TestSynth extends Tone.Synth {
 	public logs:any[][] = [];
 }
 
-fdescribe('MidiService', () => {
+describe('MidiService', () => {
 	let service: MidiService;
 
 	beforeEach(() => {

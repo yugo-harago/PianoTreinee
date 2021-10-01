@@ -28,8 +28,10 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 			this.dominant7ChordQuest
 		];
 		const question = quests[this.getRandomInt(quests.length)].bind(this);
-		const inversion = this.getRandomInt(3) - 1;
-		return question(note, inversion);
+		// const inversion = this.getRandomInt(3);
+		console.log("Note: " + Note[note] + ". Inversion: " + 1);
+		// return question(note, inversion);
+		return this.minor7ChordQuest(note, 1);
 	}
 
 	private simplifyNotes(notes: string[]) {

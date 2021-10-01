@@ -102,7 +102,7 @@ describe('PianoQuestBundleService', () => {
 		expect(quest.questChord.toString()).toBe("C/G maj7");
 	});
 
-	it('should generate major 7 third inversion chord quest',() => {
+	it('should generate major 7 third, inversion chord quest',() => {
 		const note = Note.C;
 		
 		const quest = service.major7ChordQuest(note, 3);

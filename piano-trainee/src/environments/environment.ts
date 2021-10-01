@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	mockQuestBundle: false,
+	mockQuestBundle: true,
 	mockWebMidi: false
 };
 

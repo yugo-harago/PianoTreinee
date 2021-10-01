@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { ChordType } from '@tonaljs/tonal';
 import { BehaviorSubject } from 'rxjs';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
@@ -91,9 +90,9 @@ export class PianoQuestHandlerService implements IPianoService{
 	// Check answer key in order
 	private setAnswersInOrder(activeKeys: Key[], firstKey: {note:Note, octave: number}): void {
 		if(!this.quest) throw new Error("the quest does not exist!");
-		if(!this.quest.inversion) return;
+		if(!this.quest.checkOrder) return;
 		if(this.checkSameOctave(this.quest.answerChord)) return;
-		const octaves = this.theory.splitChordInTwoOctaves(this.quest.answerChord, this.quest.inversion);
+		const octaves = this.theory.splitChordInTwoOctaves(this.quest.answerChord);
 		let rightChord;
 		if(octaves.octaveUp.includes(firstKey.note)){
 			// keys in ocatveUp should be the same ocatve and what's in octaveDown should subtract one octave of the first key.
@@ -112,6 +111,7 @@ export class PianoQuestHandlerService implements IPianoService{
 		}
 	}
 
+
 	private anyKeyIsActiveAndWrong(activeKeys: Key[]): boolean {
 		return !!activeKeys.find(key => !key.isRight);
 	}
@@ -129,11 +129,14 @@ export class PianoQuestHandlerService implements IPianoService{
 		if(!this.quest?.answerChord) throw new Error("the answer does not exist!");
 		const activeKeys = this.keys.actives;
 		// Check if is first user key hit
-		if(this.quest.inversion && activeKeys.length == 1) this.firstKey = {note: activeKeys[0].note, octave: activeKeys[0].octave}
+		if(this.quest.checkOrder && activeKeys.length == 1) this.firstKey = {note: activeKeys[0].note, octave: activeKeys[0].octave}
 		if(activeKeys.length < 2) return;
-		if(this.quest.inversion){
+		if(this.quest.checkOrder){ 
 			if(!this.firstKey) throw new Error("First key is not defined!");
-			this.setAnswersInOrder(activeKeys, this.firstKey)
+			// if(this.theory.mostKeysAreInDifferentOctave(activeKeys, this.firstKey, this.quest.answerChord)) {
+			// 	this.firstKey = this.theory.getBaseKeyBasedOnChord(activeKeys, this.quest.answerChord);
+			// }
+			this.setAnswersInOrder(activeKeys, this.firstKey);
 		}
 		if(this.anyKeyIsActiveAndWrong(activeKeys)) return;
 		if(this.rightKeysAreAllActive(activeKeys))

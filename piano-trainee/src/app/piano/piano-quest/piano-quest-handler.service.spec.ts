@@ -98,7 +98,6 @@ describe('PianoQuestHandlerService', () => {
 		expect(pianoQuestStub.calledTimes).toEqual(2);
 	});
 	
-
 	it('should not call nextQuest if the last key is released', () => {
 		// Arrange
 		const quest = new Quest([Note.C, Note.E, Note.G], 0);
@@ -110,8 +109,20 @@ describe('PianoQuestHandlerService', () => {
 		service.onKeyDown(key);
 		service.onKeyUp(key);
 
-		// Arrange
+		// Assert
 		expect(pianoQuestStub.calledTimes).toEqual(1);
+	});
+
+	it('should be wrong if first note about C quest is wrong', () => {
+		// Arrange
+		const quest = new Quest([Note.C, Note.E, Note.G], 0);
+		pianoQuestStub.quest = quest;
+		// Act
+		service.nextQuest();
+		userPressKey([Note['D#']], 4);
+		// Assert
+		const active = service.keys.actives;
+		expect(active.find(f => f.isRight)).toBeFalsy();
 	});
 
 	it('should check one inverse key to be right', () => {
@@ -228,5 +239,42 @@ describe('PianoQuestHandlerService', () => {
 		expect(key2?.isActive).toBeTruthy();
 		expect(key2?.isRight).toBeTruthy();
 	});
+
+	it('should be right if answered F# minor7 quest',() => {
+		const quest = new Quest([Note['F#'], Note.A, Note['C#'], Note.E]);
+		pianoQuestStub.quest = quest;
+
+		service.nextQuest();
+		userPressKey([Note['F#'], Note.A, Note['C#'], Note.E], 4);
+
+		const anyWrong = service.keys.actives.find(f => !f.isRight);
+		expect(anyWrong).toBeFalsy();
+	});
+
+	it('should be right if answered F#/E minor7 quest',() => {
+		const quest = new Quest([Note.E, Note['F#'], Note.A, Note['C#']], 1);
+		pianoQuestStub.quest = quest;
+
+		service.nextQuest();
+		userPressKey([Note.E, Note['F#'], Note.A], 3);
+		userPressKey([Note['C#']], 4);
+
+		const anyWrong = service.keys.actives.find(f => !f.isRight);
+		expect(anyWrong).toBeFalsy();
+	});
+
+	// it('should chenage right keys if most of the keys are in other octave', () => {
+	// 	const quest = new Quest([Note.C, Note.E, Note.G, Note['A#']], undefined, undefined, true);
+	// 	pianoQuestStub.quest = quest;
+
+	// 	service.nextQuest();
+	// 	userPressKey([Note.C], 3);
+	// 	userPressKey([Note.E, Note.G, Note['A#']], 4);
+
+	// 	const c3Key = service.keys.actives.find(f => f.note == Note.C)!;
+	// 	expect(c3Key.isRight).toBeFalsy();
+	// });
+
+	// it('should chenage right keys if most of the keys are in other octave, first inversion case', () => undefined);
 
 });

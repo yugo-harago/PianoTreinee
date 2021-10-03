@@ -1,2 +1,4 @@
-
+<app-visitor-header *ngIf="!userService.logged"></app-visitor-header>
+<app-logged-header *ngIf="userService.logged"></app-logged-header>
+<div style="height: 58px"></div>
 <router-outlet></router-outlet>

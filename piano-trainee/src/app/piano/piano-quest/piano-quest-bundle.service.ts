@@ -5,10 +5,24 @@ import { Note } from '../note.enum';
 import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
 import { Quest } from './quest.model';
 
+export enum QuestCardType {
+	majorChordQuest = "majorChordQuest",
+	minorChordQuest = "minorChordQuest",
+	major7ChordQuest = "major7ChordQuest",
+	minor7ChordQuest = "minor7ChordQuest",
+	dominantChordQuest = "dominantChordQuest",
+	dominant7ChordQuest = "dominant7ChordQuest",
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class PianoQuestBundleService implements IPianoQuestBundleService{
+
+	private currentQuests: {
+		quest: (note: Note, inversion?: number) => Quest,
+		inversion: boolean
+	}[] = [];
 
 	constructor(
 		private theory: MusicTheoryService
@@ -17,29 +31,34 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		ChordType.add(["1P", "3m", "5P", "7m"], ["minor7"]);
 	}
 
+	public resetQuest(){
+		this.currentQuests = [];
+	}
+
+	public addQuest(currestQuest: QuestCardType, inversion: boolean) {
+		switch (currestQuest) {
+			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, inversion}); break;
+			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, inversion}); break;
+			case QuestCardType.major7ChordQuest: this.currentQuests.push({quest: this.major7ChordQuest, inversion}); break;
+			case QuestCardType.minor7ChordQuest: this.currentQuests.push({quest: this.minor7ChordQuest, inversion}); break;
+			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, inversion}); break;
+			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, inversion}); break;
+		}
+	}
+
 	public nextQuest(): Quest {
-		
+		if(!this.currentQuests.length) throw new Error("Quests not defined");
 		const note = this.getRandomInt(2) == 1 ? this.getRandomWhiteNote() : this.getRandomBlackNote();
-		const quests = [
-			this.getMajorChordQuest,
-			this.getMinorChordQuest,
-			this.major7ChordQuest,
-			this.minor7ChordQuest,
-			this.dominant7ChordQuest
-		];
-		const question = quests[this.getRandomInt(quests.length)].bind(this);
-		// const inversion = this.getRandomInt(3);
-		console.log("Note: " + Note[note] + ". Inversion: " + 1);
-		// return question(note, inversion);
-		return this.minor7ChordQuest(note, 1);
+		const question = this.currentQuests[this.getRandomInt(this.currentQuests.length)];
+		const inversion = question.inversion? this.getRandomInt(3) : 0;
+		return question.quest.bind(this)(note, inversion);
 	}
 
 	private simplifyNotes(notes: string[]) {
 		notes.forEach((n, i) => notes[i] = NoteJs.simplify(n));
 	}
 
-	// Major chord with white root key
-	public getMajorChordQuest(note: Note, inversion: number = 0): Quest {
+	public majorChordQuest(note: Note, inversion: number = 0): Quest {
 		const noteStr = Note[note];
 		const chord = ChordJs.getChord("major", noteStr);
 		if(noteStr.includes("#")) this.simplifyNotes(chord.notes);
@@ -48,7 +67,7 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		return new Quest(answerChord, inversion);
 	}
 
-	public getMinorChordQuest(note: Note, inversion: number = 0): Quest {
+	public minorChordQuest(note: Note, inversion: number = 0): Quest {
 		const noteStr = Note[note];
 		const chord = ChordJs.getChord("minor", noteStr);
 		if(noteStr.includes("#")) this.simplifyNotes(chord.notes);
@@ -73,6 +92,15 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		let answerChord = this.theory.convertStringsToNoteEnums(strNotes);
 		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
 		return new Quest(answerChord, inversion, "minor7");
+	}
+
+	public dominantChordQuest(note: Note, inversion: number = 0): Quest {
+		const noteStr = Note[note];
+		const strNotes = ChordJs.getChord("dom", noteStr).notes;
+		if(noteStr.includes("#")) this.simplifyNotes(strNotes);
+		let answerChord = this.theory.convertStringsToNoteEnums(strNotes);
+		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
+		return new Quest(answerChord, inversion, "dom");
 	}
 
 	public dominant7ChordQuest(note: Note, inversion: number = 0): Quest {

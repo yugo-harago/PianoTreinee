@@ -18,7 +18,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate major third quest', () => {
 		const note = Note.C;
 		
-		const quest = service.getMajorChordQuest(note);
+		const quest = service.majorChordQuest(note);
 		
 		expect(quest.answerChord).toEqual([Note.C, Note.E, Note.G]);
 		expect(quest.questChord.toString()).toBe("C");
@@ -27,7 +27,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate major third inversion quest',() => {
 		const note = Note.C;
 		
-		const quest = service.getMajorChordQuest(note, 1);
+		const quest = service.majorChordQuest(note, 1);
 		
 		expect(quest.answerChord).toEqual([Note.G, Note.C, Note.E]);
 		expect(quest.questChord.toString()).toBe("C/G");
@@ -36,7 +36,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate major third second inversion quest',() => {
 		const note = Note.C;
 		
-		const quest = service.getMajorChordQuest(note, 2);
+		const quest = service.majorChordQuest(note, 2);
 		
 		expect(quest.answerChord).toEqual([Note.E, Note.G, Note.C]);
 		expect(quest.questChord.toString()).toBe("C/E");
@@ -45,7 +45,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate minor third quest', () => {
 		const note = Note.C;
 		
-		const quest = service.getMinorChordQuest(note);
+		const quest = service.minorChordQuest(note);
 		
 		expect(quest.inversion).toBeFalsy();
 		expect(quest.answerChord).toEqual([Note.C, Note['D#'], Note.G]);
@@ -55,7 +55,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate minor third, first inversion quest',() => {
 		const note = Note.C;
 		
-		const quest = service.getMinorChordQuest(note, 1);
+		const quest = service.minorChordQuest(note, 1);
 		
 		expect(quest.inversion).toBe(1);
 		expect(quest.answerChord).toEqual([Note.G, Note.C, Note['D#']]);
@@ -65,7 +65,7 @@ describe('PianoQuestBundleService', () => {
 	it('should generate minor third, second inversion quest',() => {
 		const note = Note.C;
 		
-		const quest = service.getMinorChordQuest(note, 2);
+		const quest = service.minorChordQuest(note, 2);
 		
 		expect(quest.inversion).toBe(2);
 		expect(quest.answerChord).toEqual([Note['D#'], Note.G, Note.C]);

@@ -1,0 +1,40 @@
+
+<div class="container">
+	<div class="row" style="margin-top: 10px;">
+		<div class="col text-center">
+			<h1>Chord Trainning</h1>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<form class="search-form">
+				<div class="input-group">
+					<span class="input-group-text">
+						<i class="fa fa-search"></i>
+					</span>
+					<input class="form-control" type="text" placeholder="Search your desired traininng">
+					<button class="btn btn-light" type="button">Search </button>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="multi-select"  name="multi-select"
+						[checked]="multipleQuest"
+						(change)="multipleQuest = !multipleQuest">
+					<label class="form-check-label" for="formCheck-1">Multi-select</label>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="container" style="margin-top: 10px;">
+	<div class="card-group" *ngFor="let chordTrainings of batchTraining">
+		<div class="card" *ngFor="let chordTraining of chordTrainings" (click)="onCardClick(chordTraining)">
+			<img class="card-img-top w-100 d-block" style="height: 220px;" alt="Chord">
+			<div class="card-body">
+				<h4 class="card-title">{{ chordTraining.title }}</h4>
+				<p>Difficulty: {{ chordTraining.difficulty }}</p><button class="btn btn-primary" type="button">Start</button>
+			</div>
+		</div>
+	</div>
+</div>

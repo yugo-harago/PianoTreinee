@@ -23,6 +23,17 @@ export class SelectTrainingComponent implements OnInit {
 		this.batchTraining = this.toMatrix(this.chordTrainings, 3);
 	}
 
+	public reset() {
+		this.chordTrainings.forEach(f => f.selected = false);
+	}
+
+	public onMultipleSelect(){
+		this.multipleQuest = !this.multipleQuest
+		if(!this.multipleQuest){
+			this.reset();
+		}
+	}
+
 	public toMatrix(arr: Array<any>, size: number) : Array<Array<any>> {
 		var res = []; 
 		for(var i=0;i < arr.length;i = i+size)
@@ -33,6 +44,8 @@ export class SelectTrainingComponent implements OnInit {
 	public onCardClick(chordTraining: ChordTraining) {
 		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion);
 		if(this.multipleQuest){
+			chordTraining.selected = true;
+		} else {
 			// go to ./training
 		}
 	}

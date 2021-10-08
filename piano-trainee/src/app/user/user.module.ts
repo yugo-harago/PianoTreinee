@@ -12,15 +12,15 @@ import { UserComponent } from './user.component';
 
 @NgModule({
 	declarations: [
-	  TrainingsComponent,
-	  LoggedHeaderComponent,
-	  UserComponent,
-	  SelectTrainingComponent
+		TrainingsComponent,
+		LoggedHeaderComponent,
+		UserComponent,
+		SelectTrainingComponent
 	],
 	imports: [
-	  CommonModule,
-	  PianoModule,
-	  UserRoutingModule
+		CommonModule,
+	  	PianoModule,
+	  	UserRoutingModule
 	],
 	exports: [
 		LoggedHeaderComponent

@@ -17,24 +17,32 @@
 					<input class="form-control" type="text" placeholder="Search your desired traininng">
 					<button class="btn btn-light" type="button">Search </button>
 				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="multi-select"  name="multi-select"
-						[checked]="multipleQuest"
-						(change)="multipleQuest = !multipleQuest">
-					<label class="form-check-label" for="formCheck-1">Multi-select</label>
-				</div>
 			</form>
-		</div>
-	</div>
-</div>
-<div class="container" style="margin-top: 10px;">
-	<div class="card-group" *ngFor="let chordTrainings of batchTraining">
-		<div class="card" *ngFor="let chordTraining of chordTrainings" (click)="onCardClick(chordTraining)">
-			<img class="card-img-top w-100 d-block" style="height: 220px;" alt="Chord">
-			<div class="card-body">
-				<h4 class="card-title">{{ chordTraining.title }}</h4>
-				<p>Difficulty: {{ chordTraining.difficulty }}</p><button class="btn btn-primary" type="button">Start</button>
+			<div class="row">
+				<div class="col">
+					<div class="form-check"><input type="checkbox" class="form-check-input" id="multi-select" 
+						[checked]="multipleQuest"
+						(change)="onMultipleSelect()"/><label class="form-check-label" for="formCheck-1">Multi-select</label></div>
+				</div>
+				<div class="col text-end" *ngIf="multipleQuest"><button class="btn btn-primary" type="button">Start</button></div>
 			</div>
 		</div>
 	</div>
 </div>
+<ng-template ngFor let-chordTrainings [ngForOf]="batchTraining">
+	<div class="container" style="margin-top: 10px;">
+		<div class="row">
+			<div class="col" *ngFor="let chordTraining of chordTrainings">
+				<div class="card" [class.selected]="chordTraining.selected">
+					<div class="card-body">
+						<h4 class="card-title">{{ chordTraining.title }}</h4>
+						<p>Difficulty: {{ chordTraining.difficulty }}</p>
+						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button">Start</button>
+						<button *ngIf="multipleQuest" class="btn btn-primary" type="button"
+							(click)="onCardClick(chordTraining)">Select</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>

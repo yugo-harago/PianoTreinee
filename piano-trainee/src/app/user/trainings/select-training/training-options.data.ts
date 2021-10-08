@@ -7,6 +7,7 @@ export class ChordTraining {
 	public difficulty: number;
 	public quest: QuestCardType;
 	public inversion: boolean;
+	public selected: boolean = false;
 	constructor(title: string, difficulty: number, quest: QuestCardType, inversion: boolean) {
 		this.title = title;
 		this.difficulty = difficulty;

@@ -22,7 +22,6 @@ import { MidiService } from './midi/midi.service';
 	PianoComponent
   ],
   providers: [
-	  { provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: environment.mockQuestBundle ? PianoQuestBundleMock : PianoQuestBundleService },
 	  { provide: MidiService },
   ]
 })

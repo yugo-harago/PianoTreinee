@@ -24,7 +24,11 @@
 						[checked]="multipleQuest"
 						(change)="onMultipleSelect()"/><label class="form-check-label" for="formCheck-1">Multi-select</label></div>
 				</div>
-				<div class="col text-end" *ngIf="multipleQuest"><button class="btn btn-primary" type="button">Start</button></div>
+				<div class="col text-end"
+					*ngIf="multipleQuest">
+					<button class="btn btn-primary" type="button"
+						(click)="onMultipleStart()">Start</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -37,7 +41,8 @@
 					<div class="card-body">
 						<h4 class="card-title">{{ chordTraining.title }}</h4>
 						<p>Difficulty: {{ chordTraining.difficulty }}</p>
-						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button">Start</button>
+						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button"
+							(click)="onCardClick(chordTraining)">Start</button>
 						<button *ngIf="multipleQuest" class="btn btn-primary" type="button"
 							(click)="onCardClick(chordTraining)">Select</button>
 					</div>

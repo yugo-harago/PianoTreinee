@@ -14,9 +14,7 @@ export enum QuestCardType {
 	dominant7ChordQuest = "dominant7ChordQuest",
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PianoQuestBundleService implements IPianoQuestBundleService{
 
 	private currentQuests: {

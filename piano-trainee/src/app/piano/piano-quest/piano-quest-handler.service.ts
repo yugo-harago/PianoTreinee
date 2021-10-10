@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
 import { MusicTheoryService } from '../music-theory.service';
@@ -16,6 +16,7 @@ export class PianoQuestHandlerService implements IPianoService{
 
 	public quest: Quest | undefined;
 	private firstKey?: {note: Note, octave: number};
+	public onRightAnswer: Subject<boolean> = new Subject<boolean>();
 
 	public canRepeat: boolean = false;
 	
@@ -59,16 +60,17 @@ export class PianoQuestHandlerService implements IPianoService{
 			}
 		} while (this.quest?.questChord == quest.questChord && !this.canRepeat && !forceExit);
 		this.quest = quest;
-		this.setAnswer(quest.answerChord);
+		this.setRightKeys(quest.answerChord);
+		this.setDefaultAnswer(quest?.answerChord, this.piano.octave.middle);
 		this.checkChange.next(true);
 	}
 
 	public loadOctaves(){
 		this.piano.loadOctaves();
-		if(this.quest?.answerChord?.length) this.setAnswer(this.quest.answerChord);
+		if(this.quest?.answerChord?.length) this.setRightKeys(this.quest.answerChord);
 	}
 
-	public setAnswer(notes: Note[] | undefined = undefined): void {
+	public setRightKeys(notes?: Note[]): void {
 		if(!notes && !this.quest?.answerChord) throw new Error("The answer or note is not settled!");
 		if(!notes) notes = this.quest?.answerChord;
 		this.keys.forEach(key => {
@@ -76,14 +78,34 @@ export class PianoQuestHandlerService implements IPianoService{
 		})
 	}
 
+	public setDefaultAnswer(notes: Note[], baseOctave: number) {
+		let octaves = this.theory.splitChordInTwoOctaves(notes);
+		this.keys.forEach(key => {
+			if(!notes.includes(key.note)) {
+				key.answer = false;
+				return;
+			}
+			let octave = 0;
+			if(octaves.octaveDown.length == 0){
+				octave = baseOctave;
+			} else {
+				octave = octaves.octaveDown.includes(key.note)? baseOctave : baseOctave + 1;
+			}
+			key.answer = key.octave == octave;
+		})
+	}
+
 	public checkSameOctave(notes: Note[]): boolean {
 		let previous = notes[0];
 		let isSame = true;
-		notes.slice(1, notes.length).forEach(note => {
-			if(previous > note) // If is bigger than previous
+		for(let i = 1; i < notes.length; i++) { // start with 1 index
+			let note = notes[i];
+			if(previous > note){ // If is bigger than previous
 				isSame = false;
+				break;
+			}
 			previous = note;
-		})
+		}
 		return isSame;
 	}
 
@@ -148,6 +170,7 @@ export class PianoQuestHandlerService implements IPianoService{
 			key.isActive = false;
 			key.isRight = false;
 		})
+		this.onRightAnswer.next(true)
 		this.nextQuest();
 	}
 	public onKeyClick(key: Key) {

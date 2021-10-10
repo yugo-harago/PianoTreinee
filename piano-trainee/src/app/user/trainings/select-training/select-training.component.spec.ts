@@ -1,15 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router, RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TOKENS } from 'src/app/injections-tokens';
+import { Quest } from 'src/app/piano/piano-quest/quest.model';
 
 import { SelectTrainingComponent } from './select-training.component';
 import { trainingOptions } from './training-options.data';
 
-fdescribe('SelectTrainingComponent', () => {
+let pianoQuestStub:{ 
+	nextQuest: () => Quest,
+	resetQuest: () => void,
+	calledTimes: number,
+	quest: Quest | undefined
+} = { 
+	nextQuest: () => {
+		pianoQuestStub.calledTimes += 1;
+		return pianoQuestStub.quest!;
+	}, 
+	resetQuest: () => undefined,
+	calledTimes: 0,
+	quest: undefined
+}
+
+describe('SelectTrainingComponent', () => {
 	let component: SelectTrainingComponent;
 	let fixture: ComponentFixture<SelectTrainingComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ SelectTrainingComponent ]
+			declarations: [ SelectTrainingComponent ],
+			imports: [ RouterTestingModule ],
+			providers: [ { provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub }]
 		})
 		.compileComponents();
 	});

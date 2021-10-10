@@ -11,6 +11,7 @@ export class Key {
 	isActive: boolean = false;
 	octave: number = 0;
 	isRight: boolean = false;
+	answer: boolean = false;
 	//create a synth and connect it to the main output (your speakers)
 	synth: Tone.Synth<Tone.SynthOptions> = new Tone.Synth().toDestination();
 	accidental: boolean = false;

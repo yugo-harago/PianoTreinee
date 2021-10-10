@@ -13,6 +13,9 @@
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 		(click)="octaveMinus()">octave -
 	</button>
+	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+		(click)="showAnswer()" *ngIf="isQuest">answer
+	</button>
 	<!-- This button is necessary due to the chrome video policy-->
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 		*ngIf="!started"
@@ -32,6 +35,7 @@
 			*ngFor="let key of pianoService.keys"
 			[class.right]="(key.isActive && !isQuest)||(key.isActive && key.isRight && isQuest)"
 			[class.wrong]="(key.isActive && !key.isRight && isQuest)"
+			[class.answer]="answerDisplayed && key.answer && isQuest && !key.isActive"
 			[attr.data-note]="key.note"
 			[class.accidental]="key.accidental"
 			[style.height.px]="keySize.height"

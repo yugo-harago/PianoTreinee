@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { first, take } from 'rxjs/operators';
 import { MidiService } from './midi/midi.service';
 import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
 import { Key, PianoService } from './piano.service';
@@ -16,10 +17,11 @@ export class PianoComponent implements OnInit, OnDestroy {
 	public octaveWidth: number = 6.5*this.keySize.width;
 	public pianoService?: IPianoService;
 	public started = false;
+	public answerDisplayed = false;
 
 	constructor(
-		private piano: PianoService,
-		private pianoQuest: PianoQuestHandlerService,
+		public piano: PianoService,
+		public  pianoQuest: PianoQuestHandlerService,
 		public midi: MidiService,
 		private change: ChangeDetectorRef
 	) {
@@ -72,6 +74,15 @@ export class PianoComponent implements OnInit, OnDestroy {
 		this.pianoService.loadOctaves();
 	}
 
+
+	public showAnswer(){
+		this.answerDisplayed = true;
+		this.pianoQuest.onRightAnswer.pipe(take(1)).subscribe(a => {
+			if(!a) return;
+			this.answerDisplayed = false;
+			this.change.detectChanges();
+		});
+	}
 	public onKeyClick(key: Key) {
 		if(!this.pianoService) throw new Error("PianoService is not initialized");
 		this.pianoService.onKeyClick(key);
@@ -100,3 +111,4 @@ export class PianoComponent implements OnInit, OnDestroy {
 		});
 	}
 }
+

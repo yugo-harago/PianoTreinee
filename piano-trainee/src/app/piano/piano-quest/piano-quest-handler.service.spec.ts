@@ -63,7 +63,7 @@ describe('PianoQuestHandlerService', () => {
 	it('should activete the key when pressed', () => {
 		// Arrange
 		service.quest = new Quest([Note.C, Note.E, Note.G], 0);
-		service.setAnswer();
+		service.setRightKeys();
 		let key = service.keys.find(k => k.note == Note.C && k.octave == 4);
 		// Act
 		service.onKeyDown(key);
@@ -76,7 +76,7 @@ describe('PianoQuestHandlerService', () => {
 		// Arrange
 		service.quest = new Quest([Note.C, Note.E, Note.G], 2);
 		// Act
-		service.setAnswer();
+		service.setRightKeys();
 		userPressKey([Note.C, Note.D], 4);
 		// Assert
 		const result1 = piano.keys.find(k => k.note == Note.C && k.octave == 4);
@@ -262,6 +262,24 @@ describe('PianoQuestHandlerService', () => {
 		const anyWrong = service.keys.actives.find(f => !f.isRight);
 		expect(anyWrong).toBeFalsy();
 	});
+
+	it('should make right answer about major chord quest',() => {
+		const quest = new Quest([Note.C, Note.E, Note.G], 0);
+		pianoQuestStub.quest = quest;
+		service.nextQuest();
+		let answer = service.keys.filter(key => key.answer);
+		expect(answer.map(key => key.note)).toEqual([Note.C, Note.E, Note.G]);
+		expect(answer.map(key => key.octave)).toEqual([4, 4, 4]);
+	})
+
+	it('should make right answer about first inversion major chord quest',() => {
+		const quest = new Quest([Note.G, Note.C, Note.E], 1);
+		pianoQuestStub.quest = quest;
+		service.nextQuest();
+		let answer = service.keys.filter(key => key.answer);
+		expect(answer.map(key => key.note)).toEqual([Note.G, Note.C, Note.E]);
+		expect(answer.map(key => key.octave)).toEqual([4, 5, 5]);
+	})
 
 	// it('should chenage right keys if most of the keys are in other octave', () => {
 	// 	const quest = new Quest([Note.C, Note.E, Note.G, Note['A#']], undefined, undefined, true);

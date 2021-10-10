@@ -7,7 +7,9 @@ describe('PianoQuestBundleService', () => {
 	let service: PianoQuestBundleService;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({});
+		TestBed.configureTestingModule({
+			providers: [PianoQuestBundleService]
+		});
 		service = TestBed.inject(PianoQuestBundleService);
 	});
 

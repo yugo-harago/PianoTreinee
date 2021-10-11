@@ -25,7 +25,6 @@ export class SelectTrainingComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.chordTrainings = trainingOptions;
-		this.batchTraining = [[]];
 		this.batchTraining = this.toMatrix(this.chordTrainings, 3);
 	}
 

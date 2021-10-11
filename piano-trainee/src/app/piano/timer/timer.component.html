@@ -1,0 +1,5 @@
+<span *ngIf="getElapsedTime(entry) as elapsed">
+	{{ elapsed.hours > 0 ? elapsed.hours + ' h' : '' }}
+	{{ elapsed.minutes > 0 ? elapsed.minutes + ' m' : '' }}
+	{{ elapsed.seconds > 0 ? elapsed.seconds + ' s' : '' }}
+</span>

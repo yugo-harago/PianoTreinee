@@ -1,6 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { interval, Subject } from 'rxjs';
 import { PianoQuestHandlerService } from '../piano-quest/piano-quest-handler.service';
 import { PianoService } from '../piano.service';
+import { TimerComponent } from '../timer/timer.component';
 
 @Component({
   selector: 'app-training-display',
@@ -9,13 +11,15 @@ import { PianoService } from '../piano.service';
 })
 export class TrainingDisplayComponent implements OnInit, OnDestroy {
 
+	public started: boolean = false;
+	@ViewChild(TimerComponent) timer?:TimerComponent = undefined;
+	
 	constructor(
 		public pianoQuestService: PianoQuestHandlerService,
-		private change: ChangeDetectorRef
-	) { }
+		private piano: PianoService,
+		private change: ChangeDetectorRef) {}
 
 	ngOnInit(): void {
-		this.nextQuest();
 		this.pianoQuestService.checkChange.subscribe((e) => {
 			if(e) this.change.detectChanges();
 		})
@@ -28,5 +32,12 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 	public nextQuest(): void {
 		this.pianoQuestService.nextQuest();
 	}
+
+	public start() {
+		this.piano.onStart.next(true);
+		this.nextQuest();
+		this.started = true;
+	}
+
 
 }

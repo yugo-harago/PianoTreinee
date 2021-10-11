@@ -38,6 +38,10 @@ export class PianoComponent implements OnInit, OnDestroy {
 		});
 		this.setMidiKeyDown();
 		this.setMidiKeyUp();
+		this.piano.onStart.pipe(first()).subscribe(start => {
+			if(!start) return;
+			this.start();
+		});
 	}
 
 	start(): void {

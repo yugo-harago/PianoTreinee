@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chord } from "@tonaljs/tonal";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { IPianoService } from './PianoService.interface';
 import * as Tone from 'tone';
 import { MidiService } from './midi/midi.service';
@@ -51,7 +51,7 @@ export class PianoService implements IPianoService{
 	public keys: Keys = new Keys();
 	public octave: Octave = new Octave();
 	public detectedChord?: string;
-
+	public onStart: Subject<boolean> = new Subject<boolean>();
 	public checkChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	public onKeyChenge: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 

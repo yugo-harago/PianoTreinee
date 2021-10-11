@@ -7,12 +7,14 @@ import { environment } from '../../environments/environment';
 import { PianoQuestBundleMock } from './piano-quest/piano-quest-bundle.mock';
 import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
 import { MidiService } from './midi/midi.service';
+import { TimerComponent } from './timer/timer.component';
 
 
 @NgModule({
   declarations: [
     TrainingDisplayComponent,
 	PianoComponent,
+	TimerComponent,
   ],
   imports: [
     CommonModule

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TOKENS } from 'src/app/injections-tokens';
 import { PianoQuestBundleService } from 'src/app/piano/piano-quest/piano-quest-bundle.service';
+import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
 import { ChordTraining, trainingOptions } from './training-options.data';
 
 @Component({
@@ -18,7 +19,8 @@ export class SelectTrainingComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private route:ActivatedRoute,
-		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundler: PianoQuestBundleService
+		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundler: PianoQuestBundleService,
+		public pianoQuest: PianoQuestHandlerService
 	){
 		this.reset();
 	}
@@ -62,6 +64,10 @@ export class SelectTrainingComponent implements OnInit {
 		if(!this.multipleQuest) throw new Error("Is not in Multiple-Select mode");
 		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion);
 		chordTraining.selected = true;
+	}
+
+	public setMaxQuest(event: Event){
+		this.pianoQuest.questCount.setMax(parseInt((event.target as HTMLTextAreaElement).value))
 	}
 
 }

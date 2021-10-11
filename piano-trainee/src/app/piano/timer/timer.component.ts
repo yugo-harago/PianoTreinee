@@ -1,15 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { interval, Subject } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { interval, Observable, Subject, Subscription } from 'rxjs';
 
 
 export interface TimeSpan {
 	hours: number;
 	minutes: number;
 	seconds: number;
-  }
-  export interface Entry {
-	created: Date;
-	id: string;
   }
 
 @Component({
@@ -18,25 +14,38 @@ export interface TimeSpan {
   styleUrls: ['./timer.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TimerComponent implements OnInit {
+export class TimerComponent implements OnInit, OnDestroy {
 
 	private destroyed$ = new Subject();
 
-	public entry: Entry = { created: new Date, id: '1'};
+	public startTime?: Date;
+
+	private interval?: Subscription;
 	constructor(
 		private changeDetector: ChangeDetectorRef) { }
 
 	ngOnInit(): void {
-		interval(1000).subscribe(() => {
-		  this.changeDetector.detectChanges();
-		});
-	}	
+		this.start();
+	}
+
+	public start(){
+		this.startTime = new Date();
+		this.interval = interval(1000)
+			.subscribe(() => {
+				this.changeDetector.detectChanges();
+			});
+	}
+
+	public stop(){
+		if(!this.interval) throw new Error("Not subscribed");
+		this.interval.unsubscribe();
+	}
 	ngOnDestroy(): void {
 		this.destroyed$.next();
 		this.destroyed$.complete();
 	}
-	getElapsedTime(entry: Entry): TimeSpan {        
-		let totalSeconds = Math.floor((new Date().getTime() - entry.created.getTime()) / 1000);
+	getElapsedTime(entry?: Date): TimeSpan {        
+		let totalSeconds = Math.floor((new Date().getTime() - entry!.getTime()) / 1000);
 	  
 		let hours = 0;
 		let minutes = 0;
@@ -59,6 +68,6 @@ export class TimerComponent implements OnInit {
 		  minutes: minutes,
 		  seconds: seconds
 		};
-	  }
+	}
 
 }

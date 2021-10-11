@@ -1,11 +1,33 @@
 
 
 
-<div class="displayer">
-	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
-		*ngIf="!started"
-		(click)="start()">Start
-	</button>
-	<h3 class="quest-text">{{ pianoQuestService.quest?.questChord }}</h3>
-	<app-timer *ngIf="started"></app-timer>
+<div class="container d-grid" style="width: 600px;height: 200px;background-color: #715745;">
+    <div class="row justify-content-start">
+        <div class="col align-self-start">
+			<app-timer *ngIf="started"></app-timer>
+		</div>
+    </div>
+    <div class="row" id="quest-screen">
+        <div class="col text-center align-self-center">
+			<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+				*ngIf="!started"
+				(click)="start()">Start
+			</button>
+			<h3 class="quest-text"
+				*ngIf="started && !ended">{{ pianoQuestService.quest?.questChord }}</h3>
+			<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+				*ngIf="ended"
+				(click)="again()">Again
+			</button>
+			<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+				*ngIf="ended"
+				(click)="back()">Back
+			</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-end align-self-end">
+			{{ pianoQuestService.questCount.current }} / {{ pianoQuestService.questCount.max }}
+		</div>
+    </div>
 </div>

@@ -15,6 +15,12 @@
 						[checked]="multipleQuest"
 						(change)="onMultipleSelect()"/><label class="form-check-label" for="formCheck-1">Multi-select</label></div>
 				</div>
+				<div class="col">
+					<button class="btn btn-primary btn-sm" type="button">+</button>
+					<input type="number" [value]="pianoQuest.questCount.max" style="width: 74px;" 
+						(input)="setMaxQuest($event)"/>
+					<button class="btn btn-primary btn-sm" type="button">-</button>
+					<span> Questions</span></div>
 				<div class="col text-end"
 					*ngIf="multipleQuest">
 					<button class="btn btn-primary" type="button"

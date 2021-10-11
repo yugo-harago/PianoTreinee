@@ -86,6 +86,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 			this.answerDisplayed = false;
 			this.change.detectChanges();
 		});
+		this.pianoQuest.questCount.nextAnswer();
 	}
 	public onKeyClick(key: Key) {
 		if(!this.pianoService) throw new Error("PianoService is not initialized");

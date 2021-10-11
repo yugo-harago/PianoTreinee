@@ -7,6 +7,7 @@ import { PianoModule } from '../piano/piano.module';
 import { LoggedHeaderComponent } from './logged-header/logged-header.component';
 import { SelectTrainingComponent } from './trainings/select-training/select-training.component';
 import { UserComponent } from './user.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -19,6 +20,7 @@ import { UserComponent } from './user.component';
 	],
 	imports: [
 		CommonModule,
+		FormsModule,
 	  	PianoModule,
 	  	UserRoutingModule
 	],

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { PianoQuestHandlerService } from '../piano-quest/piano-quest-handler.service';
 import { PianoService } from '../piano.service';
 import { TimerComponent } from '../timer/timer.component';
@@ -16,6 +17,11 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 	public questCount: number = 0;
 	@ViewChild(TimerComponent) timer?:TimerComponent = undefined;
 	
+	private subscriptions: {
+		checkChange?: Subscription,
+		questCount?: Subscription
+	} = {}
+
 	constructor(
 		public pianoQuestService: PianoQuestHandlerService,
 		private piano: PianoService,
@@ -24,10 +30,10 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 		private router: Router) {}
 
 	ngOnInit(): void {
-		this.pianoQuestService.checkChange.subscribe((e) => {
+		this.subscriptions.checkChange = this.pianoQuestService.checkChange.subscribe((e) => {
 			if(e) this.change.detectChanges();
 		});
-		this.pianoQuestService.questCount.onMaxReach.subscribe((e) => {
+		this.subscriptions.questCount = this.pianoQuestService.questCount.onMaxReach.subscribe((e) => {
 			if(!e) return;
 			this.ended = true;
 			this.timer!.stop();
@@ -35,8 +41,8 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.pianoQuestService.checkChange.unsubscribe();
-		this.pianoQuestService.questCount.onMaxReach.unsubscribe();
+		this.subscriptions.checkChange!.unsubscribe();
+		this.subscriptions.questCount!.unsubscribe();
 	}
 
 	public nextQuest(): void {

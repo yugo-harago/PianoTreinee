@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { first, take } from 'rxjs/operators';
 import { MidiService } from './midi/midi.service';
 import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
@@ -18,6 +19,11 @@ export class PianoComponent implements OnInit, OnDestroy {
 	public pianoService?: IPianoService;
 	public started = false;
 	public answerDisplayed = false;
+	public subscriptions: {
+		checkChange?: Subscription,
+		midiPress?: Subscription,
+		midiRelease?: Subscription
+	} = {};
 
 	constructor(
 		public piano: PianoService,
@@ -33,7 +39,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 		// temporarily
 		if(this.isQuest) { this.pianoService = this.pianoQuest; }
 		else { this.pianoService = this.piano; }
-		this.pianoService.checkChange.subscribe((e) => {
+		this.subscriptions.checkChange = this.pianoService.checkChange.subscribe((e) => {
 			if(e) this.change.detectChanges();
 		});
 		this.setMidiKeyDown();
@@ -50,9 +56,10 @@ export class PianoComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if(this.pianoService) this.pianoService.checkChange.unsubscribe();
-		this.midi.onMidiKeyPress.unsubscribe();
-		this.midi.onMidiKeyRelease.unsubscribe();
+		this.piano.keys.reset();
+		if(this.pianoService) this.subscriptions.checkChange!.unsubscribe();
+		this.subscriptions.midiPress!.unsubscribe();
+		this.subscriptions.midiRelease!.unsubscribe();
 	}
 
 	public zoomIn(): void {
@@ -100,7 +107,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 	}
 
 	private setMidiKeyDown(){
-		this.midi.onMidiKeyPress.subscribe(e => {
+		this.subscriptions.midiPress = this.midi.onMidiKeyPress.subscribe(e => {
 			if(!e) return;
 			if(!this.pianoService) throw new Error("PianoService is not initialized");
 			let key = this.pianoService.keys.find(k => k.note == e.note && k.octave == e.octave);
@@ -108,7 +115,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 		});
 	}
 	private setMidiKeyUp(){
-		this.midi.onMidiKeyRelease.subscribe(e => {
+		this.subscriptions.midiRelease = this.midi.onMidiKeyRelease.subscribe(e => {
 			if(!e) return;
 			if(!this.pianoService) throw new Error("PianoService is not initialized");
 			let key = this.pianoService.keys.find(k => k.note == e.note && k.octave == e.octave);

@@ -31,6 +31,13 @@ export class Keys extends Array<Key> {
 	public get rights(): Key[] {
 		return this.filter(f => f.isRight);
 	}
+
+	public reset(): void {
+		this.forEach(key => {
+			key.isActive = false;
+			key.isRight = false;
+		});
+	}
 }
 
 export class Octave {

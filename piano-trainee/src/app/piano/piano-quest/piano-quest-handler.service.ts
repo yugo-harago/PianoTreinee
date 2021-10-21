@@ -168,10 +168,7 @@ export class PianoQuestHandlerService implements IPianoService{
 	}
 
 	public answeredRight(){
-		this.keys.forEach(key => {
-			key.isActive = false;
-			key.isRight = false;
-		});
+		this.keys.reset();
 		this.onRightAnswer.next(true);
 
 		if(this.questCount.maxReached) return;

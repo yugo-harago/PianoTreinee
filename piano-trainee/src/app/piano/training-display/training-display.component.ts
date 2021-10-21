@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { interval, Subject } from 'rxjs';
 import { PianoQuestHandlerService } from '../piano-quest/piano-quest-handler.service';
 import { PianoService } from '../piano.service';
 import { TimerComponent } from '../timer/timer.component';

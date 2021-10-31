@@ -1,27 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TrainingDisplayComponent } from './training-display/training-display.component';
 import { PianoComponent } from './piano.component';
 import { TOKENS } from '../injections-tokens';
 import { environment } from '../../environments/environment';
 import { PianoQuestBundleMock } from './piano-quest/piano-quest-bundle.mock';
 import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
 import { MidiService } from './midi/midi.service';
-import { TimerComponent } from './timer/timer.component';
+import { QuestsQuantityInputComponent } from '../user/trainings/quests-quantity-input/quests-quantity-input.component';
 
 
 @NgModule({
   declarations: [
-    TrainingDisplayComponent,
 	PianoComponent,
-	TimerComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [
-	TrainingDisplayComponent,
-	PianoComponent
+	PianoComponent,
   ],
   providers: [
 	  { provide: MidiService },

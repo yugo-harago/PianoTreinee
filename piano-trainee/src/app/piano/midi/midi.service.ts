@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import WebMidi, { Input, Output, WebMidiEventConnected } from "webmidi";
 import { Key } from '../piano.service';
 import * as Tone from 'tone';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Note } from '../note.enum';
 
 // Nota: https://developer.chrome.com/blog/autoplay/#webaudio
@@ -14,10 +14,9 @@ export class MidiService {
 	public outputs: Output[] = [];
 	private selectedInput?: Input;
 	public selectedOutput?: Output;
-	public onMidiKeyPress: BehaviorSubject<{note: Note, octave: number} | undefined> = 
-		new BehaviorSubject<{note: Note, octave: number} | undefined>(undefined);
-	public onMidiKeyRelease: BehaviorSubject<{note: Note, octave: number} | undefined> = 
-		new BehaviorSubject<{note: Note, octave: number} | undefined>(undefined);
+	public onMidiKeyPress: Subject<{note: Note, octave: number}> = new Subject<{note: Note, octave: number}>();
+	public onMidiKeyRelease: Subject<{note: Note, octave: number}> = 
+		new Subject<{note: Note, octave: number}>();
 	public onConnected: BehaviorSubject<WebMidiEventConnected | undefined> = new BehaviorSubject<WebMidiEventConnected | undefined>(undefined);
 
 	public startMidi() {

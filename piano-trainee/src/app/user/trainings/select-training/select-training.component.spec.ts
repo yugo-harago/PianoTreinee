@@ -2,7 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TOKENS } from 'src/app/injections-tokens';
+import { MidiService } from 'src/app/piano/midi/midi.service';
 import { Quest } from 'src/app/piano/piano-quest/quest.model';
+import { Key } from 'src/app/piano/piano.service';
 
 import { SelectTrainingComponent } from './select-training.component';
 import { trainingOptions } from './training-options.data';
@@ -22,6 +24,14 @@ let pianoQuestStub:{
 	quest: undefined
 }
 
+let midiStub = { 
+	play: (key: Key) => {
+		console.log(key.note + key.octave + " Played.")
+	},
+	startPlay: (key: Key) => undefined,
+	stopPlay: (key: Key) => undefined,
+}
+
 describe('SelectTrainingComponent', () => {
 	let component: SelectTrainingComponent;
 	let fixture: ComponentFixture<SelectTrainingComponent>;
@@ -30,7 +40,10 @@ describe('SelectTrainingComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ SelectTrainingComponent ],
 			imports: [ RouterTestingModule ],
-			providers: [ { provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub }]
+			providers: [
+				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
+				{ provide: MidiService, useValue: midiStub },
+			]
 		})
 		.compileComponents();
 	});

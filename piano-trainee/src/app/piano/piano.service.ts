@@ -52,9 +52,6 @@ export class Octave {
   providedIn: 'root'
 })
 export class PianoService implements IPianoService{
-
-	public notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-
 	public keys: Keys = new Keys();
 	public octave: Octave = new Octave();
 	public detectedChord?: string;

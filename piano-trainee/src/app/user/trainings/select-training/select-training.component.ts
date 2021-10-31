@@ -51,7 +51,7 @@ export class SelectTrainingComponent implements OnInit {
 
 	public onCardClick(chordTraining: ChordTraining) {
 		if(this.multipleQuest) throw new Error("Is in multiple select mode");
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion);
+		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, false);
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
@@ -62,12 +62,8 @@ export class SelectTrainingComponent implements OnInit {
 
 	public onCardSelect(chordTraining: ChordTraining) {
 		if(!this.multipleQuest) throw new Error("Is not in Multiple-Select mode");
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion);
+		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, false);
 		chordTraining.selected = true;
-	}
-
-	public setMaxQuest(event: Event){
-		this.pianoQuest.questCount.setMax(parseInt((event.target as HTMLTextAreaElement).value))
 	}
 
 }

@@ -15,12 +15,7 @@
 						[checked]="multipleQuest"
 						(change)="onMultipleSelect()"/><label class="form-check-label" for="formCheck-1">Multi-select</label></div>
 				</div>
-				<div class="col">
-					<button class="btn btn-primary btn-sm" type="button">+</button>
-					<input type="number" [value]="pianoQuest.questCount.max" style="width: 74px;" 
-						(input)="setMaxQuest($event)"/>
-					<button class="btn btn-primary btn-sm" type="button">-</button>
-					<span> Questions</span></div>
+				<app-quests-quantity-input class="col"></app-quests-quantity-input>
 				<div class="col text-end"
 					*ngIf="multipleQuest">
 					<button class="btn btn-primary" type="button"
@@ -39,9 +34,11 @@
 						<h4 class="card-title">{{ chordTraining.title }}</h4>
 						<p>Difficulty: {{ chordTraining.difficulty }}</p>
 						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button"
-							(click)="onCardClick(chordTraining)">Start</button>
+							(click)="onCardClick(chordTraining)"
+							[name]="'start-' + chordTraining.name + '-btn'">Start</button>
 						<button *ngIf="multipleQuest" class="btn btn-primary" type="button"
-							(click)="onCardSelect(chordTraining)">Select</button>
+							(click)="onCardSelect(chordTraining)"
+							[name]="'select-' + chordTraining.name + '-btn'">Select</button>
 					</div>
 				</div>
 			</div>

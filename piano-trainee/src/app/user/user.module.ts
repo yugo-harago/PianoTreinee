@@ -8,6 +8,9 @@ import { LoggedHeaderComponent } from './logged-header/logged-header.component';
 import { SelectTrainingComponent } from './trainings/select-training/select-training.component';
 import { UserComponent } from './user.component';
 import { FormsModule } from '@angular/forms';
+import { QuestsQuantityInputComponent } from './trainings/quests-quantity-input/quests-quantity-input.component';
+import { TrainingDisplayComponent } from './training-display/training-display.component';
+import { TimerComponent } from './timer/timer.component';
 
 
 
@@ -16,16 +19,21 @@ import { FormsModule } from '@angular/forms';
 		TrainingsComponent,
 		LoggedHeaderComponent,
 		UserComponent,
-		SelectTrainingComponent
+		SelectTrainingComponent,
+		QuestsQuantityInputComponent,
+		TrainingDisplayComponent,
+		TimerComponent
 	],
 	imports: [
 		CommonModule,
 		FormsModule,
 	  	PianoModule,
-	  	UserRoutingModule
+	  	UserRoutingModule,
 	],
 	exports: [
-		LoggedHeaderComponent
+		LoggedHeaderComponent,
+		QuestsQuantityInputComponent,
+		TrainingDisplayComponent
 	]
 })
 export class UserModule { }

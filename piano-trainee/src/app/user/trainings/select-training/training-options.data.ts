@@ -8,11 +8,14 @@ export class ChordTraining {
 	public quest: QuestCardType;
 	public inversion: boolean;
 	public selected: boolean = false;
+	public accidental: boolean = false;
+	public name: string;
 	constructor(title: string, difficulty: number, quest: QuestCardType, inversion: boolean) {
 		this.title = title;
 		this.difficulty = difficulty;
 		this.quest = quest;
 		this.inversion = inversion;
+		this.name = title.replace(' ', '-').toLowerCase();
 	}
 };
 

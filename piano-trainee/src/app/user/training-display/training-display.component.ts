@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PianoQuestHandlerService } from '../piano-quest/piano-quest-handler.service';
-import { PianoService } from '../piano.service';
+import { PianoQuestHandlerService } from '../../piano/piano-quest/piano-quest-handler.service';
+import { PianoService } from '../../piano/piano.service';
 import { TimerComponent } from '../timer/timer.component';
 
 @Component({
@@ -27,7 +27,8 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 		private piano: PianoService,
 		private change: ChangeDetectorRef,
 		private route: ActivatedRoute,
-		private router: Router) {}
+		private router: Router,
+		private ngZone: NgZone) {}
 
 	ngOnInit(): void {
 		this.subscriptions.checkChange = this.pianoQuestService.checkChange.subscribe((e) => {
@@ -63,8 +64,9 @@ export class TrainingDisplayComponent implements OnInit, OnDestroy {
 		this.nextQuest();
 	}
 
-	public back(){
-		this.router.navigate(['../'], { relativeTo: this.route })
+	public back() {
+		// Workaround when is connected to midi and want to go back
+		this.ngZone.run(() => this.router.navigate(['../'], { relativeTo: this.route })).then();
 	}
 
 

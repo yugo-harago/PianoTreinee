@@ -151,6 +151,7 @@ export class PianoQuestHandlerService implements IPianoService{
 
 	public checkAnswer(){
 		if(!this.quest?.answerChord) throw new Error("the answer does not exist!");
+		if(!this.keys.rights.length) throw new Error("Quest answer is not settled!");
 		const activeKeys = this.keys.actives;
 		// Check if is first user key hit
 		if(this.quest.checkOrder && activeKeys.length == 1) this.firstKey = {note: activeKeys[0].note, octave: activeKeys[0].octave}
@@ -171,7 +172,6 @@ export class PianoQuestHandlerService implements IPianoService{
 		this.keys.reset();
 		this.onRightAnswer.next(true);
 
-		if(this.questCount.maxReached) return;
 		this.questCount.next();
 		this.nextQuest();
 	}
@@ -183,6 +183,7 @@ export class PianoQuestHandlerService implements IPianoService{
 
 	// Midi Key Input
 	public onKeyDown(key: Key | undefined) {
+		if(!this.quest?.answerChord) throw new Error("the answer does not exist!");
 		if(!this.keys.rights.length) throw new Error("Quest answer is not settled!");
 		this.piano.onKeyDown(key);
 		this.checkAnswer();

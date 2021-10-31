@@ -27,6 +27,7 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 	private currentQuests: {
 		quest: (note: Note, inversion?: number) => Quest,
 		inversion: boolean,
+		accidental: boolean,
 		questType: QuestCardType
 	}[] = [];
 
@@ -40,9 +41,9 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 
 		var storedQuest = localStorage.getItem(this.storageKey);
 		if(storedQuest) {
-			let selecteds = JSON.parse(storedQuest) as {inversion: boolean, questType: QuestCardType}[];
+			let selecteds = JSON.parse(storedQuest) as {inversion: boolean, questType: QuestCardType, accidental: boolean}[];
         	localStorage.removeItem(this.storageKey);
-			selecteds.forEach(f => this.addQuest(f.questType, f.inversion));
+			selecteds.forEach(f => this.addQuest(f.questType, f.inversion, f.accidental));
 		}
 	}
 
@@ -50,22 +51,26 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		this.currentQuests = [];
 	}
 
-	public addQuest(questType: QuestCardType, inversion: boolean) {
+	public addQuest(questType: QuestCardType, inversion: boolean, accidental: boolean) {
 		switch (questType) {
-			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, inversion, questType}); break;
-			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, inversion, questType}); break;
-			case QuestCardType.major7ChordQuest: this.currentQuests.push({quest: this.major7ChordQuest, inversion, questType}); break;
-			case QuestCardType.minor7ChordQuest: this.currentQuests.push({quest: this.minor7ChordQuest, inversion, questType}); break;
-			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, inversion, questType}); break;
-			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, inversion, questType}); break;
+			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, inversion, accidental, questType}); break;
+			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, inversion, accidental, questType}); break;
+			case QuestCardType.major7ChordQuest: this.currentQuests.push({quest: this.major7ChordQuest, inversion, accidental, questType}); break;
+			case QuestCardType.minor7ChordQuest: this.currentQuests.push({quest: this.minor7ChordQuest, inversion, accidental, questType}); break;
+			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, inversion, accidental, questType}); break;
+			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, inversion, accidental, questType}); break;
 		}
         localStorage.setItem(this.storageKey, JSON.stringify(this.currentQuests));
 	}
 
 	public nextQuest(): Quest {
 		if(!this.currentQuests.length) throw new Error("Quests not defined");
-		const note = this.getRandomInt(2) == 1 ? this.getRandomWhiteNote() : this.getRandomBlackNote();
 		const question = this.currentQuests[this.getRandomInt(this.currentQuests.length)];
+		let note;
+		if(question.accidental)
+			note = this.getRandomInt(2) == 1 ? this.getRandomWhiteNote() : this.getRandomBlackNote();
+		else
+			note = this.getRandomWhiteNote();
 		const inversion = question.inversion? this.getRandomInt(3) : 0;
 		this.currentQuestInfo = { questType: question.questType, inversion, note };
 		return question.quest.bind(this)(note, inversion);
@@ -128,12 +133,12 @@ export class PianoQuestBundleService implements IPianoQuestBundleService{
 		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
 		return new Quest(answerChord, inversion, "dom7");
 	}
-	private getRandomBlackNote(): Note {
+	private getRandomWhiteNote(): Note {
 		const notes = [Note.C,Note.D,Note.E,Note.F,Note.G,Note.A,Note.B];
 		const noteIndex = this.getRandomInt(notes.length);
 		return notes[noteIndex];
 	}
-	private getRandomWhiteNote(): Note {
+	private getRandomBlackNote(): Note {
 		const notes = [Note["C#"],Note["D#"],Note["F#"],Note["G#"],Note["A#"]];
 		const noteIndex = this.getRandomInt(notes.length);
 		return notes[noteIndex];

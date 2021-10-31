@@ -1,0 +1,7 @@
+
+<button class="btn btn-primary btn-sm" type="button" (click)="addMaxQuest(10)" id="add-quests-button">+</button>
+<input type="number" [value]="pianoQuest.questCount.max" style="width: 74px;"
+	(input)="setMaxQuest($event)" min="1" max="100"
+	name="quest-quantities"/>
+<button class="btn btn-primary btn-sm" type="button" (click)="addMaxQuest(-10)" id="subtract-quests-button">-</button>
+<span> Questions</span>

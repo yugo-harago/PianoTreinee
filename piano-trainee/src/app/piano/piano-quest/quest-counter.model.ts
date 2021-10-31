@@ -5,7 +5,7 @@ export class QuestCounter {
 		return this._current;
 	}
 	private _current = 0;
-	private _max: number = 3;
+	private _max: number = 10;
 	public get max(): number {
 		return this._max;
 	}
@@ -20,6 +20,10 @@ export class QuestCounter {
 	private _onMaxReach: Subject<boolean> = new Subject<boolean>();
 	public get onMaxReach(): Subject<boolean>{
 		return this._onMaxReach;
+	}
+	constructor() {
+		const storedMax = localStorage.getItem("questMaxCount"); 
+		if(storedMax) try{ this._max = parseInt(storedMax); }catch{}
 	}
 	public next(){
 		this._current += 1;
@@ -38,6 +42,7 @@ export class QuestCounter {
 		this._requestedAnswers += 1;
 	}
 	public setMax(max: number){
+		localStorage.setItem("questMaxCount", max.toString());
 		this._max = max;
 	}
 }

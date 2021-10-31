@@ -122,5 +122,8 @@ export class PianoComponent implements OnInit, OnDestroy {
 			if(key) this.pianoService.onKeyUp(key); else console.error("Key not found.")
 		});
 	}
+	public restart(){
+		this.pianoQuest.restart();
+	}
 }
 

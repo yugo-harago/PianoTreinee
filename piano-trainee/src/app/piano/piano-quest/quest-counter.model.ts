@@ -37,6 +37,7 @@ export class QuestCounter {
 	public reset(){
 		this._requestedAnswers = 0;
 		this._maxReached = false;
+		this._current = 0;
 	}
 	public nextAnswer() {
 		this._requestedAnswers += 1;

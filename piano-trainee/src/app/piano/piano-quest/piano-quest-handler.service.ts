@@ -41,6 +41,7 @@ export class PianoQuestHandlerService implements IPianoService{
 		this.piano.keys = value;
 	}
 
+
 	constructor(
 		private midi: MidiService,
 		private piano: PianoService,
@@ -65,6 +66,11 @@ export class PianoQuestHandlerService implements IPianoService{
 		this.setRightKeys(quest.answerChord);
 		this.setDefaultAnswer(quest?.answerChord, this.piano.octave.middle);
 		this.checkChange.next(true);
+	}
+	
+	public restart(){
+		this.nextQuest();
+		this.questCount.reset();
 	}
 
 	public loadOctaves(){

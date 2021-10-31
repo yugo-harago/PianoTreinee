@@ -17,6 +17,10 @@
 		(click)="showAnswer()" *ngIf="isQuest"
 		id="answer">answer
 	</button>
+	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
+		(click)="restart()" *ngIf="isQuest"
+		id="restart">restart
+	</button>
 	<!-- This button is necessary due to the chrome video policy-->
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 		*ngIf="!started && !isQuest"

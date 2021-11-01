@@ -3,7 +3,7 @@ import { Chord as ChordJs, ChordType, Note as NoteJs } from '@tonaljs/tonal';
 import { MusicTheoryService } from '../music-theory.service';
 import { Note } from '../note.enum';
 import { Key } from '../piano.service';
-import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
+import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
 import { Quest } from './quest.model';
 
 export enum QuestCardType {
@@ -16,7 +16,7 @@ export enum QuestCardType {
 }
 
 @Injectable()
-export class PianoQuestBundleService implements IPianoQuestBundleService{
+export class PianoChordQuestBundleService implements IPianoChordQuestBundleService{
 
 	public currentQuestInfo?: {
 		questType: QuestCardType, 

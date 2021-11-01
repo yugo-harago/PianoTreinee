@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Key, PianoService } from '../piano.service';
-import { PianoQuestBundleService } from './piano-quest-bundle.service';
+import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
 import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
@@ -45,7 +45,7 @@ describe('PianoQuestHandlerService', () => {
 		TestBed.configureTestingModule({
 			providers: [
 				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
-				{ provide: PianoQuestBundleService, useValue: pianoQuestStub },
+				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: MidiService, useValue: midiStub}
 			]
 		});
@@ -172,41 +172,6 @@ describe('PianoQuestHandlerService', () => {
 		let key = service.keys.find(f => f.note == Note.C && f.octave == 3);
 		expect(key?.isActive).toBeTruthy();
 		expect(key?.isRight).toBeFalsy();
-	});
-
-	it('should be true if is in same octave', () => {
-		const quest = new Quest([Note.C, Note.E, Note.G], 0);
-		pianoQuestStub.quest = quest;
-		const result = service.checkSameOctave([Note.C, Note.E, Note.G]);
-		expect(result).toBeTruthy();
-	});
-
-	it('should be false when check same octave with one note octave down', () => {
-		// G3 C4 E4
-		const quest = new Quest([Note.G, Note.C, Note.E], 1);
-		pianoQuestStub.quest = quest;
-		const result = service.checkSameOctave([Note.G, Note.C, Note.E]);
-		expect(result).toBeFalsy();
-	});
-
-	it('should be false when check same octave with one note octave up', () => {
-		// G3 C4 E4
-		const quest = new Quest([Note.E, Note.G, Note.C], 2);
-		pianoQuestStub.quest = quest;
-		const result = service.checkSameOctave(quest.answerChord);
-		expect(result).toBeFalsy();
-	});
-
-	it('should be true when check same octave with second inversion quest', () => {
-		// G3 C4 E4
-		const quest = <Quest>{
-			answerChord: [Note.C, Note['D#'], Note['G#']],
-			questChord: new Chord(Note['G#'], Note.C),
-			inversion: 2
-		}
-		pianoQuestStub.quest = quest;
-		const result = service.checkSameOctave(quest.answerChord);
-		expect(result).toBeTruthy();
 	});
 
 	it('should be right about G#/C', () => {

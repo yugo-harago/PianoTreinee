@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TOKENS } from 'src/app/injections-tokens';
-import { PianoQuestBundleService } from 'src/app/piano/piano-quest/piano-quest-bundle.service';
+import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
 import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
 import { ChordTraining, trainingOptions } from './training-options.data';
 
@@ -19,7 +19,7 @@ export class SelectTrainingComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private route:ActivatedRoute,
-		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundler: PianoQuestBundleService,
+		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundler: PianoChordQuestBundleService,
 		public pianoQuest: PianoQuestHandlerService
 	){
 		this.reset();

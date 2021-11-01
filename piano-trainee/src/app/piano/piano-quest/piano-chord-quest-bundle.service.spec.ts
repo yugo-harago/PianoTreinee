@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { Note } from '../note.enum';
 
-import { PianoQuestBundleService } from './piano-quest-bundle.service';
+import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
 
 describe('PianoQuestBundleService', () => {
-	let service: PianoQuestBundleService;
+	let service: PianoChordQuestBundleService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [PianoQuestBundleService]
+			providers: [PianoChordQuestBundleService]
 		});
-		service = TestBed.inject(PianoQuestBundleService);
+		service = TestBed.inject(PianoChordQuestBundleService);
 	});
 
 	it('should be created', () => {

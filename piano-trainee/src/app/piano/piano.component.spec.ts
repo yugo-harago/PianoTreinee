@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { UserModule } from '../user/user.module';
+import { Note } from './note.enum';
 import { Quest } from './piano-quest/quest.model';
 
 import { PianoComponent } from './piano.component';
@@ -47,6 +48,7 @@ describe('PianoComponent', () => {
 	});
 
 	it('should restart', () => {
+		pianoQuestStub.quest = new Quest([Note.C]);
 		component.start();
 		component.restart();
 		expect(component.pianoQuest.questCount.current).toBe(0);

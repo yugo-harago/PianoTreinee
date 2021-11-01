@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Note } from '../note.enum';
-import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
+import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
 import { Quest } from './quest.model';
 
 @Injectable()
-export class PianoQuestBundleMock implements IPianoQuestBundleService {
+export class PianoChordQuestBundleMock implements IPianoChordQuestBundleService {
 
 	private count: number = 0;
 

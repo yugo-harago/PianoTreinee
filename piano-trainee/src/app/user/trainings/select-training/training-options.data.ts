@@ -1,5 +1,5 @@
 import { Note } from "src/app/piano/note.enum";
-import { PianoQuestBundleService, QuestCardType } from "src/app/piano/piano-quest/piano-quest-bundle.service";
+import { PianoChordQuestBundleService, QuestCardType } from "src/app/piano/piano-quest/piano-chord-quest-bundle.service";
 import { Quest } from "src/app/piano/piano-quest/quest.model";
 
 export class ChordTraining {

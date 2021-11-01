@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MusicTheoryService } from './music-theory.service';
+import { Chord, MusicTheoryService } from './music-theory.service';
 import { Note } from './note.enum';
+import { Quest } from './piano-quest/quest.model';
 import { Key } from './piano.service';
 
 describe('MusicTheoryService', () => {
@@ -47,6 +48,35 @@ describe('MusicTheoryService', () => {
 		let chord = service.convertStringsToNoteEnums(chordStr);
 
 		expect(chord).toEqual([Note.C, Note['D#'], Note.G]);
+	});
+
+	it('should be true when check same octave with second inversion', () => {
+		// G3 C4 E4
+		const quest = <Quest>{
+			answerChord: [Note.C, Note['D#'], Note['G#']],
+			questChord: new Chord(Note['G#'], Note.C),
+			inversion: 2
+		}
+		const result = service.checkSameOctave(quest.answerChord);
+		expect(result).toBeTruthy();
+	});
+
+	it('should be true if is in same octave', () => {
+		const result = service.checkSameOctave([Note.C, Note.E, Note.G]);
+		expect(result).toBeTruthy();
+	});
+
+	it('should be false when check same octave with one note octave down', () => {
+		// G3 C4 E4
+		const result = service.checkSameOctave([Note.G, Note.C, Note.E]);
+		expect(result).toBeFalsy();
+	});
+
+	it('should be false when check same octave with one note octave up', () => {
+		// G3 C4 E4
+		const quest = new Quest([Note.E, Note.G, Note.C], 2);
+		const result = service.checkSameOctave(quest.answerChord);
+		expect(result).toBeFalsy();
 	});
 
 	it('should split in two octave if is first inversion quest', () => {

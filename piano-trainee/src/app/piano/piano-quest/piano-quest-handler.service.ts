@@ -6,7 +6,7 @@ import { MusicTheoryService } from '../music-theory.service';
 import { Note } from '../note.enum';
 import { Key, Keys, Octave, PianoService } from '../piano.service';
 import { IPianoService } from '../PianoService.interface';
-import { IPianoQuestBundleService } from './piano-quest-bundle.interface';
+import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
 import { Quest } from './quest.model';
 import { QuestCounter } from './quest-counter.model';
 
@@ -45,7 +45,7 @@ export class PianoQuestHandlerService implements IPianoService{
 	constructor(
 		private midi: MidiService,
 		private piano: PianoService,
-		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundle: IPianoQuestBundleService,
+		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundle: IPianoChordQuestBundleService,
 		private theory: MusicTheoryService
 	) {
 	}
@@ -103,25 +103,11 @@ export class PianoQuestHandlerService implements IPianoService{
 		})
 	}
 
-	public checkSameOctave(notes: Note[]): boolean {
-		let previous = notes[0];
-		let isSame = true;
-		for(let i = 1; i < notes.length; i++) { // start with 1 index
-			let note = notes[i];
-			if(previous > note){ // If is bigger than previous
-				isSame = false;
-				break;
-			}
-			previous = note;
-		}
-		return isSame;
-	}
-
 	// Check answer key in order
 	private setAnswersInOrder(activeKeys: Key[], firstKey: {note:Note, octave: number}): void {
 		if(!this.quest) throw new Error("the quest does not exist!");
 		if(!this.quest.checkOrder) return;
-		if(this.checkSameOctave(this.quest.answerChord)) return;
+		if(this.theory.checkSameOctave(this.quest.answerChord)) return;
 		const octaves = this.theory.splitChordInTwoOctaves(this.quest.answerChord);
 		let rightChord;
 		if(octaves.octaveUp.includes(firstKey.note)){

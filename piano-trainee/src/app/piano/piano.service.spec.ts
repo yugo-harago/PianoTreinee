@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { MidiService } from './midi/midi.service';
 import { Note } from './note.enum';
-import { PianoQuestBundleService } from './piano-quest/piano-quest-bundle.service';
+import { PianoChordQuestBundleService } from './piano-quest/piano-chord-quest-bundle.service';
 
 import { Keys, Octave, PianoService } from './piano.service';
 
@@ -17,7 +17,7 @@ describe('PianoService', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			providers: [
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: PianoQuestBundleService },
+				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: PianoChordQuestBundleService },
 				// { provide: PianoQuestBundleService, useValue: pianoQuestStub },
 				{ provide: MidiService, useValue: midiMock}
 			]

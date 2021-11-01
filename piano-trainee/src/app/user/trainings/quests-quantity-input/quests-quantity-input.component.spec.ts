@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from 'src/app/piano/midi/midi.service';
-import { PianoQuestBundleService } from 'src/app/piano/piano-quest/piano-quest-bundle.service';
+import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
 import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
 import { Quest } from 'src/app/piano/piano-quest/quest.model';
 
@@ -30,7 +30,7 @@ describe('QuestsQuantityInputComponent', () => {
 			declarations: [ QuestsQuantityInputComponent ],
 			providers: [
 				{ provide: MidiService },
-				{ provide: PianoQuestBundleService },
+				{ provide: PianoChordQuestBundleService },
 				{ provide: PianoQuestHandlerService },
 				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub }
 			],

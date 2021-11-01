@@ -47,6 +47,20 @@ export class MusicTheoryService {
 		return chroma;
 	}
 
+	public checkSameOctave(notes: Note[]): boolean {
+		let previous = notes[0];
+		let isSame = true;
+		for(let i = 1; i < notes.length; i++) { // start with 1 index
+			let note = notes[i];
+			if(previous > note){ // If is bigger than previous
+				isSame = false;
+				break;
+			}
+			previous = note;
+		}
+		return isSame;
+	}
+
 	// Split chord into two based on quest inversion
 	// Ex: C/E (II) => [E4, G4], [C5]
 	// Returns {octaveUp: ["E","G"], octaveDown:["C"]}

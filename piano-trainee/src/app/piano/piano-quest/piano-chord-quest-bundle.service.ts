@@ -42,6 +42,16 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 		this.currentQuests = [];
 	}
 
+	public removeQuest(questType: QuestCardType, inversion: boolean){
+		const i = this.currentQuests.findIndex(f => f.questType == questType && f.inversion == inversion);
+		this.currentQuests.splice(i);
+		if (i > -1) {
+			this.currentQuests.splice(i, 1);
+		} else {
+			throw new Error("Quest not found to remove");
+		}
+	}
+
 	public addQuest(questType: QuestCardType, inversion: boolean, accidental: boolean) {
 		switch (questType) {
 			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, inversion, accidental, questType}); break;
@@ -61,7 +71,7 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 			note = this.getRandomInt(2) == 1 ? this.getRandomWhiteNote() : this.getRandomBlackNote();
 		else
 			note = this.getRandomWhiteNote();
-		const inversion = question.inversion? this.getRandomInt(3) : 0;
+		const inversion = question.inversion? this.getRandomInt(2) + 1 : 0;
 		this.currentQuestInfo = { questType: question.questType, inversion, note };
 		return question.quest.bind(this)(note, inversion);
 	}

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Note } from '../note.enum';
 
-import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
+import { PianoChordQuestBundleService, QuestCardType } from './piano-chord-quest-bundle.service';
 
 describe('PianoQuestBundleService', () => {
 	let service: PianoChordQuestBundleService;
@@ -42,6 +42,14 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.answerChord).toEqual([Note.E, Note.G, Note.C]);
 		expect(quest.questChord.toString()).toBe("C/E");
+	});
+
+	it('should only generate major inversion quest', () => {
+		service.addQuest(QuestCardType.majorChordQuest, true, false);
+		for (let index = 0; index < 10; index++) {
+			const quest = service.nextQuest();
+			expect(quest.inversion).not.toEqual(0);
+		}
 	});
 
 	it('should generate minor third quest', () => {

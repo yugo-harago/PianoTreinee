@@ -14,11 +14,11 @@
 		(click)="octaveMinus()">octave -
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
-		(click)="showAnswer()" *ngIf="isQuest"
+		(click)="showAnswer()" *ngIf="isQuest && !answerDisplayed && !pianoQuest.questCount.maxReached"
 		id="answer">answer
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
-		(click)="restart()" *ngIf="isQuest"
+		(click)="restart()" *ngIf="isQuest && !pianoQuest.questCount.maxReached"
 		id="restart">restart
 	</button>
 	<!-- This button is necessary due to the chrome video policy-->

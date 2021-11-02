@@ -10,20 +10,7 @@
 	<div class="row">
 		<div class="col">
 			<div class="row">
-				<div class="col">
-					<div class="form-check">
-						<input type="checkbox" class="form-check-input" id="multi-select" 
-						[checked]="multipleQuest"
-						(change)="onMultipleSelect()"/>
-						<label class="form-check-label" for="formCheck-1">Multi-select</label>
-					</div>
-				</div>
 				<app-quests-quantity-input class="col"></app-quests-quantity-input>
-				<div class="col text-end"
-					*ngIf="multipleQuest">
-					<button class="btn btn-primary" type="button"
-						(click)="onMultipleStart()">Start</button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -40,12 +27,23 @@
 						<input type="checkbox" class="form-check-input" id="use-accidental" 
 						[(ngModel)]="chordTraining.accidental"
 						[ngModelOptions]="{standalone: true}"/></label><br>
-						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button"
-							(click)="onCardClick(chordTraining)"
-							[name]="'start-' + chordTraining.name + '-btn'">Start</button>
-						<button *ngIf="multipleQuest" class="btn btn-primary" type="button"
-							(click)="onCardSelect(chordTraining)"
-							[name]="'select-' + chordTraining.name + '-btn'">Select</button>
+						<div class="row">
+							<div class="col">
+								<button class="btn btn-primary" type="button"
+									(click)="onCardClick(chordTraining)"
+									[name]="'start-' + chordTraining.name + '-btn'">Start</button>
+							</div>
+							<div class="col">
+								<button class="btn btn-primary" type="button"
+									(click)="onCardSelect(chordTraining)"
+									*ngIf="!chordTraining.selected"
+									[name]="'select-' + chordTraining.name + '-btn'">Select</button>
+									<button class="btn btn-primary" type="button"
+										*ngIf="chordTraining.selected"
+										(click)="onCardDeselect(chordTraining)"
+										[name]="'deselect-' + chordTraining.name + '-btn'">Deselect</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -14,7 +14,6 @@ export class SelectTrainingComponent implements OnInit {
 
 	public batchTraining: ChordTraining[][] = [];
 	private chordTrainings: Array<ChordTraining> = [];
-	public multipleQuest: boolean = false;
 
 	constructor(
 		private router: Router,
@@ -29,17 +28,13 @@ export class SelectTrainingComponent implements OnInit {
 		this.chordTrainings = trainingOptions;
 		this.batchTraining = this.toMatrix(this.chordTrainings, 3);
 	}
+	public Start() {
+		this.router.navigate(['train'], { relativeTo: this.route });
+	}
 
 	public reset() {
 		this.chordTrainings.forEach(f => f.selected = false);
 		this.questBundler.resetQuest();
-	}
-
-	public onMultipleSelect(){
-		this.multipleQuest = !this.multipleQuest
-		if(!this.multipleQuest){
-			this.reset();
-		}
 	}
 
 	public toMatrix(arr: Array<any>, size: number) : Array<Array<any>> {
@@ -50,20 +45,17 @@ export class SelectTrainingComponent implements OnInit {
     }
 
 	public onCardClick(chordTraining: ChordTraining) {
-		if(this.multipleQuest) throw new Error("Is in multiple select mode");
 		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
-		this.router.navigate(['train'], { relativeTo: this.route });
-	}
-
-	public onMultipleStart() {
-		if(!this.multipleQuest) throw new Error("Is not in Multiple-Select mode");
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
 	public onCardSelect(chordTraining: ChordTraining) {
-		if(!this.multipleQuest) throw new Error("Is not in Multiple-Select mode");
 		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
 		chordTraining.selected = true;
+	}
+	public onCardDeselect(chordTraining: ChordTraining) {
+		this.questBundler.removeQuest(chordTraining.quest,chordTraining.inversion);
+		chordTraining.selected = false;
 	}
 
 }

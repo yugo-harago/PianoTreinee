@@ -24,27 +24,18 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 		note: Note
 	}
 
-	private currentQuests: {
+	public currentQuests: {
 		quest: (note: Note, inversion?: number) => Quest,
 		inversion: boolean,
 		accidental: boolean,
 		questType: QuestCardType
 	}[] = [];
 
-	private storageKey = 'Quests';
-
 	constructor(
 		private theory: MusicTheoryService
 	) { 
 		ChordType.add(["1P", "3M", "5P", "7m"], ["dom7"]);
 		ChordType.add(["1P", "3m", "5P", "7m"], ["minor7"]);
-
-		var storedQuest = localStorage.getItem(this.storageKey);
-		if(storedQuest) {
-			let selecteds = JSON.parse(storedQuest) as {inversion: boolean, questType: QuestCardType, accidental: boolean}[];
-        	localStorage.removeItem(this.storageKey);
-			selecteds.forEach(f => this.addQuest(f.questType, f.inversion, f.accidental));
-		}
 	}
 
 	public resetQuest(){
@@ -60,7 +51,6 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, inversion, accidental, questType}); break;
 			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, inversion, accidental, questType}); break;
 		}
-        localStorage.setItem(this.storageKey, JSON.stringify(this.currentQuests));
 	}
 
 	public nextQuest(): Quest {

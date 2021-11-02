@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PianoComponent } from './piano.component';
 import { MidiService } from './midi/midi.service';
+import { PianoQuestGuard } from './piano-quest/piano-quest-guard';
 
 
 @NgModule({
   declarations: [
-	PianoComponent,
+	PianoComponent
   ],
   imports: [
     CommonModule,
@@ -15,7 +16,7 @@ import { MidiService } from './midi/midi.service';
 	PianoComponent,
   ],
   providers: [
-	  { provide: MidiService },
+		{ provide: MidiService }
   ]
 })
 export class PianoModule { }

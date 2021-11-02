@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { UserModule } from '../user/user.module';
 import { Note } from './note.enum';
+import { PianoChordQuestBundleService } from './piano-quest/piano-chord-quest-bundle.service';
 import { Quest } from './piano-quest/quest.model';
 
 import { PianoComponent } from './piano.component';
@@ -28,7 +29,7 @@ describe('PianoComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ PianoComponent ],
 			providers: [
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
+				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 			],
 			imports: [
 				UserModule

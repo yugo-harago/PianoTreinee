@@ -9,6 +9,7 @@ import { IPianoService } from '../PianoService.interface';
 import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
 import { Quest } from './quest.model';
 import { QuestCounter } from './quest-counter.model';
+import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -45,7 +46,7 @@ export class PianoQuestHandlerService implements IPianoService{
 	constructor(
 		private midi: MidiService,
 		private piano: PianoService,
-		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundle: IPianoChordQuestBundleService,
+		private chordQuestBundle: PianoChordQuestBundleService,
 		private theory: MusicTheoryService
 	) {
 	}
@@ -55,7 +56,7 @@ export class PianoQuestHandlerService implements IPianoService{
 		let repeat = 0;
 		let forceExit = false;
 		do{
-			quest = this.questBundle.nextQuest();
+			quest = this.chordQuestBundle.nextQuest();
 			repeat++;
 			if(repeat > 20){
 				console.warn("\n %c Quest repeated more than expected, check if is in the infinite loop", 'color: #dc2b4f');
@@ -86,6 +87,7 @@ export class PianoQuestHandlerService implements IPianoService{
 		})
 	}
 
+	// Set default answer to show if user wants to know the answer
 	public setDefaultAnswer(notes: Note[], baseOctave: number) {
 		let octaves = this.theory.splitChordInTwoOctaves(notes);
 		this.keys.forEach(key => {

@@ -13,9 +13,7 @@ describe('Trainings', () => {
 	it('should keep number of quests when get back to the trainings select page', () => {
 		const setOneTraining = CommonTasks.SetOneTraining();
 		const majorquest = setOneTraining.then(()=>{
-			cy
-			.get('button[name="start-major-chord-btn"]')
-			.click();
+			CommonTasks.ClickDefaultQuestBtn();
 		});
 		const answeredTrainingsPage = majorquest.then(() => {
 			CommonTasks.CompleteOneQuestWithAnswer();
@@ -52,9 +50,7 @@ describe('Trainings', () => {
 	it('should be able to get back after the quest is completed', () => {
 		const setOneTraining = CommonTasks.SetOneTraining();
 		const majorquest = setOneTraining.then(()=>{
-			cy
-			.get('button[name="start-major-chord-btn"]')
-			.click();
+			CommonTasks.ClickDefaultQuestBtn();
 		});
 		const answeredTrainingsPage = majorquest.then(() => {
 			CommonTasks.CompleteOneQuestWithAnswer();
@@ -70,20 +66,25 @@ describe('Trainings', () => {
 	it('should be able to do more than one quest', () => {
 		const setOneTraining = CommonTasks.SetOneTraining();
 		const majorquest = setOneTraining.then(()=>{
-			cy
-			.get('button[name="start-major-chord-btn"]')
-			.click();
+			CommonTasks.ClickDefaultQuestBtn();
 		});
 		const answeredTrainingsPage = majorquest.then(() => {
 			CommonTasks.CompleteOneQuestWithAnswer();
 		});
 		const majorQuest2 = answeredTrainingsPage.then(() => {
-			cy
-			.get('button[name="start-major-chord-btn"]')
-			.click();
+			CommonTasks.ClickDefaultQuestBtn();
 		});
 		majorQuest2.then(() => {
 			CommonTasks.CompleteOneQuestWithAnswer();
 		});
+	});
+
+	it('should go to select training page if user jumped to training page', () => {
+		cy.visit('/user/trainings/train').then(() => {
+			cy.url().then(url => {
+				expect(url).to.equal("http://localhost:4200/user/trainings")
+			});
+		});
+
 	});
 })

@@ -30,9 +30,8 @@ describe('QuestsQuantityInputComponent', () => {
 			declarations: [ QuestsQuantityInputComponent ],
 			providers: [
 				{ provide: MidiService },
-				{ provide: PianoChordQuestBundleService },
 				{ provide: PianoQuestHandlerService },
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub }
+				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub }
 			],
 		})
 		.compileComponents();

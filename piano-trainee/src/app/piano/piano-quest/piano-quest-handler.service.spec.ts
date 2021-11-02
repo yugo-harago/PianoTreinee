@@ -44,7 +44,6 @@ describe('PianoQuestHandlerService', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			providers: [
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
 				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: MidiService, useValue: midiStub}
 			]

@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from 'src/app/piano/midi/midi.service';
+import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
 import { Quest } from 'src/app/piano/piano-quest/quest.model';
 import { Key } from 'src/app/piano/piano.service';
 
@@ -41,7 +42,7 @@ describe('SelectTrainingComponent', () => {
 			declarations: [ SelectTrainingComponent ],
 			imports: [ RouterTestingModule ],
 			providers: [
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
+				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: MidiService, useValue: midiStub },
 			]
 		})

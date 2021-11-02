@@ -25,4 +25,10 @@ export class CommonTasks{
 		});
 	}
 
+	public static ClickDefaultQuestBtn() {
+		cy
+		.get('button[name="start-major-chord-btn"]')
+		.click();
+	}
+
 }

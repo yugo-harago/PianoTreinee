@@ -11,9 +11,12 @@
 		<div class="col">
 			<div class="row">
 				<div class="col">
-					<div class="form-check"><input type="checkbox" class="form-check-input" id="multi-select" 
+					<div class="form-check">
+						<input type="checkbox" class="form-check-input" id="multi-select" 
 						[checked]="multipleQuest"
-						(change)="onMultipleSelect()"/><label class="form-check-label" for="formCheck-1">Multi-select</label></div>
+						(change)="onMultipleSelect()"/>
+						<label class="form-check-label" for="formCheck-1">Multi-select</label>
+					</div>
 				</div>
 				<app-quests-quantity-input class="col"></app-quests-quantity-input>
 				<div class="col text-end"
@@ -32,7 +35,11 @@
 				<div class="card" [class.selected]="chordTraining.selected">
 					<div class="card-body">
 						<h4 class="card-title">{{ chordTraining.title }}</h4>
-						<p>Difficulty: {{ chordTraining.difficulty }}</p>
+						<span>Difficulty: {{ chordTraining.difficulty }}</span><br>
+						<label class="form-check-label" for="formCheck-1">Use accidental
+						<input type="checkbox" class="form-check-input" id="use-accidental" 
+						[(ngModel)]="chordTraining.accidental"
+						[ngModelOptions]="{standalone: true}"/></label><br>
 						<button *ngIf="!multipleQuest" class="btn btn-primary" type="button"
 							(click)="onCardClick(chordTraining)"
 							[name]="'start-' + chordTraining.name + '-btn'">Start</button>

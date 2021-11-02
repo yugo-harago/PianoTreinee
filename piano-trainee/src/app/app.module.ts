@@ -9,7 +9,7 @@ import { VisitorHomeComponent } from './visitor/visitor-home/visitor-home.compon
 import { UserModule } from './user/user.module';
 import { environment } from 'src/environments/environment';
 import { TOKENS } from './injections-tokens';
-import { PianoQuestBundleMock } from './piano/piano-quest/piano-chord-quest-bundle.mock';
+import { PianoChordQuestBundleMock } from './piano/piano-quest/piano-chord-quest-bundle.mock';
 import { PianoChordQuestBundleService } from './piano/piano-quest/piano-chord-quest-bundle.service';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { PianoChordQuestBundleService } from './piano/piano-quest/piano-chord-qu
 		UserModule, 
 	],
 	providers: [
-		{ provide: TOKENS.PIANO_QUEST_BUNDLE, useClass: environment.mockQuestBundle ? PianoQuestBundleMock : PianoChordQuestBundleService }
+		{ provide: PianoChordQuestBundleService, useClass: environment.mockQuestBundle ? PianoChordQuestBundleMock : PianoChordQuestBundleService }
 	],
 	bootstrap: [AppComponent]
 })

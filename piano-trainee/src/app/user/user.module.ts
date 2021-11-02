@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { QuestsQuantityInputComponent } from './trainings/quests-quantity-input/quests-quantity-input.component';
 import { TrainingDisplayComponent } from './training-display/training-display.component';
 import { TimerComponent } from './timer/timer.component';
+import { InversionFocusTrainingComponent } from './trainings/inversion-focus-training/inversion-focus-training.component';
+import { PianoQuestGuard } from '../piano/piano-quest/piano-quest-guard';
 
 
 
@@ -22,7 +24,8 @@ import { TimerComponent } from './timer/timer.component';
 		SelectTrainingComponent,
 		QuestsQuantityInputComponent,
 		TrainingDisplayComponent,
-		TimerComponent
+		TimerComponent,
+		InversionFocusTrainingComponent
 	],
 	imports: [
 		CommonModule,
@@ -34,6 +37,9 @@ import { TimerComponent } from './timer/timer.component';
 		LoggedHeaderComponent,
 		QuestsQuantityInputComponent,
 		TrainingDisplayComponent
+	],
+	providers: [
+		{ provide: PianoQuestGuard }
 	]
 })
 export class UserModule { }

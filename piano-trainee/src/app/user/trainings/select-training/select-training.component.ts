@@ -19,7 +19,7 @@ export class SelectTrainingComponent implements OnInit {
 	constructor(
 		private router: Router,
 		private route:ActivatedRoute,
-		@Inject(TOKENS.PIANO_QUEST_BUNDLE) private questBundler: PianoChordQuestBundleService,
+		private questBundler: PianoChordQuestBundleService,
 		public pianoQuest: PianoQuestHandlerService
 	){
 		this.reset();
@@ -51,7 +51,7 @@ export class SelectTrainingComponent implements OnInit {
 
 	public onCardClick(chordTraining: ChordTraining) {
 		if(this.multipleQuest) throw new Error("Is in multiple select mode");
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, false);
+		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
@@ -62,7 +62,7 @@ export class SelectTrainingComponent implements OnInit {
 
 	public onCardSelect(chordTraining: ChordTraining) {
 		if(!this.multipleQuest) throw new Error("Is not in Multiple-Select mode");
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, false);
+		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
 		chordTraining.selected = true;
 	}
 

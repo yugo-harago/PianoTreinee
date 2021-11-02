@@ -45,7 +45,7 @@ describe('TrainingDisplayComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ TrainingDisplayComponent ],
 			providers: [
-				{ provide: TOKENS.PIANO_QUEST_BUNDLE, useValue: pianoQuestStub },
+				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: PianoQuestHandlerService, useValue: pianoQuestStub},
 				{ provide: TimerComponent, useValue: timerComponent}
 			],

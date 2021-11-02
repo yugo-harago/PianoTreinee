@@ -245,6 +245,20 @@ describe('PianoQuestHandlerService', () => {
 		expect(answer.map(key => key.octave)).toEqual([4, 5, 5]);
 	})
 
+	fit('should not repeat quest', () => {
+		service.canRepeat = false;
+		pianoQuestStub.quest = new Quest([Note.C, Note.E, Note.G], 0);
+		let warned = false;
+		spyOn(console, 'warn').and.callFake(() => {
+			warned = true;
+		});
+		service.nextQuest();
+		pianoQuestStub.quest = new Quest([Note.C, Note.E, Note.G], 0);
+		service.nextQuest();
+		expect(warned).toBeTruthy();
+
+	});
+
 	// it('should chenage right keys if most of the keys are in other octave', () => {
 	// 	const quest = new Quest([Note.C, Note.E, Note.G, Note['A#']], undefined, undefined, true);
 	// 	pianoQuestStub.quest = quest;

@@ -62,7 +62,7 @@ export class PianoQuestHandlerService implements IPianoService{
 				console.warn("\n %c Quest repeated more than expected, check if is in the infinite loop", 'color: #dc2b4f');
 				forceExit = true;
 			}
-		} while (this.quest?.questChord == quest.questChord && !this.canRepeat && !forceExit);
+		} while (this.quest?.questChord.toString() == quest.questChord.toString() && !this.canRepeat && !forceExit);
 		this.quest = quest;
 		this.setRightKeys(quest.answerChord);
 		this.setDefaultAnswer(quest?.answerChord, this.piano.octave.middle);

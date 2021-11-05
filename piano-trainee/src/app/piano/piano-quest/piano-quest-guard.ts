@@ -7,7 +7,7 @@ import { PianoChordQuestBundleService } from "./piano-chord-quest-bundle.service
 export class PianoQuestGuard implements CanActivate {
   	constructor(
 		private chordQuest: PianoChordQuestBundleService,
-		public router: Router
+		private router: Router
 	) {}
 
   canActivate(

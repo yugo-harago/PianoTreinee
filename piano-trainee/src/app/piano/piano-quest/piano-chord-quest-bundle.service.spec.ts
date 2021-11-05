@@ -59,7 +59,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBeFalsy();
 		expect(quest.answerChord).toEqual([Note.C, Note['D#'], Note.G]);
-		expect(quest.questChord.toString()).toBe("Cm");
+		expect(quest.questChord.toString()).toBe("C m");
 	});
 
 	it('should generate minor third, first inversion quest',() => {
@@ -69,7 +69,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(1);
 		expect(quest.answerChord).toEqual([Note.G, Note.C, Note['D#']]);
-		expect(quest.questChord.toString()).toBe("C/G m");
+		expect(quest.questChord.toString()).toBe("C m/G");
 	});
 
 	it('should generate minor third, second inversion quest',() => {
@@ -79,7 +79,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(2);
 		expect(quest.answerChord).toEqual([Note['D#'], Note.G, Note.C]);
-		expect(quest.questChord.toString()).toBe("C/D# m");
+		expect(quest.questChord.toString()).toBe("C m/D#");
 	});
 
 	it('should generate major 7 chord quest',() => {
@@ -99,7 +99,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(1);
 		expect(quest.answerChord).toEqual([Note.B, Note.C, Note.E, Note.G]);
-		expect(quest.questChord.toString()).toBe("C/B maj7");
+		expect(quest.questChord.toString()).toBe("C maj7/B");
 	});
 
 	it('should generate major 7 second inversion chord quest',() => {
@@ -109,7 +109,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(2);
 		expect(quest.answerChord).toEqual([Note.G, Note.B, Note.C, Note.E]);
-		expect(quest.questChord.toString()).toBe("C/G maj7");
+		expect(quest.questChord.toString()).toBe("C maj7/G");
 	});
 
 	it('should generate major 7 third, inversion chord quest',() => {
@@ -119,7 +119,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(3);
 		expect(quest.answerChord).toEqual([Note.E, Note.G, Note.B, Note.C]);
-		expect(quest.questChord.toString()).toBe("C/E maj7");
+		expect(quest.questChord.toString()).toBe("C maj7/E");
 	});
 
 	it('should generate minor 7 chord quest',() => {
@@ -139,7 +139,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(1);
 		expect(quest.answerChord).toEqual([Note['A#'], Note.C, Note['D#'], Note.G]);
-		expect(quest.questChord.toString()).toBe("C/A# minor7");
+		expect(quest.questChord.toString()).toBe("C minor7/A#");
 	});
 
 	it('should generate minor 7, second inversion chord quest',() => {
@@ -149,7 +149,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(2);
 		expect(quest.answerChord).toEqual([Note.G, Note['A#'], Note.C, Note['D#']]);
-		expect(quest.questChord.toString()).toBe("C/G minor7");
+		expect(quest.questChord.toString()).toBe("C minor7/G");
 	});
 
 	it('should generate minor 7, third inversion chord quest',() => {
@@ -159,7 +159,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(3);
 		expect(quest.answerChord).toEqual([Note['D#'], Note.G, Note['A#'], Note.C]);
-		expect(quest.questChord.toString()).toBe("C/D# minor7");
+		expect(quest.questChord.toString()).toBe("C minor7/D#");
 	});
 
 	it('should generate dominant 7 chord quest', () => {
@@ -179,7 +179,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(1);
 		expect(quest.answerChord).toEqual([Note['A#'], Note.C, Note.E, Note.G]);
-		expect(quest.questChord.toString()).toBe("C/A# dom7");
+		expect(quest.questChord.toString()).toBe("C dom7/A#");
 	});
 
 	it('should generate dominant 7, second inversion chord quest', () => {
@@ -189,7 +189,7 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(2);
 		expect(quest.answerChord).toEqual([Note.G, Note['A#'], Note.C, Note.E]);
-		expect(quest.questChord.toString()).toBe("C/G dom7");
+		expect(quest.questChord.toString()).toBe("C dom7/G");
 	});
 
 	it('should generate dominant 7, third inversion chord quest', () => {
@@ -199,6 +199,6 @@ describe('PianoQuestBundleService', () => {
 		
 		expect(quest.inversion).toBe(3);
 		expect(quest.answerChord).toEqual([Note.E, Note.G, Note['A#'], Note.C]);
-		expect(quest.questChord.toString()).toBe("C/E dom7");
+		expect(quest.questChord.toString()).toBe("C dom7/E");
 	});
 });

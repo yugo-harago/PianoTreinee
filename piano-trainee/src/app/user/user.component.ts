@@ -11,10 +11,12 @@ export class UserComponent implements OnInit {
 	constructor(
 		private userService: UserService,
 	) { 
-		this.userService.logged = true;
 	}
 
 	ngOnInit(): void {
 	}
 
+	public logout(){
+		this.userService.logged = false;
+	}
 }

@@ -68,7 +68,7 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 		const question = this.currentQuests[this.getRandomInt(this.currentQuests.length)];
 		let note;
 		if(question.accidental)
-			note = this.getRandomInt(2) == 1 ? this.getRandomWhiteNote() : this.getRandomBlackNote();
+			note = this.getRandomBlackNote();
 		else
 			note = this.getRandomWhiteNote();
 		const inversion = question.inversion? this.getRandomInt(2) + 1 : 0;

@@ -4,7 +4,7 @@ export class CommonTasks{
 		let quests = 0;
 		return cy
 			.get('input[name="quest-quantities"]')
-			.clear({force: true})
+			.clear()
 			.type('1')
 			.invoke('val')
 			.then(val => {

@@ -21,19 +21,17 @@ export class SelectTrainingComponent implements OnInit {
 		private questBundler: PianoChordQuestBundleService,
 		public pianoQuest: PianoQuestHandlerService
 	){
-		this.reset();
 	}
 
 	ngOnInit(): void {
 		this.chordTrainings = trainingOptions;
 		this.batchTraining = this.toMatrix(this.chordTrainings, 3);
 	}
-	public Start() {
+	public start() {
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
-	public reset() {
-		this.chordTrainings.forEach(f => f.selected = false);
+	public reset(){
 		this.questBundler.resetQuest();
 	}
 
@@ -45,16 +43,16 @@ export class SelectTrainingComponent implements OnInit {
     }
 
 	public onCardClick(chordTraining: ChordTraining) {
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
+		this.questBundler.addQuest(chordTraining);
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
 	public onCardSelect(chordTraining: ChordTraining) {
-		this.questBundler.addQuest(chordTraining.quest,chordTraining.inversion, chordTraining.accidental);
+		this.questBundler.addQuest(chordTraining);
 		chordTraining.selected = true;
 	}
 	public onCardDeselect(chordTraining: ChordTraining) {
-		this.questBundler.removeQuest(chordTraining.quest,chordTraining.inversion);
+		this.questBundler.removeQuest(chordTraining);
 		chordTraining.selected = false;
 	}
 

@@ -14,7 +14,7 @@
 		(click)="octaveMinus()">octave -
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
-		(click)="showAnswer()" *ngIf="isQuest && !answerDisplayed && !pianoQuest.questCount.maxReached"
+		(click)="showAnswer()" *ngIf="isQuest && (started && !displayAnswer && !pianoQuest.questCount.maxReached)"
 		id="answer">answer
 	</button>
 	<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
@@ -40,7 +40,7 @@
 			*ngFor="let key of pianoService.keys"
 			[class.right]="(key.isActive && !isQuest)||(key.isActive && key.isRight && isQuest)"
 			[class.wrong]="(key.isActive && !key.isRight && isQuest)"
-			[class.answer]="answerDisplayed && key.answer && isQuest && !key.isActive"
+			[class.answer]="displayAnswer && key.answer && isQuest && !key.isActive"
 			[attr.data-note]="key.note"
 			[class.accidental]="key.accidental"
 			[style.height.px]="keySize.height"

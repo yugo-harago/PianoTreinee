@@ -18,7 +18,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 	public octaveWidth: number = 6.5*this.keySize.width;
 	public pianoService?: IPianoService;
 	public started = false;
-	public answerDisplayed = false;
+	public displayAnswer = false;
 	public subscriptions: {
 		checkChange?: Subscription,
 		midiPress?: Subscription,
@@ -57,6 +57,7 @@ export class PianoComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.piano.keys.reset();
+		this.pianoQuest.questCount.reset();
 		if(this.pianoService) this.subscriptions.checkChange!.unsubscribe();
 		this.subscriptions.midiPress!.unsubscribe();
 		this.subscriptions.midiRelease!.unsubscribe();
@@ -87,10 +88,10 @@ export class PianoComponent implements OnInit, OnDestroy {
 
 
 	public showAnswer(){
-		this.answerDisplayed = true;
+		this.displayAnswer = true;
 		this.pianoQuest.onRightAnswer.pipe(take(1)).subscribe(a => {
 			if(!a) return;
-			this.answerDisplayed = false;
+			this.displayAnswer = false;
 			this.change.detectChanges();
 		});
 		this.pianoQuest.questCount.nextAnswer();

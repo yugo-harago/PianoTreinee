@@ -11,6 +11,12 @@
 		<div class="col">
 			<div class="row">
 				<app-quests-quantity-input class="col"></app-quests-quantity-input>
+				<div class="col">
+					<button class="btn btn-primary" (click)="start()">start</button>
+				</div>
+				<div class="col">
+					<button class="btn btn-primary" (click)="reset()">Reset</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -19,7 +25,7 @@
 	<div class="container" style="margin-top: 10px;">
 		<div class="row">
 			<div class="col" *ngFor="let chordTraining of chordTrainings">
-				<div class="card" [class.selected]="chordTraining.selected">
+				<div class="card" [class.selected]="chordTraining.selected" [id]="chordTraining.name+'-card'">
 					<div class="card-body">
 						<h4 class="card-title">{{ chordTraining.title }}</h4>
 						<span>Difficulty: {{ chordTraining.difficulty }}</span><br>

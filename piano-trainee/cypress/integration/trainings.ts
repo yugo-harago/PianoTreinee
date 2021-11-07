@@ -1,6 +1,6 @@
 import { CommonTasks } from "./trainings/common-tasks";
 
-describe('Trainings', () => {
+describe('Trainings', { scrollBehavior: 'center' }, () => {
 
 	beforeEach(() => {
 		cy.visit('/user/trainings');
@@ -85,6 +85,40 @@ describe('Trainings', () => {
 				expect(url).to.equal("http://localhost:4200/user/trainings")
 			});
 		});
-
 	});
+
+	it('should go back and still have the selected trainings', () => {
+		const setOneTraining = CommonTasks.SetOneTraining();
+		const selectedQuests = setOneTraining.then(()=>{
+			cy.get('button[name="select-major-chord-btn"]').click();
+			cy.get('button[name="select-minor-chord-btn"]').click();
+			cy.get('button[name="start-minor-chord-btn"]').click();
+		});
+		const answeredTrainingsPage = selectedQuests.then(() => {
+			CommonTasks.CompleteOneQuestWithAnswer();
+		});
+		answeredTrainingsPage.then(() => {
+			cy.get("#major-chord-card").should("have.class", "selected");
+			cy.get("#minor-chord-card").should("have.class", "selected");
+		})
+	});
+
+	it('should be able to deselect after the training is done', () => {
+		const setOneTraining = CommonTasks.SetOneTraining();
+		const selectedQuests = setOneTraining.then(()=>{
+			cy.get('button[name="select-major-chord-btn"]').click();
+			cy.get('button[name="select-minor-chord-btn"]').click();
+			cy.get('button[name="start-minor-chord-btn"]').click();
+		});
+		const answeredTrainingsPage = selectedQuests.then(() => {
+			CommonTasks.CompleteOneQuestWithAnswer();
+		});
+		answeredTrainingsPage.then(() => {
+			cy.get('button[name="deselect-major-chord-btn"]').click();
+			cy.get('button[name="deselect-minor-chord-btn"]').click();
+		}).then(() => {
+			cy.get("#major-chord-card").should("not.have.class", "selected");
+			cy.get("#minor-chord-card").should("not.have.class", "selected");
+		})
+	})
 })

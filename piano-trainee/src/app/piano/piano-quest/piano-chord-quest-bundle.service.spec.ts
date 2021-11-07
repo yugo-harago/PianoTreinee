@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { ChordTraining, trainingOptions } from 'src/app/user/trainings/select-training/training-options.data';
 import { Note } from '../note.enum';
 
 import { PianoChordQuestBundleService, QuestCardType } from './piano-chord-quest-bundle.service';
@@ -45,7 +46,8 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major inversion quest', () => {
-		service.addQuest(QuestCardType.majorChordQuest, true, false);
+		const chordQuest = new ChordTraining(1, "title", 1, QuestCardType.majorChordQuest, true)
+		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
 			expect(quest.inversion).not.toEqual(0);
@@ -200,5 +202,11 @@ describe('PianoQuestBundleService', () => {
 		expect(quest.inversion).toBe(3);
 		expect(quest.answerChord).toEqual([Note.E, Note.G, Note['A#'], Note.C]);
 		expect(quest.questChord.toString()).toBe("C dom7/E");
+	});
+
+	it('should not have duplicate item in the quest list', () => {
+		service.addQuest(trainingOptions[0]);
+		service.addQuest(trainingOptions[0]);
+		expect(service.currentQuests.length).toBe(1);
 	});
 });

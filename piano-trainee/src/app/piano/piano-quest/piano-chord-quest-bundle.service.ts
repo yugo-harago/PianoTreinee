@@ -52,6 +52,7 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 	}
 
 	public addQuest(chordTraining: ChordTraining) {
+		if(this.currentQuests.map(x => x.chordTraining.id).includes(chordTraining.id)) return;
 		switch (chordTraining.quest) {
 			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, chordTraining}); break;
 			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, chordTraining}); break;

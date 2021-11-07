@@ -5,7 +5,6 @@ import { PianoQuestHandlerService } from './piano-quest-handler.service';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from '../midi/midi.service';
 import { Note } from '../note.enum';
-import { Chord } from '../music-theory.service';
 import { Quest } from './quest.model';
 
 describe('PianoQuestHandlerService', () => {

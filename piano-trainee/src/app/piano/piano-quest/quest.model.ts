@@ -1,4 +1,4 @@
-import { AccidentalType, Chord } from "../music-theory.service";
+import { AccidentalType, Chord } from "../chord.model";
 import { Note } from "../note.enum";
 
 export class Quest {

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { Chord } from './chord.model';
 
-import { Chord, MusicTheoryService } from './music-theory.service';
+import { MusicTheoryService } from './music-theory.service';
 import { Note } from './note.enum';
 import { Quest } from './piano-quest/quest.model';
 import { Key } from './piano.service';

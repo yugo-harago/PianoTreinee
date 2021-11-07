@@ -1,4 +1,4 @@
-import { AccidentalType } from "src/app/piano/music-theory.service";
+import { AccidentalType } from "src/app/piano/chord.model";
 import { Note } from "src/app/piano/note.enum";
 import { PianoChordQuestBundleService, QuestCardType } from "src/app/piano/piano-quest/piano-chord-quest-bundle.service";
 import { Quest } from "src/app/piano/piano-quest/quest.model";
@@ -20,7 +20,7 @@ export class ChordTraining {
 		this.inversion = !!inversion;
 		this.name = title.replace(' ', '-').toLowerCase();
 		this.accidental = !!accidental;
-		this.accidentalShowType = accidentalShowType?? AccidentalType.Shap;
+		this.accidentalShowType = accidentalShowType?? AccidentalType.Sharp;
 		this.id = id;
 	}
 }

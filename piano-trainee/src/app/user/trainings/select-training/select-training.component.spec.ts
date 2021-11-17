@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from 'src/app/piano/midi/midi.service';
-import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
-import { Quest } from 'src/app/piano/piano-quest/quest.model';
+import { PianoChordQuestBundleService } from 'src/app/quest/piano-quest/piano-chord-quest-bundle.service';
+import { Quest } from 'src/app/quest/piano-quest/quest.model';
 import { Key } from 'src/app/piano/piano.service';
-
+import { QuestsQuantityInputComponent } from '../quests-quantity-input/quests-quantity-input.component';
 import { SelectTrainingComponent } from './select-training.component';
 import { trainingOptions } from './training-options.data';
 
@@ -39,8 +38,14 @@ describe('SelectTrainingComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ SelectTrainingComponent ],
-			imports: [ RouterTestingModule ],
+			declarations: [ 
+				SelectTrainingComponent,
+				QuestsQuantityInputComponent
+			],
+			imports: [ 
+				RouterTestingModule,
+				FormsModule,
+			],
 			providers: [
 				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: MidiService, useValue: midiStub },
@@ -60,7 +65,7 @@ describe('SelectTrainingComponent', () => {
 	});
 
 	it('should generate training batch', () => {
-		expect(component.batchTraining.length).toBe(Math.floor(trainingOptions.length/3));
+		expect(component.batchTraining.length).toBe(3);
 		expect(component.batchTraining[0].length).toBe(3);
 	});
 });

@@ -12,12 +12,12 @@ describe('Chord model', () => {
 	});
 
 	it('should show sharp Chord', () => {
-		const chord = new Chord(Note["C#"], undefined, 'm', AccidentalType.Sharp);
+		const chord = new Chord(Note["C#"], undefined, 'm', AccidentalType.sharp);
 		expect(chord.toString()).toBe("C# m");
 	});
 
 	it('should show flat Chord', () => {
-		const chord = new Chord(Note["C#"], undefined, 'm', AccidentalType.Flat);
+		const chord = new Chord(Note["C#"], undefined, 'm', AccidentalType.flat);
 		expect(chord.toString()).toBe("Db m");
 	});
 });

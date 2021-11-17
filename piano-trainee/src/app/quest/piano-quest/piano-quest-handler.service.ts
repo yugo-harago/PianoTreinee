@@ -1,12 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { TOKENS } from 'src/app/injections-tokens';
-import { MidiService } from '../midi/midi.service';
-import { MusicTheoryService } from '../music-theory.service';
-import { Note } from '../note.enum';
-import { Key, Keys, Octave, PianoService } from '../piano.service';
-import { IPianoService } from '../PianoService.interface';
-import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
+import { MidiService } from '../../piano/midi/midi.service';
+import { MusicTheoryService } from '../../piano/music-theory.service';
+import { Note } from '../../piano/note.enum';
+import { Key, Keys, Octave, PianoService } from '../../piano/piano.service';
+import { IPianoService } from '../../piano/PianoService.interface';
 import { Quest } from './quest.model';
 import { QuestCounter } from './quest-counter.model';
 import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
@@ -152,9 +150,6 @@ export class PianoQuestHandlerService implements IPianoService{
 		if(activeKeys.length < 2) return;
 		if(this.quest.checkOrder){ 
 			if(!this.firstKey) throw new Error("First key is not defined!");
-			// if(this.theory.mostKeysAreInDifferentOctave(activeKeys, this.firstKey, this.quest.answerChord)) {
-			// 	this.firstKey = this.theory.getBaseKeyBasedOnChord(activeKeys, this.quest.answerChord);
-			// }
 			this.setAnswersInOrder(activeKeys, this.firstKey);
 		}
 		if(this.anyKeyIsActiveAndWrong(activeKeys)) return;

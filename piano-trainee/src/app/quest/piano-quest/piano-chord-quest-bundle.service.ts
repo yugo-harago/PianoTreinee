@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Chord as ChordJs, ChordType, Note as NoteJs } from '@tonaljs/tonal';
-import { ChordTraining } from 'src/app/user/trainings/select-training/training-options.data';
-import { MusicTheoryService } from '../music-theory.service';
-import { Note } from '../note.enum';
-import { Key } from '../piano.service';
+import { ChordQuest } from 'src/app/user/trainings/select-training/select-training.component';
+import { ChordTraining, TrainingInversionType } from '../../user/trainings/select-training/training-options.data';
+import { AccidentalType } from '../../piano/chord.model';
+import { MusicTheoryService } from '../../piano/music-theory.service';
+import { Note } from '../../piano/note.enum';
+import { Key } from '../../piano/piano.service';
 import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
+import { QuestCardType } from './quest-card-type.enum';
 import { Quest } from './quest.model';
-
-export enum QuestCardType {
-	majorChordQuest = "majorChordQuest",
-	minorChordQuest = "minorChordQuest",
-	major7ChordQuest = "major7ChordQuest",
-	minor7ChordQuest = "minor7ChordQuest",
-	dominantChordQuest = "dominantChordQuest",
-	dominant7ChordQuest = "dominant7ChordQuest",
-}
+import { RandomService } from '../random.service';
 
 @Injectable()
 export class PianoChordQuestBundleService implements IPianoChordQuestBundleService{
@@ -27,23 +22,23 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 
 	public currentQuests: {
 		quest: (note: Note, inversion?: number) => Quest,
-		chordTraining: ChordTraining
+		chordQuest: ChordQuest
 	}[] = [];
 
 	constructor(
-		private theory: MusicTheoryService
+		private theory: MusicTheoryService,
+		private random: RandomService
 	) { 
 		ChordType.add(["1P", "3M", "5P", "7m"], ["dom7"]);
 		ChordType.add(["1P", "3m", "5P", "7m"], ["minor7"]);
 	}
 
 	public resetQuest(){
-		this.currentQuests.forEach(f => f.chordTraining.selected = false);
 		this.currentQuests = [];
 	}
 
 	public removeQuest(chordTraining: ChordTraining){
-		const i = this.currentQuests.findIndex(f => f.chordTraining.id === chordTraining.id);
+		const i = this.currentQuests.findIndex(f => f.chordQuest.id === chordTraining.id);
 		if (i > -1) {
 			this.currentQuests.splice(i, 1);
 		} else {
@@ -51,29 +46,27 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 		}
 	}
 
-	public addQuest(chordTraining: ChordTraining) {
-		if(this.currentQuests.map(x => x.chordTraining.id).includes(chordTraining.id)) return;
-		switch (chordTraining.quest) {
-			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, chordTraining}); break;
-			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, chordTraining}); break;
-			case QuestCardType.major7ChordQuest: this.currentQuests.push({quest: this.major7ChordQuest, chordTraining}); break;
-			case QuestCardType.minor7ChordQuest: this.currentQuests.push({quest: this.minor7ChordQuest, chordTraining}); break;
-			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, chordTraining}); break;
-			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, chordTraining}); break;
+	public addQuest(chordQuest: ChordQuest) {
+		if(this.currentQuests.map(x => x.chordQuest.id).includes(chordQuest.id)) return;
+		switch (chordQuest.quest) {
+			case QuestCardType.majorChordQuest: this.currentQuests.push({quest: this.majorChordQuest, chordQuest}); break;
+			case QuestCardType.minorChordQuest: this.currentQuests.push({quest: this.minorChordQuest, chordQuest}); break;
+			case QuestCardType.major7ChordQuest: this.currentQuests.push({quest: this.major7ChordQuest, chordQuest}); break;
+			case QuestCardType.minor7ChordQuest: this.currentQuests.push({quest: this.minor7ChordQuest, chordQuest}); break;
+			case QuestCardType.dominantChordQuest: this.currentQuests.push({quest: this.dominantChordQuest, chordQuest}); break;
+			case QuestCardType.dominant7ChordQuest: this.currentQuests.push({quest: this.dominant7ChordQuest, chordQuest}); break;
 		}
 	}
 
 	public nextQuest(): Quest {
 		if(!this.currentQuests.length) throw new Error("Quests not defined");
-		const question = this.currentQuests[this.getRandomInt(this.currentQuests.length)];
-		let note;
-		if(question.chordTraining.accidental)
-			note = this.getRandomBlackNote();
-		else
-			note = this.getRandomWhiteNote();
-		const inversion = question.chordTraining.inversion? this.getRandomInt(2) + 1 : 0;
-		this.currentQuestInfo = { questType: question.chordTraining.quest, inversion, note };
-		return question.quest.bind(this)(note, inversion);
+		const question = this.currentQuests[this.random.getRandomInt(this.currentQuests.length)];
+		const note = this.random.getRandomNote(question.chordQuest.accidental);
+		const inversion = this.random.getRandomInversion(question.chordQuest.inversion);
+		this.currentQuestInfo = { questType: question.chordQuest.quest, inversion, note };
+		let quest = question.quest.bind(this)(note, inversion);
+		quest.accidentalShowType = question.chordQuest.accidental;
+		return quest;
 	}
 
 	private simplifyNotes(notes: string[]) {
@@ -132,18 +125,5 @@ export class PianoChordQuestBundleService implements IPianoChordQuestBundleServi
 		let answerChord = this.theory.convertStringsToNoteEnums(strNotes);
 		for(let i=0; i<inversion; i++) this.theory.inverseChord(answerChord);
 		return new Quest(answerChord, inversion, "dom7");
-	}
-	private getRandomWhiteNote(): Note {
-		const notes = [Note.C,Note.D,Note.E,Note.F,Note.G,Note.A,Note.B];
-		const noteIndex = this.getRandomInt(notes.length);
-		return notes[noteIndex];
-	}
-	private getRandomBlackNote(): Note {
-		const notes = [Note["C#"],Note["D#"],Note["F#"],Note["G#"],Note["A#"]];
-		const noteIndex = this.getRandomInt(notes.length);
-		return notes[noteIndex];
-	}
-	private getRandomInt(max: number): number {
-		return Math.floor(Math.random() * max);
 	}
 }

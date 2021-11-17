@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular
 import { Subscription } from 'rxjs';
 import { first, take } from 'rxjs/operators';
 import { MidiService } from './midi/midi.service';
-import { PianoQuestHandlerService } from './piano-quest/piano-quest-handler.service';
+import { PianoQuestHandlerService } from '../quest/piano-quest/piano-quest-handler.service';
 import { Key, PianoService } from './piano.service';
 import { IPianoService } from './PianoService.interface';
 

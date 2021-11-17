@@ -12,7 +12,7 @@ import { QuestsQuantityInputComponent } from './trainings/quests-quantity-input/
 import { TrainingDisplayComponent } from './training-display/training-display.component';
 import { TimerComponent } from './timer/timer.component';
 import { InversionFocusTrainingComponent } from './trainings/inversion-focus-training/inversion-focus-training.component';
-import { PianoQuestGuard } from '../piano/piano-quest/piano-quest-guard';
+import { PianoQuestGuard } from '../quest/piano-quest/piano-quest-guard';
 
 
 

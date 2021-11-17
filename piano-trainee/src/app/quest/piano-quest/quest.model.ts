@@ -1,5 +1,5 @@
-import { AccidentalType, Chord } from "../chord.model";
-import { Note } from "../note.enum";
+import { AccidentalType, Chord } from "../../piano/chord.model";
+import { Note } from "../../piano/note.enum";
 
 export class Quest {
 	public answerChord: Note[] = [];

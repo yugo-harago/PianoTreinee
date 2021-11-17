@@ -3,7 +3,7 @@ import { Chord } from './chord.model';
 
 import { MusicTheoryService } from './music-theory.service';
 import { Note } from './note.enum';
-import { Quest } from './piano-quest/quest.model';
+import { Quest } from '../quest/piano-quest/quest.model';
 import { Key } from './piano.service';
 
 describe('MusicTheoryService', () => {

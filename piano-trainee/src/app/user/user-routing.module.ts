@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SelectTrainingComponent } from './trainings/select-training/select-training.component';
 import { TrainingsComponent } from './trainings/trainings.component';
 import { UserComponent } from './user.component';
-import { PianoQuestGuard } from '../piano/piano-quest/piano-quest-guard'
+import { PianoQuestGuard } from '../quest/piano-quest/piano-quest-guard'
 
 const routes: Routes = [
 	{ path: '', component: UserComponent },

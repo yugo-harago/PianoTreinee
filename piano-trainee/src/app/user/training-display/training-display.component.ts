@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PianoQuestHandlerService } from '../../piano/piano-quest/piano-quest-handler.service';
+import { PianoQuestHandlerService } from '../../quest/piano-quest/piano-quest-handler.service';
 import { PianoService } from '../../piano/piano.service';
 import { TimerComponent } from '../timer/timer.component';
 

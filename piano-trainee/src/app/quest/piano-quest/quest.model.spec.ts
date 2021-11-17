@@ -1,4 +1,4 @@
-import { Note } from "../note.enum";
+import { Note } from "../../piano/note.enum";
 import { Quest } from "./quest.model";
 
 describe('Quest model', () => {

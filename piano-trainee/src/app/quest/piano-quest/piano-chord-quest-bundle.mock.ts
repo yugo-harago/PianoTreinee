@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Note } from '../note.enum';
+import { Note } from '../../piano/note.enum';
 import { IPianoChordQuestBundleService } from './piano-chord-quest-bundle.interface';
 import { Quest } from './quest.model';
 

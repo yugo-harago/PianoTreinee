@@ -4,11 +4,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
 import { TOKENS } from 'src/app/injections-tokens';
 import { MidiService } from 'src/app/piano/midi/midi.service';
-import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
-import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
-import { Quest } from 'src/app/piano/piano-quest/quest.model';
+import { PianoChordQuestBundleService } from 'src/app/quest/piano-quest/piano-chord-quest-bundle.service';
+import { PianoQuestHandlerService } from 'src/app/quest/piano-quest/piano-quest-handler.service';
+import { Quest } from 'src/app/quest/piano-quest/quest.model';
 import { PianoModule } from 'src/app/piano/piano.module';
 import { TimerComponent } from '../timer/timer.component';
+import { QuestsQuantityInputComponent } from '../trainings/quests-quantity-input/quests-quantity-input.component';
 
 import { TrainingDisplayComponent } from './training-display.component';
 
@@ -43,7 +44,11 @@ describe('TrainingDisplayComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ TrainingDisplayComponent ],
+			declarations: [ 
+				TrainingDisplayComponent,
+				TimerComponent,
+				QuestsQuantityInputComponent
+			 ],
 			providers: [
 				{ provide: PianoChordQuestBundleService, useValue: pianoQuestStub },
 				{ provide: PianoQuestHandlerService, useValue: pianoQuestStub},

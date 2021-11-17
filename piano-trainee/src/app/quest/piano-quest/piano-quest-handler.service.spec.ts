@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { Key, PianoService } from '../piano.service';
+import { Key, PianoService } from '../../piano/piano.service';
 import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
 import { PianoQuestHandlerService } from './piano-quest-handler.service';
-import { TOKENS } from 'src/app/injections-tokens';
-import { MidiService } from '../midi/midi.service';
-import { Note } from '../note.enum';
+import { MidiService } from '../../piano/midi/midi.service';
+import { Note } from '../../piano/note.enum';
 import { Quest } from './quest.model';
 
 describe('PianoQuestHandlerService', () => {
@@ -258,19 +257,5 @@ describe('PianoQuestHandlerService', () => {
 
 		expect(warned).toBeTruthy();
 	});
-
-	// it('should chenage right keys if most of the keys are in other octave', () => {
-	// 	const quest = new Quest([Note.C, Note.E, Note.G, Note['A#']], undefined, undefined, true);
-	// 	pianoQuestStub.quest = quest;
-
-	// 	service.nextQuest();
-	// 	userPressKey([Note.C], 3);
-	// 	userPressKey([Note.E, Note.G, Note['A#']], 4);
-
-	// 	const c3Key = service.keys.actives.find(f => f.note == Note.C)!;
-	// 	expect(c3Key.isRight).toBeFalsy();
-	// });
-
-	// it('should chenage right keys if most of the keys are in other octave, first inversion case', () => undefined);
 
 });

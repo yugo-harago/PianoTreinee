@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
+import { PianoQuestHandlerService } from 'src/app/quest/piano-quest/piano-quest-handler.service';
 
 @Component({
   selector: 'app-quests-quantity-input',

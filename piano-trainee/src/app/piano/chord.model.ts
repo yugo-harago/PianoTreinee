@@ -1,7 +1,9 @@
 import { Note } from './note.enum';
 export enum AccidentalType {
-	Sharp,
-	Flat
+	sharp,
+	flat,
+	none,
+	both
 }
 
 export class Chord {
@@ -17,12 +19,12 @@ export class Chord {
 		this.root = root;
 		this.type = type;
 		this.baseNote = baseNote;
-		this.accidentalType = accidentalType?? AccidentalType.Sharp;
+		this.accidentalType = accidentalType?? AccidentalType.sharp;
 	}
 
 	toString(): string {
 		let result = Note[this.root];
-		if(this.accidentalType == AccidentalType.Flat && this.isAccidental) {
+		if(this.accidentalType == AccidentalType.flat && this.isAccidental) {
 			result = Note[this.root + 1] + "b";
 		}
 		if(this.type) {

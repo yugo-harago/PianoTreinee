@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { MidiService } from './midi/midi.service';
 import { Note } from './note.enum';
-import { PianoChordQuestBundleService } from './piano-quest/piano-chord-quest-bundle.service';
+import { PianoChordQuestBundleService } from '../quest/piano-quest/piano-chord-quest-bundle.service';
 
 import { Keys, Octave, PianoService } from './piano.service';
 

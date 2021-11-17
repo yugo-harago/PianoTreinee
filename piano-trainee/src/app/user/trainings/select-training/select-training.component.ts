@@ -1,9 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TOKENS } from 'src/app/injections-tokens';
-import { PianoChordQuestBundleService } from 'src/app/piano/piano-quest/piano-chord-quest-bundle.service';
-import { PianoQuestHandlerService } from 'src/app/piano/piano-quest/piano-quest-handler.service';
-import { ChordTraining, trainingOptions } from './training-options.data';
+import { AccidentalType } from 'src/app/piano/chord.model';
+import { PianoChordQuestBundleService } from 'src/app/quest/piano-quest/piano-chord-quest-bundle.service';
+import { PianoQuestHandlerService } from 'src/app/quest/piano-quest/piano-quest-handler.service';
+import { QuestCardType } from 'src/app/quest/piano-quest/quest-card-type.enum';
+import { ChordTraining, TrainingInversionType, trainingOptions } from './training-options.data';
+
+
+export class ChordQuest {
+	constructor(
+		public id: number,
+		public quest: QuestCardType,
+		public inversion: TrainingInversionType,
+		public accidental: AccidentalType
+		){}
+}
 
 @Component({
   selector: 'app-select-training',
@@ -12,6 +23,7 @@ import { ChordTraining, trainingOptions } from './training-options.data';
 })
 export class SelectTrainingComponent implements OnInit {
 
+	public TrainingInversionType = TrainingInversionType;
 	public batchTraining: ChordTraining[][] = [];
 	private chordTrainings: Array<ChordTraining> = [];
 
@@ -32,6 +44,7 @@ export class SelectTrainingComponent implements OnInit {
 	}
 
 	public reset(){
+		this.chordTrainings.forEach(f => f.selected = false);
 		this.questBundler.resetQuest();
 	}
 
@@ -43,17 +56,36 @@ export class SelectTrainingComponent implements OnInit {
     }
 
 	public onCardClick(chordTraining: ChordTraining) {
-		this.questBundler.addQuest(chordTraining);
+		let quest = this.toQuest(chordTraining);
+		this.questBundler.addQuest(quest);
 		this.router.navigate(['train'], { relativeTo: this.route });
 	}
 
 	public onCardSelect(chordTraining: ChordTraining) {
-		this.questBundler.addQuest(chordTraining);
+		let quest = this.toQuest(chordTraining);
+		this.questBundler.addQuest(quest);
 		chordTraining.selected = true;
 	}
 	public onCardDeselect(chordTraining: ChordTraining) {
 		this.questBundler.removeQuest(chordTraining);
 		chordTraining.selected = false;
+	}
+	public inversionSelect(chordTraining: ChordTraining, $event: Event) {
+		chordTraining.inversion = parseInt(($event.target as HTMLTextAreaElement).value);
+	}
+
+	private toQuest(chordTraining: ChordTraining): ChordQuest{
+		let accidental: AccidentalType;
+		if(chordTraining.flatAccidental && chordTraining.sharpAccidental){
+			accidental = AccidentalType.both
+		} else if(chordTraining.flatAccidental){
+			accidental = AccidentalType.flat;
+		}else if(chordTraining.sharpAccidental){
+			accidental = AccidentalType.sharp;
+		}else{
+			accidental = AccidentalType.none;
+		}
+		return new ChordQuest(chordTraining.id, chordTraining.quest, chordTraining.inversion, accidental);
 	}
 
 }

@@ -29,6 +29,16 @@
 					<div class="card-body">
 						<h4 class="card-title">{{ chordTraining.title }}</h4>
 						<span>Difficulty: {{ chordTraining.difficulty }}</span><br>
+						<span>Sharp:<input class="form-check-input" type="checkbox" [value]="chordTraining.sharpAccidental" id="sharpCheckBox"></span><br>
+						<span>Flat:<input class="form-check-input" type="checkbox" [value]="chordTraining.flatAccidental" id="flatCheckBox"></span><br>
+						<span>Inversion:
+							<select class="form-select" aria-label="Inversion Selection" [(ngModel)]="chordTraining.inversion"><br>
+								<option selected [value]="TrainingInversionType.none">None</option>
+								<option [value]="TrainingInversionType.first">First</option>
+								<option [value]="TrainingInversionType.second">Second</option>
+								<option [value]="TrainingInversionType.both">Both</option>
+							  </select>
+						</span>
 						<div class="row">
 							<div class="col">
 								<button class="btn btn-primary" type="button"

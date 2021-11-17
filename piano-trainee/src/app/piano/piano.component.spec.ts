@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TOKENS } from '../injections-tokens';
 import { UserModule } from '../user/user.module';
 import { Note } from './note.enum';
-import { PianoChordQuestBundleService } from './piano-quest/piano-chord-quest-bundle.service';
-import { Quest } from './piano-quest/quest.model';
+import { PianoChordQuestBundleService } from '../quest/piano-quest/piano-chord-quest-bundle.service';
+import { Quest } from '../quest/piano-quest/quest.model';
 
 import { PianoComponent } from './piano.component';
 

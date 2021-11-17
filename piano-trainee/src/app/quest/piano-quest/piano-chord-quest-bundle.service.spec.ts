@@ -1,15 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { ChordTraining, trainingOptions } from 'src/app/user/trainings/select-training/training-options.data';
-import { Note } from '../note.enum';
+import { ChordQuest } from '../../user/trainings/select-training/select-training.component';
+import { ChordTraining, TrainingInversionType, trainingOptions } from '../../user/trainings/select-training/training-options.data';
+import { AccidentalType } from '../../piano/chord.model';
+import { Note } from '../../piano/note.enum';
 
-import { PianoChordQuestBundleService, QuestCardType } from './piano-chord-quest-bundle.service';
+import { PianoChordQuestBundleService } from './piano-chord-quest-bundle.service';
+import { QuestCardType } from './quest-card-type.enum';
+import { RandomService } from '../random.service';
 
 describe('PianoQuestBundleService', () => {
 	let service: PianoChordQuestBundleService;
+	let randomService: RandomService;
 
 	beforeEach(() => {
+		randomService = new RandomService();
 		TestBed.configureTestingModule({
-			providers: [PianoChordQuestBundleService]
+			providers: [
+				{ provide: PianoChordQuestBundleService },
+				{ provide: RandomService, useValue: randomService}
+			]
 		});
 		service = TestBed.inject(PianoChordQuestBundleService);
 	});
@@ -46,12 +55,59 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major inversion quest', () => {
-		const chordQuest = new ChordTraining(1, "title", 1, QuestCardType.majorChordQuest, true)
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.both)
 		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
 			expect(quest.inversion).not.toEqual(0);
 		}
+	});
+
+	it('should only generate major first inversion quest', () => {
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.both);
+		service.addQuest(chordQuest);
+		for (let index = 0; index < 10; index++) {
+			const quest = service.nextQuest();
+			expect(quest.inversion).toEqual(1);
+		}
+	});
+
+	it('should only generate major second inversion quest', () => {
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.second, AccidentalType.both)
+		service.addQuest(chordQuest);
+		for (let index = 0; index < 10; index++) {
+			const quest = service.nextQuest();
+			expect(quest.inversion).toEqual(2);
+		}
+	});
+
+	it('should only generate major without inversion quest', () => {
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.both)
+		service.addQuest(chordQuest);
+		for (let index = 0; index < 10; index++) {
+			const quest = service.nextQuest();
+			expect(quest.inversion).toEqual(0);
+		}
+	});
+
+	it('should generate major sharp quest', () => {
+		randomService.getRandomInversion = () => 0;
+		randomService.getRandomNote = () => Note['C#'];
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.sharp)
+		service.addQuest(chordQuest);
+		const quest = service.nextQuest();
+		const stringQuest = quest.questChord.toString();
+		expect(stringQuest).toEqual("C#");
+	});
+
+	it('should generate major flat quest', () => {
+		randomService.getRandomInversion = () => 0;
+		randomService.getRandomNote = () => Note['C#'];
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.flat)
+		service.addQuest(chordQuest);
+		const quest = service.nextQuest();
+		const stringQuest = quest.questChord.toString();
+		expect(stringQuest).toEqual("Db");
 	});
 
 	it('should generate minor third quest', () => {
@@ -205,8 +261,9 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should not have duplicate item in the quest list', () => {
-		service.addQuest(trainingOptions[0]);
-		service.addQuest(trainingOptions[0]);
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.both);
+		service.addQuest(chordQuest);
+		service.addQuest(chordQuest);
 		expect(service.currentQuests.length).toBe(1);
 	});
 });

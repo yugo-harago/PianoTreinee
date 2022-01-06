@@ -2,8 +2,9 @@ import { Note } from './note.enum';
 export enum AccidentalType {
 	sharp,
 	flat,
+	flatAndSharp,
 	none,
-	both
+	all
 }
 
 export class Chord {

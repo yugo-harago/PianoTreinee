@@ -21,43 +21,23 @@
 		</div>
 	</div>
 </div>
+<div class="container">
+	<div class="row" style="margin-top: 10px;">
+		<div class="col text-center">
+			<h3>Custom Chord Trainning</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<app-custom-training-card></app-custom-training-card>
+		</div>
+	</div>
+</div>
 <ng-template ngFor let-chordTrainings [ngForOf]="batchTraining">
 	<div class="container" style="margin-top: 10px;">
 		<div class="row">
 			<div class="col" *ngFor="let chordTraining of chordTrainings">
-				<div class="card" [class.selected]="chordTraining.selected" [id]="chordTraining.name+'-card'">
-					<div class="card-body">
-						<h4 class="card-title">{{ chordTraining.title }}</h4>
-						<span>Difficulty: {{ chordTraining.difficulty }}</span><br>
-						<span>Sharp:<input class="form-check-input" type="checkbox" [value]="chordTraining.sharpAccidental" id="sharpCheckBox"></span><br>
-						<span>Flat:<input class="form-check-input" type="checkbox" [value]="chordTraining.flatAccidental" id="flatCheckBox"></span><br>
-						<span>Inversion:
-							<select class="form-select" aria-label="Inversion Selection" [(ngModel)]="chordTraining.inversion"><br>
-								<option selected [value]="TrainingInversionType.none">None</option>
-								<option [value]="TrainingInversionType.first">First</option>
-								<option [value]="TrainingInversionType.second">Second</option>
-								<option [value]="TrainingInversionType.both">Both</option>
-							  </select>
-						</span>
-						<div class="row">
-							<div class="col">
-								<button class="btn btn-primary" type="button"
-									(click)="onCardClick(chordTraining)"
-									[name]="'start-' + chordTraining.name + '-btn'">Start</button>
-							</div>
-							<div class="col">
-								<button class="btn btn-primary" type="button"
-									(click)="onCardSelect(chordTraining)"
-									*ngIf="!chordTraining.selected"
-									[name]="'select-' + chordTraining.name + '-btn'">Select</button>
-									<button class="btn btn-primary" type="button"
-										*ngIf="chordTraining.selected"
-										(click)="onCardDeselect(chordTraining)"
-										[name]="'deselect-' + chordTraining.name + '-btn'">Deselect</button>
-							</div>
-						</div>
-					</div>
-				</div>
+				<app-training-card [chordTraining]="chordTraining"></app-training-card>
 			</div>
 		</div>
 	</div>

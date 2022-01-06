@@ -23,7 +23,6 @@ export class ChordQuest {
 })
 export class SelectTrainingComponent implements OnInit {
 
-	public TrainingInversionType = TrainingInversionType;
 	public batchTraining: ChordTraining[][] = [];
 	private chordTrainings: Array<ChordTraining> = [];
 
@@ -54,38 +53,5 @@ export class SelectTrainingComponent implements OnInit {
 			res.push(arr.slice(i,i+size));
 		return res;
     }
-
-	public onCardClick(chordTraining: ChordTraining) {
-		let quest = this.toQuest(chordTraining);
-		this.questBundler.addQuest(quest);
-		this.router.navigate(['train'], { relativeTo: this.route });
-	}
-
-	public onCardSelect(chordTraining: ChordTraining) {
-		let quest = this.toQuest(chordTraining);
-		this.questBundler.addQuest(quest);
-		chordTraining.selected = true;
-	}
-	public onCardDeselect(chordTraining: ChordTraining) {
-		this.questBundler.removeQuest(chordTraining);
-		chordTraining.selected = false;
-	}
-	public inversionSelect(chordTraining: ChordTraining, $event: Event) {
-		chordTraining.inversion = parseInt(($event.target as HTMLTextAreaElement).value);
-	}
-
-	private toQuest(chordTraining: ChordTraining): ChordQuest{
-		let accidental: AccidentalType;
-		if(chordTraining.flatAccidental && chordTraining.sharpAccidental){
-			accidental = AccidentalType.both
-		} else if(chordTraining.flatAccidental){
-			accidental = AccidentalType.flat;
-		}else if(chordTraining.sharpAccidental){
-			accidental = AccidentalType.sharp;
-		}else{
-			accidental = AccidentalType.none;
-		}
-		return new ChordQuest(chordTraining.id, chordTraining.quest, chordTraining.inversion, accidental);
-	}
 
 }

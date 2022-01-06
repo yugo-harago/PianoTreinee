@@ -13,6 +13,8 @@ import { TrainingDisplayComponent } from './training-display/training-display.co
 import { TimerComponent } from './timer/timer.component';
 import { InversionFocusTrainingComponent } from './trainings/inversion-focus-training/inversion-focus-training.component';
 import { PianoQuestGuard } from '../quest/piano-quest/piano-quest-guard';
+import { TrainingCardComponent } from './trainings/select-training/training-card/training-card.component';
+import { CustomTrainingCardComponent } from './trainings/select-training/custom-training-card/custom-training-card.component';
 
 
 
@@ -25,7 +27,9 @@ import { PianoQuestGuard } from '../quest/piano-quest/piano-quest-guard';
 		QuestsQuantityInputComponent,
 		TrainingDisplayComponent,
 		TimerComponent,
-		InversionFocusTrainingComponent
+		InversionFocusTrainingComponent,
+		TrainingCardComponent,
+  CustomTrainingCardComponent
 	],
 	imports: [
 		CommonModule,

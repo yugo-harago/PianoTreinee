@@ -55,7 +55,7 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major inversion quest', () => {
-		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.both)
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.all)
 		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
@@ -64,7 +64,7 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major first inversion quest', () => {
-		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.both);
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.first, AccidentalType.all);
 		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
@@ -73,7 +73,7 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major second inversion quest', () => {
-		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.second, AccidentalType.both)
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.second, AccidentalType.all)
 		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
@@ -82,7 +82,7 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should only generate major without inversion quest', () => {
-		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.both)
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.all)
 		service.addQuest(chordQuest);
 		for (let index = 0; index < 10; index++) {
 			const quest = service.nextQuest();
@@ -261,7 +261,7 @@ describe('PianoQuestBundleService', () => {
 	});
 
 	it('should not have duplicate item in the quest list', () => {
-		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.both);
+		const chordQuest = new ChordQuest(1, QuestCardType.majorChordQuest, TrainingInversionType.none, AccidentalType.all);
 		service.addQuest(chordQuest);
 		service.addQuest(chordQuest);
 		expect(service.currentQuests.length).toBe(1);

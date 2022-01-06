@@ -120,5 +120,27 @@ describe('Trainings', { scrollBehavior: 'center' }, () => {
 			cy.get("#major-chord-card").should("not.have.class", "selected");
 			cy.get("#minor-chord-card").should("not.have.class", "selected");
 		})
-	})
+	});
+
+	it('should change accidental', () => {
+		const setOneTraining = CommonTasks.SetOneTraining();
+		const clickFlat = setOneTraining.then(()=>{
+			cy.get('#major-chord-card .flatCheckBox').click();
+			cy.get('#major-chord-card .whiteCheckBox').click();
+		}).then(() => {
+			CommonTasks.ClickDefaultQuestBtn().then(()=>{
+				CommonTasks.CompleteOneQuestWithAnswer();
+			});
+		});
+		const clickSharp = clickFlat.then(() => {
+			cy.get('#major-chord-card .flatCheckBox').click();
+			cy.get('#major-chord-card .sharpCheckBox').click();
+		}).then(() => {
+			CommonTasks.ClickDefaultQuestBtn().then(()=>{
+				cy.get('#start').click().then(() => {
+					cy.get("#chord-quest-text").contains('#');
+				});
+			});
+		});
+	});
 })

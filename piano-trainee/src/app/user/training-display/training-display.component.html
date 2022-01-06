@@ -15,6 +15,7 @@
 				id="start">Start
 			</button>
 			<h3 class="quest-text"
+				id="chord-quest-text"
 				*ngIf="started && !ended">{{ pianoQuestService.quest?.questChord }}</h3>
 			<button class="btn btn-light btn-sm" type="button" style="padding: 5px;margin: 2px;"
 				*ngIf="ended"

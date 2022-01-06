@@ -1,0 +1,33 @@
+
+<div class="card-body" *ngIf="chordTraining">
+	<h4 class="card-title">{{ chordTraining.title }}</h4>
+	<span>Difficulty: {{ chordTraining.difficulty }}</span><br>
+	<span>White key:<input class="form-check-input whiteCheckBox" type="checkbox" [(ngModel)]="chordTraining.whiteKey" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Sharp:<input class="form-check-input sharpCheckBox" type="checkbox" [(ngModel)]="chordTraining.sharpAccidental" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Flat:<input class="form-check-input flatCheckBox" type="checkbox" [(ngModel)]="chordTraining.flatAccidental" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Inversion:
+		<select class="form-select" aria-label="Inversion Selection" [(ngModel)]="chordTraining.inversion"><br>
+			<option selected [value]="TrainingInversionType.none">None</option>
+			<option [value]="TrainingInversionType.first">First</option>
+			<option [value]="TrainingInversionType.second">Second</option>
+			<option [value]="TrainingInversionType.both">Both</option>
+			</select>
+	</span>
+	<div class="row">
+		<div class="col">
+			<button class="btn btn-primary" type="button"
+				(click)="onCardClick()"
+				[name]="'start-' + chordTraining.name + '-btn'">Start</button>
+		</div>
+		<div class="col">
+			<button class="btn btn-primary" type="button"
+				(click)="onCardSelect()"
+				*ngIf="!chordTraining.selected"
+				[name]="'select-' + chordTraining.name + '-btn'">Select</button>
+				<button class="btn btn-primary" type="button"
+					*ngIf="chordTraining.selected"
+					(click)="onCardDeselect()"
+					[name]="'deselect-' + chordTraining.name + '-btn'">Deselect</button>
+		</div>
+	</div>
+</div>

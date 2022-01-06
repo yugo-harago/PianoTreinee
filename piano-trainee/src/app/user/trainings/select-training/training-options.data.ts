@@ -1,5 +1,6 @@
 import { AccidentalType } from "src/app/piano/chord.model";
 import { Note } from "src/app/piano/note.enum";
+import { Keys } from "src/app/piano/piano.service";
 import { QuestCardType } from "src/app/quest/piano-quest/quest-card-type.enum";
 import { Quest } from "src/app/quest/piano-quest/quest.model";
 
@@ -11,9 +12,10 @@ export enum TrainingInversionType {
 }
 
 export class ChordTraining {
-	public keyNote: Note = Note.C;
 	public selected: boolean = false;
 	public name: string;
+	public whiteKey: boolean = true;
+	public ordinalTrainings?: number[];
 	constructor(
 		public id: number,
 		public title: string,

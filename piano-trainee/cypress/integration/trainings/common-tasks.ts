@@ -26,7 +26,7 @@ export class CommonTasks{
 	}
 
 	public static ClickDefaultQuestBtn() {
-		cy
+		return cy
 		.get('button[name="start-major-chord-btn"]')
 		.click();
 	}

@@ -7,7 +7,9 @@ import { Quest } from 'src/app/quest/piano-quest/quest.model';
 import { Key } from 'src/app/piano/piano.service';
 import { QuestsQuantityInputComponent } from '../quests-quantity-input/quests-quantity-input.component';
 import { SelectTrainingComponent } from './select-training.component';
-import { trainingOptions } from './training-options.data';
+import { ChordTraining, trainingOptions } from './training-options.data';
+import { QuestCardType } from 'src/app/quest/piano-quest/quest-card-type.enum';
+import { AccidentalType } from 'src/app/piano/chord.model';
 
 let pianoQuestStub:{ 
 	nextQuest: () => Quest,

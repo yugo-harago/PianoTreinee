@@ -5,4 +5,5 @@ export enum QuestCardType {
 	minor7ChordQuest = "minor7ChordQuest",
 	dominantChordQuest = "dominantChordQuest",
 	dominant7ChordQuest = "dominant7ChordQuest",
+    custom = "custom"
 }

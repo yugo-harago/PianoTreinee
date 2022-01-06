@@ -10,7 +10,8 @@ export class RandomService {
 
   public getRandomNote(accidental: AccidentalType): Note{
 	  switch(accidental){
-		  case AccidentalType.both: return this.getRandomInt(2) == 1? this.getRandomBlackNote() : this.getRandomWhiteNote();
+		  case AccidentalType.all: return this.getRandomInt(2) == 1? this.getRandomBlackNote() : this.getRandomWhiteNote();
+		  case AccidentalType.flatAndSharp: 
 		  case AccidentalType.sharp:
 		  case AccidentalType.flat: return this.getRandomBlackNote();
 		  case AccidentalType.none: return this.getRandomWhiteNote();

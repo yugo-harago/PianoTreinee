@@ -1,0 +1,30 @@
+
+<div class="card-body">
+	<h4 class="card-title">{{ chordTraining.title }}</h4>
+	<span>White key:<input class="form-check-input whiteCheckBox" type="checkbox" [(ngModel)]="chordTraining.whiteKey" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Sharp:<input class="form-check-input sharpCheckBox" type="checkbox" [(ngModel)]="chordTraining.sharpAccidental" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Flat:<input class="form-check-input flatCheckBox" type="checkbox" [(ngModel)]="chordTraining.flatAccidental" [ngModelOptions]="{standalone: true}"></span><br>
+	<span>Ordinal keys:</span>
+    <span class="ml-1">
+        <ng-container *ngFor="let n of ordinalKeys">
+            <button class="btn btn-light" [class.active]="n[1]" (click)="onOrdinalKey(n)">{{ n[0] }}</button>
+        </ng-container>
+    </span>
+	<div class="row">
+		<div class="col">
+			<button class="btn btn-primary" type="button"
+				(click)="onCardClick()"
+				[name]="'start-' + chordTraining.name + '-btn'">Start</button>
+		</div>
+		<div class="col">
+			<button class="btn btn-primary" type="button"
+				(click)="onCardSelect()"
+				*ngIf="!chordTraining.selected"
+				[name]="'select-' + chordTraining.name + '-btn'">Select</button>
+				<button class="btn btn-primary" type="button"
+					*ngIf="chordTraining.selected"
+					(click)="onCardDeselect()"
+					[name]="'deselect-' + chordTraining.name + '-btn'">Deselect</button>
+		</div>
+	</div>
+</div>
